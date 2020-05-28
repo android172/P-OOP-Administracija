@@ -13,11 +13,20 @@ public class Database
 
     public Database()       // First time run
     {
+
+        ConnectToDatabase("");
+
+        CreateDatabase("Testing");
+    }
+
+    public void ConnectToDatabase(String name)
+    {
         System.out.println("Connecting to database");
 
         try
         {
-            conn = DriverManager.getConnection("jdbc:mariadb://localhost/", "root", "");
+            conn = DriverManager.getConnection("jdbc:mariadb://localhost/" + name, "root", "");
+            stat = conn.createStatement();
 
             System.out.println("Connection successful");
         }
@@ -26,24 +35,44 @@ public class Database
             System.out.println("Connecting failed");
             throwables.printStackTrace();
         }
+
     }
 
     public void CreateDatabase(String name)     //  Creates full database for the project
     {
-        sql = "CREATE DATABASE IF NOT EXISTS" + name;
+        sql = "CREATE DATABASE " + name;
 
         System.out.println("Creating database");
 
         try
         {
-            stat.executeQuery(sql);
+            stat.executeUpdate(sql);
 
             System.out.println("Database " + name + " has been created");
+
+            CreateTableUsers();
+            CreateTableSubjects();
+            CreateTableExams();
+            CreateTableStudents();
+            CreateTableExamApplications();
+            CreateTableAppliedToListen();
+            CreateTableArchive();
         }
-        catch (SQLException throwables)     // Proveriti da li baza postoji, ako postoji odmah se povezati, ako ne postoji, napraviti bazu i tabele
+        catch (SQLException throwables)
         {
-            System.out.println("Creating database failed");
-            throwables.printStackTrace();
+            if(throwables.getErrorCode() == 1007)       // baza postoji (izbrisati "IF NOT EXISTS")
+            {
+                System.out.println("Database already exists");
+                ConnectToDatabase(name);
+            }
+
+
+            else        // Druge greske
+            {
+                System.out.println("Creating database failed");
+                throwables.printStackTrace();
+            }
+
         }
     }
 
