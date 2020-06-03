@@ -1,9 +1,6 @@
 package poopprojekat.studentska_sluzba;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Database
 {
@@ -13,10 +10,10 @@ public class Database
 
     public Database()       // First time run
     {
-
         ConnectToDatabase("");
 
         CreateDatabase("Testing");
+
     }
 
     public void ConnectToDatabase(String name)
@@ -32,8 +29,16 @@ public class Database
         }
         catch (SQLException throwables)
         {
-            System.out.println("Connecting failed");
-            throwables.printStackTrace();
+            if(throwables.getErrorCode() == 1049)       // Database doesn't exsist
+            {
+                System.out.println("Database doesn't exist");
+            }
+            else        // other errors
+            {
+                System.out.println("Connecting failed");
+                throwables.printStackTrace();
+            }
+
         }
 
     }
@@ -57,6 +62,8 @@ public class Database
             CreateTableExamApplications();
             CreateTableAppliedToListen();
             CreateTableArchive();
+
+            ConnectToDatabase(name);
         }
         catch (SQLException throwables)
         {
@@ -67,7 +74,7 @@ public class Database
             }
 
 
-            else        // Druge greske
+            else        // Other errors
             {
                 System.out.println("Creating database failed");
                 throwables.printStackTrace();
@@ -244,5 +251,97 @@ public class Database
         }
     }
 
+    public void AddStudent(Student s)       // JMBG is unique
+    {
+        sql = "INSERT INTO Students (FirstName, LastName, IndexNum, JMBG, DateOfBirth, From)" +
+                "SELECT '" + s.jmbg + "' FROM DUAL" +
+                "WHERE NOT EXISTS(SELECT JMBG FROM Students" +
+                "WHERE JMBG = '" + s.jmbg + "' LIMIT 1)";
 
+        try
+        {
+            stat.executeUpdate(sql);
+            System.out.println("Student added");
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public Student GetStudent(Student s)        // s must have jmbg (rest is optional)
+    {
+        sql = "SELECT * FROM Studends" +
+                "WHERE JMBG = '" + s.jmbg + "'";
+
+        ResultSet res = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            s.firstName = res.getString("FirstName");
+            s.lastName = res.getString("LastName");
+            s.indexNum = res.getString("IndexNum");
+            s.jmbg = res.getInt("JMBG");
+            s.dateOfBirth = res.getDate("DateOfBirth");
+            s.city = res.getString("From");
+
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return s;
+    }
+
+    public void AddSubject(Subject s)       // SubjectId is unique
+    {
+        sql = "INSERT INTO SubjectsAll (SubjectName, SubjectId, Year, ESPB)" +
+                "SELECT '" + s.subjectId + "' FROM DUAL" +
+                "WHERE NOT EXISTS(SELECT SubjectId FROM SubjectsAll" +
+                "WHERE SubjectId = '" + s.subjectId + "' LIMIT 1)";
+
+        try
+        {
+            stat.executeUpdate(sql);
+            System.out.println("Subject added");
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public Subject GetSubject(Subject s)       // s must have subjectId (rest is optional)
+    {
+        sql = "SELECT * FROM SubjectsAll" +
+                "WHERE SubjectId = '" + s.subjectId + "'";
+
+        ResultSet res = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            s.subjectName = res.getString("SubjectName");
+            s.subjectId = res.getString("SubjectId");
+            s.espb = res.getInt("ESPB");
+            s.year = res.getInt("Year");
+
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return s;
+    }
 }
