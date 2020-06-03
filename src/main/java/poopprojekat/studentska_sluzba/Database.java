@@ -87,10 +87,10 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Users" +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "Username VARCHAR(30) not NULL," +
+                "Username VARCHAR(30) not NULL," +      // ind/god ili ind-god
                 "Password VARCHAR(30) not NULL," +
-                "Role VARCHAR(10) not NULL," +
-                "PRIMARY KEY (id) )";
+                "Role VARCHAR(10) not NULL," +          // Student, Profesor, Admin
+                "PRIMARY KEY (Username) )";
 
         System.out.println("Creating table 'Users'");
 
@@ -114,7 +114,7 @@ public class Database
                 "SubjectId VARCHAR(10) not NULL," +
                 "Year INTEGER not NULL," +
                 "ESPB INTEGER not NULL," +
-                "PRIMARY KEY (id) )";
+                "PRIMARY KEY (SubjectId) )";
 
         System.out.println("Creating table 'Subjects'");
 
@@ -140,7 +140,7 @@ public class Database
                 "JMBG INTEGER not NULL," +
                 "DateOfBirth DATE not NULL," +
                 "From VARCHAR(15) not NULL," +
-                "PRIMARY KEY (id) )";
+                "PRIMARY KEY (JMBG, IndexNum) )";
 
         System.out.println("Creating table 'Students'");
 
@@ -163,7 +163,7 @@ public class Database
                 "IndexNum VARCHAR(10) not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
                 "Year INTEGER not NULL," +      // Na kojoj godini je predmet
-                "PRIMARY KEY (id) )";
+                "PRIMARY KEY (IndexNum, SubjectId) )";
 
         System.out.println("Creating table 'AppliedToListen'");
 
@@ -186,7 +186,7 @@ public class Database
                 "ExamDate DATE not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
                 "ProfessorId INTEGER not NULL" +
-                "PRIMARY KEY (id) )";
+                "PRIMARY KEY (Date, SubjectId) )";
 
         System.out.println("Creating table 'Exams'");
 
@@ -209,7 +209,7 @@ public class Database
                 "IndexNum VARCHAR(10) not NULL," +
                 "ExamDate DATE not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
-                "PRIMARY KEY (id) )";
+                "PRIMARY KEY (IndexNum, ExamDate, SubjectId) )";
 
         System.out.println("Creating table 'ExamApplication'");
 
@@ -235,7 +235,7 @@ public class Database
                 "Mark INTEGER not NULL," +
                 "Show VARCHAR(5) not NULL," +
                 "Pass/Fail VARCHAR(8) not NULL," +
-                "PRIMARY KEY (id) )";
+                "PRIMARY KEY (IndexNum, ExamDate, SubjectId) )";
 
         System.out.println("Creating table 'ExamsArchive'");
 
@@ -251,28 +251,60 @@ public class Database
         }
     }
 
-    public void AddStudent(Student s)       // JMBG is unique
+    private void CreateTableProfessors()
+    {
+        sql = "CREATE TABLE IF NOT EXISTS Professors" +
+                "( id INTEGER not NULL AUTO_INCREMENT," +
+                "ProfId INTEGER not NULL," +
+                "FirstName VARCHAR(15) not NULL," +
+                "LastName VARCHAR(15) not NULL," +
+                "PRIMARY KEY (ProfId) )";
+
+        System.out.println("Creating table 'ExamsArchive'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("Table 'ExamsArchive' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating table 'ExamsArchive' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    // End of Create -----------------------------------------------
+
+    // boolean true u AddX -> uspesno dodalo
+    // null u GetX -> ne postoji
+
+    public boolean AddStudent(Student s)       // JMBG and indexNum is unique
     {
         sql = "INSERT INTO Students (FirstName, LastName, IndexNum, JMBG, DateOfBirth, From)" +
                 "SELECT '" + s.jmbg + "' FROM DUAL" +
                 "WHERE NOT EXISTS(SELECT JMBG FROM Students" +
-                "WHERE JMBG = '" + s.jmbg + "' LIMIT 1)";
+                "WHERE JMBG = '" + s.jmbg + "' AND IndexNum = '" + s.indexNum + "' LIMIT 1)";
 
         try
         {
             stat.executeUpdate(sql);
             System.out.println("Student added");
+            return true;
         }
         catch (SQLException throwables)
         {
             throwables.printStackTrace();
         }
+
+        return false;
     }
 
-    public Student GetStudent(Student s)        // s must have jmbg (rest is optional)
+    public Student GetStudent(Student s)        // s must have jmbg or (fname and lname) or index (rest is optional)
     {
         sql = "SELECT * FROM Studends" +
-                "WHERE JMBG = '" + s.jmbg + "'";
+                "WHERE JMBG = '" + s.jmbg + "' OR IndexNum = '" + s.indexNum + "'" +
+                "OR (FirstName = '" + s.firstName + "' AND LastName = '" + s.lastName + "')";
 
         ResultSet res = null;
 
@@ -299,7 +331,7 @@ public class Database
         return s;
     }
 
-    public void AddSubject(Subject s)       // SubjectId is unique
+    public boolean AddSubject(Subject s)       // SubjectId is unique
     {
         sql = "INSERT INTO SubjectsAll (SubjectName, SubjectId, Year, ESPB)" +
                 "SELECT '" + s.subjectId + "' FROM DUAL" +
@@ -310,17 +342,20 @@ public class Database
         {
             stat.executeUpdate(sql);
             System.out.println("Subject added");
+            return true;
         }
         catch (SQLException throwables)
         {
             throwables.printStackTrace();
         }
+
+        return false;
     }
 
-    public Subject GetSubject(Subject s)       // s must have subjectId (rest is optional)
+    public Subject GetSubject(Subject s)       // s must have subjectId or subjectName (rest is optional)
     {
         sql = "SELECT * FROM SubjectsAll" +
-                "WHERE SubjectId = '" + s.subjectId + "'";
+                "WHERE SubjectId = '" + s.subjectId + "' OR SubjectName = '" + s.subjectName + "'";
 
         ResultSet res = null;
 
@@ -344,4 +379,54 @@ public class Database
 
         return s;
     }
+
+    public boolean AddProfessor(Professor p)       // ProfId is unique
+    {
+        sql = "INSERT INTO Professors (ProfId, FirstName, LastName)" +
+                "SELECT '" + p.profId + "' FROM DUAL" +
+                "WHERE NOT EXISTS(SELECT ProfId FROM SubjectsAll" +
+                "WHERE ProfId = '" + p.profId + "' LIMIT 1)";
+
+        try
+        {
+            stat.executeUpdate(sql);
+            System.out.println("Professor added");
+            return true;
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public Professor GetProfessor(Professor p)
+    {
+        sql = "SELECT * FROM Professors" +
+                "WHERE ProfId = '" + p.profId + "' OR (FirstName = '" + p.firstName + "'" +
+                "AND LastName = '" + p.lastName + "')";
+
+        ResultSet res = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            p.firstName = res.getString("FirstName");
+            p.lastName = res.getString("LastName");
+            p.profId = res.getInt("ProfId");
+
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return p;
+    }
+
 }
