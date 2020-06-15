@@ -1,0 +1,112 @@
+::placeholder {
+	color: var(--color-highlight2);
+}
+
+input:focus::placeholder {
+	color: transparent;
+}
+
+label, input {
+	margin: 5px;
+	padding: 2px;
+	color: var(--color-text);
+}
+
+input {
+	font-weight: 900;
+	border-radius: 15px;
+}
+
+h2 {
+	padding-bottom: 15px;
+}
+
+input:focus {
+	outline: none;
+}
+
+#username, #password {
+	height: 35px;
+	width: 90%;
+	color: var(--color-header);
+
+	border: none;
+	background-color: transparent;
+}
+
+@keyframes input-animation {
+	from {
+		background-color: var(--color-darker);
+		border-radius: 40px;
+	}
+	to {
+		background-color: var(--color-light);
+		border-radius: 3px;
+		text-align: center;
+	}
+}
+
+#username:hover, #password:hover{
+	background-color: var(--color-darker);
+}
+
+#username:focus, #password:focus{
+	animation-name: input-animation;
+	animation-duration: .5s; 
+	animation-timing-function:ease-out;
+
+	background-color: var(--color-light);
+	border-radius: 3px;
+	text-align: center;
+}
+
+.submit, .reset{
+	position: absolute;
+	padding: 6px 30px 6px 30px;
+	bottom: 0;
+	
+	color: var(--color-text);
+	border-radius: 15px;
+	background-color: var(--color-highlight);
+	border-color: var(--color-highlight2);
+
+	box-shadow: 0px 0px 6px black;
+}
+
+.submit {
+	left: 18px;
+
+}
+
+.reset {
+	right: 18px;
+}
+
+#login-wrapper{
+	width: 300px;
+	height: 400px;
+
+	border-radius: 20px;
+	color: white;
+	background-color: var(--color-dark);
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -150px;
+	margin-top: -200px;
+
+	box-shadow: -2px 2px 4px black;
+}
+
+form {
+	padding: 20px;
+	position: relative;
+	height: 340px;
+
+	letter-spacing: 2px;
+}
+
+/*#register {
+	visibility: hidden;
+}*/
