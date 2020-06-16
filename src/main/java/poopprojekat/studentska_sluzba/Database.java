@@ -455,7 +455,7 @@ public class Database
 
     // GET f-je
 
-    public static List GetFilteredStudents(Date dateOfBirth, String city, String majorName)
+    public static List<Student> GetFilteredStudents(Date dateOfBirth, String city, String majorName)
     {
         List<Student> lista = new ArrayList<>();
         boolean uslov = false;
@@ -630,7 +630,7 @@ public class Database
         return p;
     }
 
-    public static List GetMajor(String majorName, int majorId)
+    public static List<Major> GetMajor(String majorName, int majorId)
     {
         List<Major> lista = new ArrayList<>();
         boolean uslov = false;
