@@ -367,7 +367,7 @@ public class Database
     // null u GetX -> ne postoji
     // Za AddX f-je sve obavezne promenjive moraju biti popunjene
 
-    // ADD f-je
+    // ADD f-je -----------------------------------------------------
 
     public static boolean AddStudent(Student s)       // JMBG and indexNum is unique
     {
@@ -455,7 +455,7 @@ public class Database
 
     // GET f-je
 
-    public static List GetFilteredStudents(Date dateOfBirth, String city, String majorName)
+    public static List<Student> GetStudents(Date dateOfBirth, String city, String majorName)
     {
         List<Student> lista = new ArrayList<>();
         boolean uslov = false;
@@ -516,11 +516,12 @@ public class Database
 
     }
 
-    public static Student GetStudentByUnique(Student s)        // Pretrazuje po brind ILI jmbg
+    public static Student GetStudent(String jmbg)
     {
         sql = "SELECT * FROM Students " +
-                "WHERE (" + s.jmbg + " is not NULL AND JMBG = '" + s.jmbg + "') OR IndexNum = '" + s.indexNum + "'";
+                "WHERE JMBG = '" + jmbg + "'";
 
+        Student s = null;
         ResultSet res = null;
 
         try
@@ -530,12 +531,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            s.firstName = res.getString("FirstName");
-            s.lastName = res.getString("LastName");
-            s.indexNum = res.getString("IndexNum");
-            s.jmbg = res.getString("JMBG");
-            s.dateOfBirth = res.getDate("DateOfBirth");
-            s.city = res.getString("City");
+            s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getString("IndexNum"), res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getInt("MajorId"));
 
         }
         catch (SQLException throwables)
@@ -546,7 +542,33 @@ public class Database
         return s;
     }
 
-    public static Subject GetSubject(Subject s)       // s must have subjectId or subjectName (rest is optional)
+    public static Student GetStudent(String indexNum)
+    {
+        sql = "SELECT * FROM Students " +
+                "WHERE IndexNum = '" + indexNum + "'";
+
+        Student s = null;
+        ResultSet res = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getString("IndexNum"), res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getInt("MajorId"));
+
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return s;
+    }
+
+    public static Subject GetSubject(Subject s)
     {
         if(s.subjectName == null)
         {
@@ -630,28 +652,12 @@ public class Database
         return p;
     }
 
-    public static List GetMajor(String majorName, int majorId)
+    public static List GetMajors(String majorName)
     {
         List<Major> lista = new ArrayList<>();
         boolean uslov = false;
         sql = "SELECT * FROM Majors " +
-                "WHERE ";
-
-        if(majorName != null)
-        {
-            sql += "MajorName = '" + majorName + "' ";
-            uslov = true;
-        }
-        if(majorId != 0)
-        {
-            if(uslov)
-                sql += "AND ";
-
-            sql += "MajorId = " + majorId + " ";
-            uslov = true;
-        }
-        if(!uslov)
-            sql += "1 ";
+                "WHERE MajorName = '" + majorName + "' ";
 
         ResultSet res = null;
 
@@ -680,6 +686,31 @@ public class Database
         }
 
         return lista;
+    }
+
+    public static Major GetMajor(int majorId)
+    {
+        Major m = null;
+        ResultSet res;
+
+        sql = "SELECT * FROM Majors " +
+                "WHERE MajorId = '" + majorId + "' ";
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            m = new Major(res.getInt("MajorId"), res.getString("MajorName"));
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return m;
     }
 
     public static List<Subject> SubjectsOfProfessor(Professor p)

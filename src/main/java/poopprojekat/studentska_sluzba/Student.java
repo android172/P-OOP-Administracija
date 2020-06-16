@@ -23,20 +23,21 @@ public class Student
         indexNum = brind;
     }
 
-    public Student(String fname, String lname, String brind)
+    public Student(String fname, String lname, String brind)        // za vracanje iz baze za spisak studenata
     {
         firstName = fname;
         lastName = lname;
         indexNum = brind;
     }
 
-    public Student(String fname, String lname, String brind, Date dob, String city, String jmbg, int majorId)
+    public Student(String fname, String lname, String brind, Date dob, String city, String jmbg, int majorId)       // Za dodavanje studenta u bazu
     {
         this(fname, lname, brind);
         dateOfBirth = dob;
         this.city = city;
         this.jmbg = jmbg;
         this.majorId = majorId;
+        GetMajorName();
     }
     public void ApplyToListen(Subject s)
     {
@@ -46,6 +47,11 @@ public class Student
     public void GetAppliedSubjects()
     {
 
+    }
+
+    public void GetMajorName()
+    {
+        majorname = (Database.GetMajor(majorId)).name;
     }
 
     @Override
