@@ -5,10 +5,11 @@ import java.util.List;
 
 public class Professor
 {
-
+    // Obavezne za dodavanje
     public String firstName;
     public String lastName;
     public int profId;
+    //
     List<Subject> teach = new ArrayList<>();
 
     public Professor(int id)        // za pretragu baze

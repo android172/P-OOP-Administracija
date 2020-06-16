@@ -2,14 +2,16 @@ package poopprojekat.studentska_sluzba;
 
 public class Subject
 {
+    // Obavezne za dodavanje
     public String subjectName;
     public String subjectId;        // npr: M333
     public int espb;
     public int year;
-    public String prof;
-    public String major;
     public int profid;
     public int majorid;
+    //
+    public String prof;
+    public String major;
 
     public Subject(String id)
     {
