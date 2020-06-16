@@ -9,7 +9,7 @@ public class Student
     //Obavezne za dodavanje
     public String firstName;
     public String lastName;
-    public String indexNum;         //  br/god
+    public Index index;
     public Date dateOfBirth;        // Godina rodjenja - 1900 (zbog tabele)
     public String city;
     public String jmbg;
@@ -18,19 +18,19 @@ public class Student
     public int majorId;
     public List<Subject> listen = new ArrayList<>();
 
-    public Student(String brind)
+    public Student(Index brind)
     {
-        indexNum = brind;
+        index = brind;
     }
 
-    public Student(String fname, String lname, String brind)        // za vracanje iz baze za spisak studenata
+    public Student(String fname, String lname, Index brind)        // za vracanje iz baze za spisak studenata
     {
         firstName = fname;
         lastName = lname;
-        indexNum = brind;
+        index = brind;
     }
 
-    public Student(String fname, String lname, String brind, Date dob, String city, String jmbg, int majorId)       // Za dodavanje studenta u bazu
+    public Student(String fname, String lname, Index brind, Date dob, String city, String jmbg, int majorId)       // Za dodavanje studenta u bazu
     {
         this(fname, lname, brind);
         dateOfBirth = dob;
@@ -57,6 +57,6 @@ public class Student
     @Override
     public String toString()
     {
-        return firstName + " " + lastName + " " + indexNum + " " + dateOfBirth + " From:" + city + " JMBG: " + jmbg + " Smer: " + majorname;
+        return firstName + " " + lastName + " " + index + " " + dateOfBirth + " From:" + city + " JMBG: " + jmbg + " Smer: " + majorname;
     }
 }

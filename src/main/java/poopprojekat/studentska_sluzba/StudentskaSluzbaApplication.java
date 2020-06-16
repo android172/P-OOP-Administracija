@@ -3,7 +3,6 @@ package poopprojekat.studentska_sluzba;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 @SpringBootApplication
@@ -15,7 +14,14 @@ public class StudentskaSluzbaApplication
 
         Database db = new Database();
 
-        db.TestDummy();
+        try
+        {
+            db.TestDummy();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
 //        Subject s = new Subject("M002");
 //        s = Database.GetSubject(s);
@@ -29,13 +35,13 @@ public class StudentskaSluzbaApplication
 //        stud = Database.GetStudent(stud);
 //        System.out.println(stud);
 
-        List<Student> lista;
-        lista = Database.GetFilteredStudents(null, null, "Smer1");
-
-        for (Student st:lista)
-        {
-            System.out.println(st);
-        }
+//        List<Student> lista;
+//        lista = Database.GetFilteredStudents(null, null, "Smer1");
+//
+//        for (Student st:lista)
+//        {
+//            System.out.println(st);
+//        }
     }
 
 }

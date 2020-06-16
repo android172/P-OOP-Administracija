@@ -4,6 +4,25 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// Database class Includes:
+// DropDatabase(String name) - Brise bazu
+// AddStudent(Student s) - prima studenta i ubacuje u bazu. Pogledati obavezne promenjive u Student
+// AddSubject(Subject s) - prima predmet i ubacuje u bazu. Pogledati obavezne promenjive u Subject
+// AddProfessor(Professor p) - prima Professor i ubacuje u bazu. Pogledati obavezne promenjive u Professor
+// AddMajor(Major m) - prima Major i ubacuje u bazu. Pogledati obavezne promenjive u Major
+// sve Add f-je vracaju true ako je uspesno dodalo, false ako nije
+// GetStudents(Date dateOfBirth, String city, String MajorName) - prima 1 ili vise parametra (ostale staviti null)
+//                                                               i pretrazuje ih u bazi. Vraca ArrayList<Student>
+// GetStudent(String jmbg) - prima jmbg studenta, vraca Student
+// GetStudent(Index index) - prima index studenta, vraca Student
+// GetSubjets(String subjectName, int year, String profName, String majorName) - prima 1 ili vise parametra (ostali 0 ili null)
+//                                                                               i pretrazuje ih, Vraca ArrayList<Subject>
+// GetSubject(String SubjectId) - prima id predmeta, vraca Subject
+// GetProfessor(int profId) - prima id profesora, vraca Professor
+// GetMajors(String majorName) - prima ime smera, vraca ArrayList<Major>
+// GetMajor(int majorId) - prima id smera, vraca Major
+// SubjectsOfProfessor(Professor p) - prima profesora i vraca sve predmete na kojima predaje. vraca ArrayList<Subjects>
+
 public class Database
 {
     private static Connection conn = null;
@@ -18,21 +37,21 @@ public class Database
 
     }
 
-    public void TestDummy()
+    public void TestDummy() throws Exception
     {
         CreateDatabase("Testing");
 
-        Student s = new Student("Student1", "Jedanovic", "1/2020", Date.valueOf("2000-1-1"), "Prvogradic", "0123456789123", 1);
+        Student s = new Student("Student1", "Jedanovic", new Index("1/2020"), Date.valueOf("2000-1-1"), "Prvogradic", "0123456789123", 1);
         AddStudent(s);
-        s = new Student("Student2", "Drugovanovic", "2/2020", Date.valueOf("2000-2-1"), "Drugogradic", "1234567890123", 1);
+        s = new Student("Student2", "Drugovanovic", new Index("2/2020"), Date.valueOf("2000-2-1"), "Drugogradic", "1234567890123", 1);
         AddStudent(s);
-        s = new Student("Student3", "Trecanovic", "3/2020", Date.valueOf("2000-3-1"), "Prvogradic", "2223334448882", 2);
+        s = new Student("Student3", "Trecanovic", new Index("3/2020"), Date.valueOf("2000-3-1"), "Prvogradic", "2223334448882", 2);
         AddStudent(s);
-        s = new Student("Student3", "Cetvrtanovic", "4/2020", Date.valueOf("2000-4-1"), "Prvogradic", "2223434498882", 1);
+        s = new Student("Student3", "Cetvrtanovic", new Index("4/2020"), Date.valueOf("2000-4-1"), "Prvogradic", "2223434498882", 1);
         AddStudent(s);
-        s = new Student("Student3", "Petic", "5/2020", Date.valueOf("2000-5-1"), "Trecegradic", "2223374446882", 2);
+        s = new Student("Student3", "Petic", new Index("5/2020"), Date.valueOf("2000-5-1"), "Trecegradic", "2223374446882", 2);
         AddStudent(s);
-        s = new Student("Student3", "Sestic", "6/2020", Date.valueOf("2000-6-1"), "Drugogradic", "2223934448822", 2);
+        s = new Student("Student3", "Sestic", new Index("6/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "2223934448822", 2);
         AddStudent(s);
 
         Professor p = new Professor("Professor1", "Profesanovic1", 1);
@@ -372,9 +391,9 @@ public class Database
     public static boolean AddStudent(Student s)       // JMBG and indexNum is unique
     {
         sql = "INSERT INTO Students (FirstName, LastName, IndexNum, JMBG, DateOfBirth, City, MajorId)" +
-                "SELECT '" + s.firstName +"', '" + s.lastName + "', '" + s.indexNum + "', '" + s.jmbg +"', '" + s.dateOfBirth +"', '" + s.city +"', '"+ s.majorId +"' FROM DUAL " +
+                "SELECT '" + s.firstName +"', '" + s.lastName + "', '" + s.index + "', '" + s.jmbg +"', '" + s.dateOfBirth +"', '" + s.city +"', '"+ s.majorId +"' FROM DUAL " +
                 "WHERE NOT EXISTS (SELECT JMBG FROM Students " +
-                "WHERE JMBG = '" + s.jmbg + "' AND IndexNum = '" + s.indexNum + "' LIMIT 1)";
+                "WHERE JMBG = '" + s.jmbg + "' AND IndexNum = '" + s.index + "' LIMIT 1)";
 
         try
         {
@@ -453,11 +472,11 @@ public class Database
         return false;
     }
 
-    // GET f-je
+    // GET f-je --------------------------------------
 
-    public static List<Student> GetStudents(Date dateOfBirth, String city, String majorName)
+    public static ArrayList<Student> GetStudents(Date dateOfBirth, String city, String majorName)
     {
-        List<Student> lista = new ArrayList<>();
+        ArrayList<Student> lista = new ArrayList<>();
         boolean uslov = false;
         ResultSet res;
         String sqlt = "SELECT * FROM Students " +
@@ -480,9 +499,22 @@ public class Database
         {
             if(uslov)
                 sqlt += "AND ";
-            List<Major> temp = GetMajor(majorName, 0);
+            List<Major> majors = GetMajors(majorName);
 
-            sqlt += "MajorId = " + (temp.get(0)).id + " ";
+            if(majors.size() > 1)
+            {
+                sqlt += "( ";
+                for (Major m: majors)
+                {
+                    sqlt += "MajorId = " + m.id + " OR ";
+                }
+                sqlt += "0 ) ";
+            }
+            else
+            {
+                sqlt += "MajorId = " + majors.get(0) + " ";
+            }
+
             uslov = true;
         }
         if(!uslov)
@@ -497,12 +529,12 @@ public class Database
 
             Student s;
 
-            s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getNString("IndexNum"));
+            s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")));
             lista.add(s);
 
             while(res.next())
             {
-                s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getNString("IndexNum"));
+                s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")));
                 lista.add(s);
             }
 
@@ -510,6 +542,10 @@ public class Database
         catch (SQLException throwables)
         {
             throwables.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
 
         return lista;
@@ -531,21 +567,25 @@ public class Database
             if(!res.first())
                 return null;
 
-            s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getString("IndexNum"), res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getInt("MajorId"));
+            s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")), res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getInt("MajorId"));
 
         }
         catch (SQLException throwables)
         {
             throwables.printStackTrace();
         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         return s;
     }
 
-    public static Student GetStudent(String indexNum)
+    public static Student GetStudent(Index indexNum)
     {
         sql = "SELECT * FROM Students " +
-                "WHERE IndexNum = '" + indexNum + "'";
+                "WHERE IndexNum = '" + indexNum.getIndex() + "'";
 
         Student s = null;
         ResultSet res = null;
@@ -557,7 +597,138 @@ public class Database
             if(!res.first())
                 return null;
 
-            s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getString("IndexNum"), res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getInt("MajorId"));
+            s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")) , res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getInt("MajorId"));
+
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return s;
+    }
+
+    public static ArrayList<Subject> GetSubjects(String subjectName, int year, String profName, String majorName)
+    {
+        String sqlt = "SELECT * FROM Subjects " +
+                "WHERE ";
+
+        ResultSet res = null;
+        ArrayList<Professor> proflist = new ArrayList<>();
+        ArrayList<Major> majorlist = new ArrayList<>();
+        ArrayList<Subject> subjects = new ArrayList<>();
+        Subject tempsubject;
+        boolean uslov = false;
+
+        if(subjectName != null)
+        {
+            sqlt += "SubjectName = '" + subjectName + "' ";
+            uslov = true;
+        }
+        if(year != 0)
+        {
+            if(uslov)
+                sqlt += "AND ";
+            sqlt += "Year = " + year + " ";
+            uslov = true;
+        }
+        if(profName != null)
+        {
+            if(uslov)
+                sqlt += "AND ";
+
+            String temp[] = profName.split(" ");
+
+            ArrayList<Integer> profIds = GetProfessors(temp[0], temp[1]);
+
+            if(profIds.size() > 1)
+            {
+                sqlt += "( ";
+                for(int id : profIds)
+                {
+                    sqlt += "ProfId = " + id + " OR ";
+                }
+                sqlt += "0 ) ";
+            }
+            else
+            {
+                sqlt += "ProfId = " + profIds.get(0) + " ";
+            }
+
+            uslov = true;
+
+        }
+        if(majorName != null)
+        {
+            if(uslov)
+                sqlt += "AND ";
+
+            ArrayList<Major> majorIds = GetMajors(majorName);
+
+            if(majorIds.size() > 1)
+            {
+                sqlt += "( ";
+                for(Major m : majorIds)
+                {
+                    sqlt += "MajorId = " + m.id + " OR ";
+                }
+                sqlt += "0 ) ";
+            }
+            else
+            {
+                sqlt += "ProfId = " + majorIds.get(0) + " ";
+            }
+
+            uslov = true;
+        }
+        if(!uslov)
+            sqlt += "1 ";
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getInt("ProfId"), res.getInt("MajorId"));
+            subjects.add(tempsubject);
+
+            while(res.next())
+            {
+                tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getInt("ProfId"), res.getInt("MajorId"));
+                subjects.add(tempsubject);
+            }
+
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return subjects;
+    }
+
+    public static Subject GetSubject(String subjectId)
+    {
+        sql = "SELECT * FROM Subjects " +
+                "WHERE SubjectId = '" + subjectId + "' ";
+
+        ResultSet res = null;
+        Subject s = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            s = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getInt("ProfId"), res.getInt("MajorId"));
 
         }
         catch (SQLException throwables)
@@ -568,26 +739,13 @@ public class Database
         return s;
     }
 
-    public static Subject GetSubject(Subject s)
+    public static Professor GetProfessor(int profId)
     {
-        if(s.subjectName == null)
-        {
-            sql = "SELECT SubjectName, SubjectId, ESPB, Year, p.FirstName, p.LastName, m.MajorName " +
-                    "FROM Subjects as sa join Professors as p on " +
-                    "sa.profId = p.profId join Majors as m on sa.MajorId = m.MajorId " +
-                    "WHERE SubjectId = '" + s.subjectId + "'";
-        }
-        else
-        {
-            sql = "SELECT SubjectName, SubjectId, ESPB, Year, p.FirstName, p.LastName, m.MajorName " +
-                    "FROM Subjects as sa join Professors as p on " +
-                    "sa.profId = p.profId join Majors as m on sa.MajorId = m.MajorId " +
-                    "WHERE SubjectId = '" + s.subjectId + "' OR SubjectName = '" + s.subjectName + "'";
-        }
-
+        sql = "SELECT * FROM Professors " +
+                "WHERE ProfId = " + profId;
 
         ResultSet res = null;
-        String t1, t2;
+        Professor p = null;
 
         try
         {
@@ -596,52 +754,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            s.subjectName = res.getString("SubjectName");
-            s.subjectId = res.getString("SubjectId");
-            s.espb = res.getInt("ESPB");
-            s.year = res.getInt("Year");
-            s.major = res.getString("m.MajorName");
-
-            t1 = res.getString("p.FirstName");
-            t2 = res.getString("p.LastName");
-            s.prof = t1 + " " + t2;
-
-        }
-        catch (SQLException throwables)
-        {
-            throwables.printStackTrace();
-        }
-
-        return s;
-    }
-
-    public static Professor GetProfessor(Professor p)
-    {
-        if(p.firstName == null && p.lastName == null)
-        {
-            sql = "SELECT * FROM Professors " +
-                    "WHERE ProfId = " + p.profId;
-        }
-        else
-        {
-            sql = "SELECT * FROM Professors " +
-                    "WHERE ProfId = " + p.profId + " OR (FirstName = '" + p.firstName + "'" +
-                    "AND LastName = '" + p.lastName + "')";
-        }
-
-
-        ResultSet res = null;
-
-        try
-        {
-            res = stat.executeQuery(sql);
-
-            if(!res.first())
-                return null;
-
-            p.firstName = res.getString("FirstName");
-            p.lastName = res.getString("LastName");
-            p.profId = res.getInt("ProfId");
+            p = new Professor(res.getString("FirstName"), res.getString("LastName"), res.getInt("ProfId"));
 
         }
         catch (SQLException throwables)
@@ -652,10 +765,37 @@ public class Database
         return p;
     }
 
-    public static List GetMajors(String majorName)
+    private static ArrayList<Integer> GetProfessors(String fname, String lname)
     {
-        List<Major> lista = new ArrayList<>();
-        boolean uslov = false;
+        ArrayList<Integer> profIds = new ArrayList<>();
+        sql = "SELECT * FROM Professors " +
+                "WHERE FirstName = '" + fname + "' AND LastName = '" + lname + "' ";
+
+        ResultSet res = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            profIds.add(res.getInt("ProfId"));
+
+            while(res.next())
+                profIds.add(res.getInt("ProfId"));
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return profIds;
+    }
+
+    public static ArrayList<Major> GetMajors(String majorName)
+    {
+        ArrayList<Major> lista = new ArrayList<>();
         sql = "SELECT * FROM Majors " +
                 "WHERE MajorName = '" + majorName + "' ";
 
@@ -713,14 +853,14 @@ public class Database
         return m;
     }
 
-    public static List<Subject> SubjectsOfProfessor(Professor p)
+    public static ArrayList<Subject> SubjectsOfProfessor(Professor p)
     {
         sql = "SELECT * FROM SubjectsALL" +
                 "WHERE ProfId = '" + p.profId + "'";
 
         ResultSet res = null;
         Subject temp = null;
-        List<Subject> list = new ArrayList<>();
+        ArrayList<Subject> list = new ArrayList<>();
 
         try
         {
@@ -732,7 +872,7 @@ public class Database
             while(res.next())
             {
                 temp.subjectId = res.getString("SubjectId");
-                temp = GetSubject(temp);
+                temp = GetSubject(temp.subjectId);
 
                 list.add(temp);
             }
