@@ -3,9 +3,6 @@ package poopprojekat.studentska_sluzba;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.xml.crypto.Data;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
@@ -45,26 +42,6 @@ public class StudentskaSluzbaApplication
 //        {
 //            System.out.println(st);
 //        }
-
-//        ArrayList<Subject> subs = Database.GetSubjects(null, 0, "Professor1 Profesanovic1", null);
-//
-//        for(Subject s: subs)
-//        {
-//            System.out.println(s);
-//        }
-
-//        ArrayList<Major> majors = Database.GetMajors("Smer1");
-//        for(Major m: majors)
-//        {
-//            System.out.println(m);
-//        }
-
-//        Major m = Database.GetMajor(3);
-//        System.out.println(m);
-
-//        Professor p = Database.GetProfessor(1);
-//        p.GetSubjects();
-//        System.out.println(p);
     }
 
 }
