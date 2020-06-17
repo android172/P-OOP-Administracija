@@ -897,7 +897,20 @@ public class Database
 
     public static int GetHighestIndex(int year)
     {
-        sql = "SELECT * FROM Students ";
+        sql = "SELECT max(cast(SUBSTRING(IndexNum, 0, 2))) FROM Students ";
+
+        ResultSet res = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
 
         return 0;
     }

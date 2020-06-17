@@ -17,14 +17,14 @@ public class StudentskaSluzbaApplication
 
         Database db = new Database();
 
-        try
-        {
-            db.TestDummy();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+//        try
+//        {
+//            db.TestDummy();
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
 
 //        Subject s = new Subject("M002");
 //        s = Database.GetSubject(s);
@@ -65,6 +65,8 @@ public class StudentskaSluzbaApplication
 //        Professor p = Database.GetProfessor(1);
 //        p.GetSubjects();
 //        System.out.println(p);
+
+        Generate_random_data_point.get_random_professor();
     }
 
 }
