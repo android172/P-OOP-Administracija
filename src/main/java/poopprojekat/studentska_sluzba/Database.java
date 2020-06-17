@@ -905,7 +905,7 @@ public class Database
         {
             res = stat.executeQuery(sql);
 
-
+            System.out.println(res.getInt("IndexNum"));
         }
         catch (SQLException throwables)
         {
