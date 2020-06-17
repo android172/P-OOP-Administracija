@@ -5,9 +5,9 @@ import java.util.regex.Pattern;
 
 // Student Index class
 // INCLUDES:
-// Constructor              - (number, year) / (String_index_representation)
+// Constructor              - (number, year) / (String_index_representation) / (year (where index is auto-generated)) / (current year auto-generated)
 // get(Number, Year, Index) - return number, year, string representation of Index
-// set(Number, Year, index) - set ~
+// set(Number, Year, index) - set number, year, index with its string representation
 // equals()                 - two indexes are same if corresponding number and year ints are equivalent;
 public class Index {
     
@@ -32,7 +32,7 @@ public class Index {
         this.year = Integer.parseInt(index_str.split("/")[1]);
     }
     public Index(int year) throws Exception {
-        this(12, year);
+        this(Database.GetHighestIndex(year) + 1, year);
     }
     public Index() throws Exception {
         this(Calendar.getInstance().get(Calendar.YEAR));
