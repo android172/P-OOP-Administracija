@@ -1,5 +1,6 @@
 package poopprojekat.studentska_sluzba;
 
+import java.util.Calendar;
 import java.util.regex.Pattern;
 
 // Student Index class
@@ -29,6 +30,12 @@ public class Index {
             throw new Exception("Input format invalid, required format: (Any number > 0) / (4 digit year)\nGiven: " + index_str);
         this.number = Integer.parseInt(index_str.split("/")[0]);
         this.year = Integer.parseInt(index_str.split("/")[1]);
+    }
+    public Index(int year) throws Exception {
+        this(12, year);
+    }
+    public Index() throws Exception {
+        this(Calendar.getInstance().get(Calendar.YEAR));
     }
 
     // access functions

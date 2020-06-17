@@ -3,9 +3,6 @@ package poopprojekat.studentska_sluzba;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.xml.crypto.Data;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
