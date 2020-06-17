@@ -5,13 +5,13 @@ import java.util.Random;
 public class Name_gen {
 
     public static String get_random_first_name() {
-        return first_names[r_f.nextInt(first_names.length)];
+        return first_names[new Random().nextInt(first_names.length)];
     }
     public static String get_random_last_name() {
-        return last_names[r_l.nextInt(last_names.length)];
+        return last_names[new Random().nextInt(last_names.length)];
     }
     public static String get_random_city() {
-        return city_names[r_c.nextInt(city_names.length)];
+        return city_names[new Random().nextInt(city_names.length)];
     }
     
     private static final String first_names[] = {
@@ -951,10 +951,6 @@ public class Name_gen {
         "Prokuplje" ,
         "Loznica"
     };
-
-    private static final Random r_f = new Random(first_names.length);
-    private static final Random r_l = new Random(last_names.length);
-    private static final Random r_c = new Random(city_names.length);
 }
 
 
