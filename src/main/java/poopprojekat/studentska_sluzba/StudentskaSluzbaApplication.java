@@ -14,14 +14,14 @@ public class StudentskaSluzbaApplication
 
         Database db = new Database();
 
-        try
-        {
-            db.TestDummy();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+//        try
+//        {
+//            db.TestDummy();
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
 
 //        Subject s = new Subject("M002");
 //        s = Database.GetSubject(s);
@@ -42,6 +42,28 @@ public class StudentskaSluzbaApplication
 //        {
 //            System.out.println(st);
 //        }
+
+//        ArrayList<Subject> subs = Database.GetSubjects(null, 0, "Professor1 Profesanovic1", null);
+//
+//        for(Subject s: subs)
+//        {
+//            System.out.println(s);
+//        }
+
+//        ArrayList<Major> majors = Database.GetMajors("Smer1");
+//        for(Major m: majors)
+//        {
+//            System.out.println(m);
+//        }
+
+//        Major m = Database.GetMajor(3);
+//        System.out.println(m);
+
+//        Professor p = Database.GetProfessor(1);
+//        p.GetSubjects();
+//        System.out.println(p);
+
+        Generate_random_data_point.get_random_professor();
     }
 
 }
