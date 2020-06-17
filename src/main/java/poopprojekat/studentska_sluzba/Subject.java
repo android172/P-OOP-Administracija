@@ -18,14 +18,14 @@ public class Subject
         subjectId = id;
     }
 
-    public Subject(String name, String id, int espb, int year, int p, int m)
+    public Subject(String subjectName, String id, int espb, int year, int profId, int majorId)
     {
-        subjectName = name;
+        this.subjectName = subjectName;
         subjectId = id;
         this.espb = espb;
         this.year = year;
-        profid = p;
-        majorid = m;
+        this.profid = profId;
+        this.majorid = majorId;
     }
 
     @Override

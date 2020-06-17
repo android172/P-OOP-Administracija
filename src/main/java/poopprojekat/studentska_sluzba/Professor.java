@@ -10,7 +10,7 @@ public class Professor
     public String lastName;
     public int profId;
     //
-    List<Subject> teach = new ArrayList<>();
+    ArrayList<Subject> teach = new ArrayList<>();
 
     public Professor(int id)        // za pretragu baze
     {
@@ -32,12 +32,12 @@ public class Professor
     @Override
     public String toString()
     {
-        String s = firstName + " " + lastName + " " + profId;
+        String s = firstName + " " + lastName + " ID:" + profId + "\nTeaches:";
 
 
-        for (int i = 0; i< teach.size(); i++)
+        for (int i = 0; i < teach.size(); i++)
         {
-            s += "\n";
+            s += "\n--";
             s += teach.get(i);
         }
 

@@ -501,18 +501,21 @@ public class Database
                 sqlt += "AND ";
             List<Major> majors = GetMajors(majorName);
 
-            if(majors.size() > 1)
+            if(majors != null)
             {
-                sqlt += "( ";
-                for (Major m: majors)
+                if(majors.size() > 1)
                 {
-                    sqlt += "MajorId = " + m.id + " OR ";
+                    sqlt += "( ";
+                    for (Major m: majors)
+                    {
+                        sqlt += "MajorId = " + m.id + " OR ";
+                    }
+                    sqlt += "0 ) ";
                 }
-                sqlt += "0 ) ";
-            }
-            else
-            {
-                sqlt += "MajorId = " + majors.get(0) + " ";
+                else
+                {
+                    sqlt += "MajorId = " + majors.get(0) + " ";
+                }
             }
 
             uslov = true;
@@ -618,8 +621,6 @@ public class Database
                 "WHERE ";
 
         ResultSet res = null;
-        ArrayList<Professor> proflist = new ArrayList<>();
-        ArrayList<Major> majorlist = new ArrayList<>();
         ArrayList<Subject> subjects = new ArrayList<>();
         Subject tempsubject;
         boolean uslov = false;
@@ -645,22 +646,23 @@ public class Database
 
             ArrayList<Integer> profIds = GetProfessors(temp[0], temp[1]);
 
-            if(profIds.size() > 1)
+            if(profIds != null)
             {
-                sqlt += "( ";
-                for(int id : profIds)
+                if(profIds.size() > 1)
                 {
-                    sqlt += "ProfId = " + id + " OR ";
+                    sqlt += "( ";
+                    for(int id : profIds)
+                    {
+                        sqlt += "ProfId = " + id + " OR ";
+                    }
+                    sqlt += "0 ) ";
                 }
-                sqlt += "0 ) ";
+                else
+                {
+                    sqlt += "ProfId = " + profIds.get(0) + " ";
+                }
             }
-            else
-            {
-                sqlt += "ProfId = " + profIds.get(0) + " ";
-            }
-
             uslov = true;
-
         }
         if(majorName != null)
         {
@@ -669,18 +671,21 @@ public class Database
 
             ArrayList<Major> majorIds = GetMajors(majorName);
 
-            if(majorIds.size() > 1)
+            if(majorIds != null)
             {
-                sqlt += "( ";
-                for(Major m : majorIds)
+                if(majorIds.size() > 1)
                 {
-                    sqlt += "MajorId = " + m.id + " OR ";
+                    sqlt += "( ";
+                    for(Major m : majorIds)
+                    {
+                        sqlt += "MajorId = " + m.id + " OR ";
+                    }
+                    sqlt += "0 ) ";
                 }
-                sqlt += "0 ) ";
-            }
-            else
-            {
-                sqlt += "ProfId = " + majorIds.get(0) + " ";
+                else
+                {
+                    sqlt += "ProfId = " + majorIds.get(0) + " ";
+                }
             }
 
             uslov = true;
@@ -690,7 +695,7 @@ public class Database
 
         try
         {
-            res = stat.executeQuery(sql);
+            res = stat.executeQuery(sqlt);
 
             if(!res.first())
                 return null;
@@ -834,7 +839,7 @@ public class Database
         ResultSet res;
 
         sql = "SELECT * FROM Majors " +
-                "WHERE MajorId = '" + majorId + "' ";
+                "WHERE MajorId = " + majorId + " ";
 
         try
         {
@@ -855,8 +860,8 @@ public class Database
 
     public static ArrayList<Subject> SubjectsOfProfessor(Professor p)
     {
-        sql = "SELECT * FROM SubjectsALL" +
-                "WHERE ProfId = '" + p.profId + "'";
+        sql = "SELECT * FROM Subjects " +
+                "WHERE ProfId = " + p.profId + " ";
 
         ResultSet res = null;
         Subject temp = null;
@@ -869,11 +874,14 @@ public class Database
             if(!res.first())
                 return null;
 
+            temp = new Subject(res.getString("SubjectId"));
+            temp = GetSubject(temp.subjectId);
+            list.add(temp);
+
             while(res.next())
             {
-                temp.subjectId = res.getString("SubjectId");
+                temp = new Subject(res.getString("SubjectId"));
                 temp = GetSubject(temp.subjectId);
-
                 list.add(temp);
             }
         }
@@ -885,6 +893,13 @@ public class Database
         return list;
 
 
+    }
+
+    public static int GetHighestIndex(int year)
+    {
+        sql = "SELECT * FROM Students ";
+
+        return 0;
     }
 
 }
