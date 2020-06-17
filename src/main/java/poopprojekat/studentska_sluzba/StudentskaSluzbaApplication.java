@@ -15,14 +15,14 @@ public class StudentskaSluzbaApplication
 
         Database db = new Database();
 
-//        try
-//        {
-//            db.TestDummy();
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
+        try
+        {
+            db.TestDummy();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
 //        Subject s = new Subject("M002");
 //        s = Database.GetSubject(s);
@@ -37,7 +37,7 @@ public class StudentskaSluzbaApplication
 //        System.out.println(stud);
 
 //        List<Student> lista;
-//        lista = Database.GetFilteredStudents(null, null, "Smer1");
+//        lista = Database.GetStudents(null, null, new String[]{"Smer1", "Smer2"}, 4, false);
 //
 //        for (Student st:lista)
 //        {
@@ -64,7 +64,9 @@ public class StudentskaSluzbaApplication
 //        p.GetSubjects();
 //        System.out.println(p);
 
-        Database.GetHighestIndex(2000);
+//        System.out.println(Database.GetHighestIndex(2020));
+
+//        System.out.println("Resenje: " + Database.GetEmptyId("Majors"));
     }
 
 }

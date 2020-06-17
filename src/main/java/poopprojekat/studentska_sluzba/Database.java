@@ -11,8 +11,10 @@ import java.util.List;
 // AddProfessor(Professor p) - prima Professor i ubacuje u bazu. Pogledati obavezne promenjive u Professor
 // AddMajor(Major m) - prima Major i ubacuje u bazu. Pogledati obavezne promenjive u Major
 // sve Add f-je vracaju true ako je uspesno dodalo, false ako nije
-// GetStudents(Date dateOfBirth, String city, String MajorName) - prima 1 ili vise parametra (ostale staviti null)
-//                                                               i pretrazuje ih u bazi. Vraca ArrayList<Student>
+// GetStudents(Date dateOfBirth, String city, String MajorName, int orderBy, boolean ascending) - prima DoB/City/MajorName,
+//                                      orderby: 3 - sortira po DoB 4 - sortira po City, 6 - sortira po MajorId,
+//                                      ascending - da li sortira od manjeg ka vecem ili obrnuto (vrednost nije bitna ako orderby nije 3,4 ili 6)
+//                                      f-ja vraca ArrayList<Student>
 // GetStudent(String jmbg) - prima jmbg studenta, vraca Student
 // GetStudent(Index index) - prima index studenta, vraca Student
 // GetSubjets(String subjectName, int year, String profName, String majorName) - prima 1 ili vise parametra (ostali 0 ili null)
@@ -22,6 +24,8 @@ import java.util.List;
 // GetMajors(String majorName) - prima ime smera, vraca ArrayList<Major>
 // GetMajor(int majorId) - prima id smera, vraca Major
 // SubjectsOfProfessor(Professor p) - prima profesora i vraca sve predmete na kojima predaje. vraca ArrayList<Subjects>
+// GetHighestIndex(int year) - Vraca najveci br indeksa za zadatu godinu
+// GetEmptyId(tableName) - prima tabelu "Professors" ili "Majors" i vraca 1. slobodan Id
 
 public class Database
 {
@@ -71,6 +75,8 @@ public class Database
         Major m = new Major(1, "Smer1");
         AddMajor(m);
         m = new Major(2, "Smer2");
+        AddMajor(m);
+        m = new Major(3, "Smer2");
         AddMajor(m);
     }
 
@@ -474,7 +480,7 @@ public class Database
 
     // GET f-je --------------------------------------
 
-    public static ArrayList<Student> GetStudents(Date dateOfBirth, String city, String majorName)
+    public static ArrayList<Student> GetStudents(Date dateOfBirth[], String city[], String majorName[], int orderBy, boolean ascending)
     {
         ArrayList<Student> lista = new ArrayList<>();
         boolean uslov = false;
@@ -484,7 +490,13 @@ public class Database
 
         if(dateOfBirth != null)
         {
-            sqlt += "DateofBirth = '" + dateOfBirth + "' ";
+            sqlt += "( ";
+            for(int i = 0; i < dateOfBirth.length; i++)
+            {
+                sqlt += "DateofBirth = '" + dateOfBirth[i] + "' OR ";
+            }
+            sqlt += "0 ) ";
+
             uslov = true;
         }
         if(city != null)
@@ -492,36 +504,72 @@ public class Database
             if(uslov)
                 sqlt += "AND ";
 
-            sqlt += "city = '" + city + "' ";
+            sqlt += "( ";
+            for(int i = 0; i < city.length; i++)
+            {
+                sqlt += "city = '" + city[i] + "' OR ";
+            }
+            sqlt += "0 ) ";
+
             uslov = true;
         }
         if(majorName != null)
         {
             if(uslov)
                 sqlt += "AND ";
-            List<Major> majors = GetMajors(majorName);
 
-            if(majors != null)
+            sqlt += "( ";
+            for(int i=0; i<majorName.length; i++)
             {
-                if(majors.size() > 1)
+                List<Major> majors = GetMajors(majorName[i]);
+
+                if(majors != null)
                 {
-                    sqlt += "( ";
-                    for (Major m: majors)
+                    if(majors.size() > 1)
                     {
-                        sqlt += "MajorId = " + m.id + " OR ";
+                        sqlt += "( ";
+                        for (Major m: majors)
+                        {
+                            sqlt += "MajorId = " + m.id + " OR ";
+                        }
+                        sqlt += "0 ) OR ";
                     }
-                    sqlt += "0 ) ";
-                }
-                else
-                {
-                    sqlt += "MajorId = " + majors.get(0) + " ";
+                    else
+                    {
+                        sqlt += "MajorId = " + majors.get(0).id + " OR ";
+                    }
                 }
             }
+            sqlt += "0 ) ";
 
             uslov = true;
         }
         if(!uslov)
             sqlt += "1 ";
+
+        if(orderBy > 2 && orderBy < 7)
+        {
+            switch(orderBy)
+            {
+                case 3:
+                    sqlt += "ORDER BY DateofBirth ";
+                    break;
+                case 4:
+                    sqlt += "ORDER BY City ";
+                    break;
+                case 6:
+                    sqlt += "ORDER BY MajorId ";
+                    break;
+            }
+
+            if(ascending)
+                sqlt += "ASC ";
+            else
+                sqlt += "DESC ";
+        }
+
+
+        System.out.println(sqlt);
 
         try
         {
@@ -897,7 +945,8 @@ public class Database
 
     public static int GetHighestIndex(int year)
     {
-        sql = "SELECT max(cast(SUBSTRING(IndexNum, 0, 2))) FROM Students ";
+        sql = "SELECT MAX(SUBSTR(IndexNum, 1, INSTR(IndexNum, '/')-1)) as ind, SUBSTR(IndexNum, INSTR(IndexNum, '/')+1) as god FROM Students " +
+                "WHERE SUBSTR(IndexNum, INSTR(IndexNum, '/')+1) = " + year + " ";
 
         ResultSet res = null;
 
@@ -905,7 +954,10 @@ public class Database
         {
             res = stat.executeQuery(sql);
 
-            System.out.println(res.getInt("IndexNum"));
+            if(!res.first())
+                return 0;
+
+            return res.getInt("ind");
         }
         catch (SQLException throwables)
         {
@@ -915,4 +967,37 @@ public class Database
         return 0;
     }
 
+    public static int GetEmptyId(String tableName)
+    {
+        if(tableName == "Professors")
+            sql = "SELECT ProfId FROM Professors ";
+
+        else if(tableName == "Majors")
+            sql = "SELECT MajorId FROM Majors";
+
+        ResultSet res = null;
+        int pret = 0;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return 0;
+
+            do
+            {
+                if(res.getInt(1) != pret + 1)
+                    return pret + 1;
+
+                pret = res.getInt(1);
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return pret + 1;
+    }
 }
