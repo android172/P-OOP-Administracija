@@ -3,6 +3,8 @@ package poopprojekat.studentska_sluzba;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
+
 @SpringBootApplication
 public class StudentskaSluzbaApplication
 {
@@ -10,14 +12,14 @@ public class StudentskaSluzbaApplication
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
         Database db = new Database();
 
-        try
-        {
-            db.TestDummy();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+//        try
+//        {
+//            db.TestDummy();
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
 
 //        Subject s = new Subject("M002");
 //        s = Database.GetSubject(s);
@@ -31,15 +33,15 @@ public class StudentskaSluzbaApplication
 //        stud = Database.GetStudent(stud);
 //        System.out.println(stud);
 
-//        List<Student> lista;
-//        lista = Database.GetStudents(null, null, new String[]{"Smer1", "Smer2"}, 4, false);
+//        ArrayList<Student> lista;
+//        lista = Database.GetStudents(null, null, null, 0, false);
 //
 //        for (Student st:lista)
 //        {
 //            System.out.println(st);
 //        }
 
-//        ArrayList<Subject> subs = Database.GetSubjects(null, 0, "Professor1 Profesanovic1", null);
+//        ArrayList<Subject> subs = Database.GetSubjects(null, 0, null, null);
 //
 //        for(Subject s: subs)
 //        {
@@ -64,6 +66,7 @@ public class StudentskaSluzbaApplication
 //        System.out.println("Resenje: " + Database.GetEmptyId("Majors"));
 
         //Database.DropDatabase("testing");
+
     }
 
 }

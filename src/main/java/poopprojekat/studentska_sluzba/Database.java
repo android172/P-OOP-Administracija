@@ -10,15 +10,18 @@ import java.util.List;
 // AddSubject(Subject s) - prima predmet i ubacuje u bazu. Pogledati obavezne promenjive u Subject
 // AddLecturer(Lecturer p) - prima Lecturer i ubacuje u bazu. Pogledati obavezne promenjive u Lecturer
 // AddMajor(Major m) - prima Major i ubacuje u bazu. Pogledati obavezne promenjive u Major
+// AddUser(String username, String password, String role) - sve promenjive moraju biti != null i username mora biti unique (brind), ubacuje ih u tabelu Users
 // sve Add f-je vracaju true ako je uspesno dodalo, false ako nije
 // GetStudents(Date dateOfBirth, String city, String MajorName, int orderBy, boolean ascending) - prima DoB/City/MajorName,
 //                                      orderby: 3 - sortira po DoB 4 - sortira po City, 6 - sortira po MajorId,
 //                                      ascending - da li sortira od manjeg ka vecem ili obrnuto (vrednost nije bitna ako orderby nije 3,4 ili 6)
 //                                      f-ja vraca ArrayList<Student>
+//                                      Ukoliko su svi parametri null, f-ja vraca sve studente iz tabele Students
 // GetStudent(String jmbg) - prima jmbg studenta, vraca Student
 // GetStudent(Index index) - prima index studenta, vraca Student
 // GetSubjets(String subjectName, int year, String profName, String majorName) - prima 1 ili vise parametra (ostali 0 ili null)
 //                                                                               i pretrazuje ih, Vraca ArrayList<Subject>
+//                                                                               Ukoliko su svi parametri null, f-ja vraca sve predmete iz tabele Subjects
 // GetSubject(String SubjectId) - prima id predmeta, vraca Subject
 // GetLecturer(int LectId) - prima id profesora, vraca Lecturer
 // GetMajors(String majorName) - prima ime smera, vraca ArrayList<Major>
@@ -26,6 +29,7 @@ import java.util.List;
 // SubjectsOfLecturer(Lecturer p) - prima profesora i vraca sve predmete na kojima predaje. vraca ArrayList<Subjects>
 // GetHighestIndex(int year) - Vraca najveci br indeksa za zadatu godinu
 // GetEmptyId(tableName) - prima tabelu "Lecturers" ili "Majors" i vraca 1. slobodan Id
+// GetUser(String username, String password) - pretrazuje korisnika u bazi, ako postoji vraca String role, u suprotnom vraca null
 
 public class Database
 {
@@ -154,7 +158,7 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Users " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "Username VARCHAR(30) not NULL," +      // ind/god ili ind-god
+                "Username VARCHAR(30) not NULL, Unique " +      // ind/god ili ind-god
                 "Password VARCHAR(30) not NULL," +
                 "Role VARCHAR(10) not NULL," +          // Student, Profesor, Admin
                 "PRIMARY KEY (id, Username)," +
@@ -459,7 +463,7 @@ public class Database
 
     public static boolean AddMajor(Major m) throws Exception        // MajorId is unique
     {
-        sql = "INSERT INTO Majors (MajorId, MajorName)" +
+        sql = "INSERT INTO Majors (MajorId, MajorName) " +
                 "VALUES ( '" + m.id + "', '" + m.name +"' ) ";
 
         try
@@ -472,6 +476,27 @@ public class Database
         {
             if(throwables.getErrorCode() == 1062)
                 throw new Exception("MajorId is already in table Majors");
+            throwables.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static boolean AddUser(String userName, String password, String role) throws Exception
+    {
+        sql = "INSERT INTO Users (Username, Password, Role) " +
+                "VALUES ( '" + userName + "', '" + password + "', " + role + " ) ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+            System.out.println("User added");
+            return true;
+        }
+        catch (SQLException throwables)
+        {
+            if(throwables.getErrorCode() == 1062)
+                throw new Exception("Username is already in table Users");
             throwables.printStackTrace();
         }
 
@@ -567,9 +592,6 @@ public class Database
             else
                 sqlt += "DESC ";
         }
-
-
-        System.out.println(sqlt);
 
         try
         {
@@ -999,5 +1021,29 @@ public class Database
         }
 
         return pret + 1;
+    }
+
+    public static String GetUser(String username, String password)
+    {
+        sql = "SELECT * FROM Users " +
+                "WHERE Username = '" + username + "' AND Password = '" + password + "' ";
+
+        ResultSet res = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            return res.getString("Role");
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return null;
     }
 }
