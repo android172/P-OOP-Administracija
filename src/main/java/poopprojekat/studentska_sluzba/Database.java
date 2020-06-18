@@ -402,7 +402,7 @@ public class Database
     public static boolean AddStudent(Student s) throws Exception       // JMBG and indexNum is unique
     {
         sql = "INSERT INTO Students (FirstName, LastName, IndexNum, JMBG, DateOfBirth, City, MajorId) " +
-                "VALUES ( '" + s.firstName + "', '" + s.lastName + "', '" + s.index + "', '" + s.jmbg + "', '" + s.dateOfBirth + "', '" + s.city + "', '" + s.majorId + "' )";
+                "VALUES ( '" + s.getFirstName() + "', '" + s.getLastName() + "', '" + s.getIndex() + "', '" + s.getJmbg() + "', '" + s.getDateOfBirth() + "', '" + s.getCity() + "', '" + s.getMajorId() + "' )";
         try
         {
             stat.executeUpdate(sql);
