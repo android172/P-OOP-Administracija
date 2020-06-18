@@ -35,7 +35,6 @@ public class Lecturer
     {
         String s = firstName + " " + lastName + " ID:" + lectId + "\nTeaches:";
 
-
         for (int i = 0; i < teach.size(); i++)
         {
             s += "\n--";

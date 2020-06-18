@@ -6,10 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class StudentskaSluzbaApplication
 {
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
-
         Database db = new Database();
 
         try
@@ -64,6 +62,8 @@ public class StudentskaSluzbaApplication
 //        System.out.println(Database.GetHighestIndex(2020));
 
 //        System.out.println("Resenje: " + Database.GetEmptyId("Majors"));
+
+        //Database.DropDatabase("testing");
     }
 
 }
