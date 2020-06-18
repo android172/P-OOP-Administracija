@@ -1,38 +1,37 @@
 package poopprojekat.studentska_sluzba;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class Professor
+public class Lecturer
 {
     // Obavezne za dodavanje
     public String firstName;
     public String lastName;
-    public int profId;
+    public int lectId;
     //
     ArrayList<Subject> teach = new ArrayList<>();
 
-    public Professor(int id)        // za pretragu baze
+    public Lecturer(int id) // za pretragu baze
     {
-        profId = id;
+        lectId = id;
     }
 
-    public Professor(String fname, String lname, int id)        // za unos u bazu
+    public Lecturer(String fname, String lname, int id)        // za unos u bazu
     {
         firstName = fname;
         lastName = lname;
-        profId = id;
+        lectId = id;
     }
 
     public void GetSubjects()
     {
-        teach = Database.SubjectsOfProfessor(this);
+        teach = Database.SubjectsOfLecturer(this);
     }
 
     @Override
     public String toString()
     {
-        String s = firstName + " " + lastName + " ID:" + profId + "\nTeaches:";
+        String s = firstName + " " + lastName + " ID:" + lectId + "\nTeaches:";
 
 
         for (int i = 0; i < teach.size(); i++)

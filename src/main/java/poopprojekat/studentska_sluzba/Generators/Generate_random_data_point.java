@@ -4,13 +4,13 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 import poopprojekat.studentska_sluzba.Index;
-import poopprojekat.studentska_sluzba.Professor;
+import poopprojekat.studentska_sluzba.Lecturer;
 import poopprojekat.studentska_sluzba.Student;
 
 // Class for generating random data to be pushed to database
 // INCLUDES:
 // get_random_student   - method for generating random student object
-// get_random_professor - method for generating random professor object
+// get_random_lecturer - method for generating random professor object
 public class Generate_random_data_point {
 
     public static Student get_random_student() {
@@ -25,7 +25,7 @@ public class Generate_random_data_point {
         return null;
     }
 
-    public static Professor get_random_professor() {
-        return new Professor(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(), 1);
+    public static Lecturer get_random_lecturer() {
+        return new Lecturer(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(), 1);
     }
 }

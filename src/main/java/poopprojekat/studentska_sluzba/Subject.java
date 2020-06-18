@@ -7,7 +7,7 @@ public class Subject
     public String subjectId;        // npr: M333
     public int espb;
     public int year;
-    public int profid;
+    public int lectid;
     public int majorid;
     //
     public String prof;
@@ -24,7 +24,7 @@ public class Subject
         subjectId = id;
         this.espb = espb;
         this.year = year;
-        this.profid = profId;
+        this.lectid = profId;
         this.majorid = majorId;
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 // DropDatabase(String name) - Brise bazu
 // AddStudent(Student s) - prima studenta i ubacuje u bazu. Pogledati obavezne promenjive u Student
 // AddSubject(Subject s) - prima predmet i ubacuje u bazu. Pogledati obavezne promenjive u Subject
-// AddProfessor(Professor p) - prima Professor i ubacuje u bazu. Pogledati obavezne promenjive u Professor
+// AddLecturer(Lecturer p) - prima Lecturer i ubacuje u bazu. Pogledati obavezne promenjive u Lecturer
 // AddMajor(Major m) - prima Major i ubacuje u bazu. Pogledati obavezne promenjive u Major
 // sve Add f-je vracaju true ako je uspesno dodalo, false ako nije
 // GetStudents(Date dateOfBirth, String city, String MajorName, int orderBy, boolean ascending) - prima DoB/City/MajorName,
@@ -20,12 +20,12 @@ import java.util.List;
 // GetSubjets(String subjectName, int year, String profName, String majorName) - prima 1 ili vise parametra (ostali 0 ili null)
 //                                                                               i pretrazuje ih, Vraca ArrayList<Subject>
 // GetSubject(String SubjectId) - prima id predmeta, vraca Subject
-// GetProfessor(int profId) - prima id profesora, vraca Professor
+// GetLecturer(int profId) - prima id profesora, vraca Lecturer
 // GetMajors(String majorName) - prima ime smera, vraca ArrayList<Major>
 // GetMajor(int majorId) - prima id smera, vraca Major
-// SubjectsOfProfessor(Professor p) - prima profesora i vraca sve predmete na kojima predaje. vraca ArrayList<Subjects>
+// SubjectsOfLecturer(Lecturer p) - prima profesora i vraca sve predmete na kojima predaje. vraca ArrayList<Subjects>
 // GetHighestIndex(int year) - Vraca najveci br indeksa za zadatu godinu
-// GetEmptyId(tableName) - prima tabelu "Professors" ili "Majors" i vraca 1. slobodan Id
+// GetEmptyId(tableName) - prima tabelu "Lecturers" ili "Majors" i vraca 1. slobodan Id
 
 public class Database
 {
@@ -58,12 +58,12 @@ public class Database
         s = new Student("Student3", "Sestic", new Index("6/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "2223934448822", 2);
         AddStudent(s);
 
-        Professor p = new Professor("Professor1", "Profesanovic1", 1);
-        AddProfessor(p);
-        p = new Professor("Professor2", "Profesanovic2", 2);
-        AddProfessor(p);
-        p = new Professor("Professor3", "Profesanovic3", 3);
-        AddProfessor(p);
+        Lecturer p = new Lecturer("Lecturer1", "Profesanovic1", 1);
+        AddLecturer(p);
+        p = new Lecturer("Lecturer2", "Profesanovic2", 2);
+        AddLecturer(p);
+        p = new Lecturer("Lecturer3", "Profesanovic3", 3);
+        AddLecturer(p);
 
         Subject sub = new Subject("Predmet1", "M001", 7, 1, 2, 1);
         AddSubject(sub);
@@ -121,7 +121,7 @@ public class Database
             ConnectToDatabase(name);
 
             CreateTableStudents();
-            CreateTableProfessors();
+            CreateTableLecturers();
             CreateTableMajors();
             CreateTableUsers();
             CreateTableSubjects();
@@ -184,7 +184,7 @@ public class Database
                 "ProfId INTEGER not NULL," +
                 "PRIMARY KEY (id, SubjectId)," +
                 "FOREIGN KEY (MajorId) REFERENCES Majors (MajorId)," +
-                "FOREIGN KEY (ProfId) REFERENCES Professors (ProfId) )";
+                "FOREIGN KEY (ProfId) REFERENCES Lecturers (ProfId) )";
 
         System.out.println("Creating table 'Subjects'");
 
@@ -257,7 +257,7 @@ public class Database
                 "( id INTEGER not NULL AUTO_INCREMENT," +
                 "ExamDate DATE not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
-                "ProfessorId INTEGER not NULL," +
+                "LecturerId INTEGER not NULL," +
                 "PRIMARY KEY (id, ExamDate, SubjectId) )";
 
         System.out.println("Creating table 'Exams'");
@@ -323,9 +323,9 @@ public class Database
         }
     }
 
-    private void CreateTableProfessors()
+    private void CreateTableLecturers()
     {
-        sql = "CREATE TABLE IF NOT EXISTS Professors " +
+        sql = "CREATE TABLE IF NOT EXISTS Lecturers " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
                 "ProfId INTEGER not NULL," +
                 "FirstName VARCHAR(15) not NULL," +
@@ -418,7 +418,7 @@ public class Database
     public static boolean AddSubject(Subject s)       // SubjectId is unique
     {
         sql = "INSERT INTO Subjects (SubjectName, SubjectId, Year, ESPB, MajorId, ProfId)" +
-                "SELECT '" + s.subjectName + "', '" + s.subjectId + "', '" + s.year + "', '" + s.espb +"', '" + s.majorid +"', '" + s.profid +"' FROM DUAL " +
+                "SELECT '" + s.subjectName + "', '" + s.subjectId + "', '" + s.year + "', '" + s.espb +"', '" + s.majorid +"', '" + s.lectid +"' FROM DUAL " +
                 "WHERE NOT EXISTS (SELECT SubjectId FROM Subjects " +
                 "WHERE SubjectId = '" + s.subjectId + "' LIMIT 1)";
 
@@ -436,17 +436,17 @@ public class Database
         return false;
     }
 
-    public static boolean AddProfessor(Professor p)       // ProfId is unique
+    public static boolean AddLecturer(Lecturer p)       // ProfId is unique
     {
-        sql = "INSERT INTO Professors (ProfId, FirstName, LastName)" +
-                "SELECT '" + p.profId + "', '" + p.firstName +"', '" + p.lastName +"' FROM DUAL " +
+        sql = "INSERT INTO Lecturers (ProfId, FirstName, LastName)" +
+                "SELECT '" + p.lectId + "', '" + p.firstName +"', '" + p.lastName +"' FROM DUAL " +
                 "WHERE NOT EXISTS (SELECT ProfId FROM Subjects " +
-                "WHERE ProfId = '" + p.profId + "' LIMIT 1)";
+                "WHERE ProfId = '" + p.lectId + "' LIMIT 1)";
 
         try
         {
             stat.executeUpdate(sql);
-            System.out.println("Professor added");
+            System.out.println("Lecturer added");
             return true;
         }
         catch (SQLException throwables)
@@ -692,7 +692,7 @@ public class Database
 
             String temp[] = profName.split(" ");
 
-            ArrayList<Integer> profIds = GetProfessors(temp[0], temp[1]);
+            ArrayList<Integer> profIds = GetLecturers(temp[0], temp[1]);
 
             if(profIds != null)
             {
@@ -792,13 +792,13 @@ public class Database
         return s;
     }
 
-    public static Professor GetProfessor(int profId)
+    public static Lecturer GetLecturer(int profId)
     {
-        sql = "SELECT * FROM Professors " +
+        sql = "SELECT * FROM Lecturers " +
                 "WHERE ProfId = " + profId;
 
         ResultSet res = null;
-        Professor p = null;
+        Lecturer p = null;
 
         try
         {
@@ -807,7 +807,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            p = new Professor(res.getString("FirstName"), res.getString("LastName"), res.getInt("ProfId"));
+            p = new Lecturer(res.getString("FirstName"), res.getString("LastName"), res.getInt("ProfId"));
 
         }
         catch (SQLException throwables)
@@ -818,10 +818,10 @@ public class Database
         return p;
     }
 
-    private static ArrayList<Integer> GetProfessors(String fname, String lname)
+    private static ArrayList<Integer> GetLecturers(String fname, String lname)
     {
         ArrayList<Integer> profIds = new ArrayList<>();
-        sql = "SELECT * FROM Professors " +
+        sql = "SELECT * FROM Lecturers " +
                 "WHERE FirstName = '" + fname + "' AND LastName = '" + lname + "' ";
 
         ResultSet res = null;
@@ -906,10 +906,10 @@ public class Database
         return m;
     }
 
-    public static ArrayList<Subject> SubjectsOfProfessor(Professor p)
+    public static ArrayList<Subject> SubjectsOfLecturer(Lecturer p)
     {
         sql = "SELECT * FROM Subjects " +
-                "WHERE ProfId = " + p.profId + " ";
+                "WHERE ProfId = " + p.lectId + " ";
 
         ResultSet res = null;
         Subject temp = null;
@@ -969,8 +969,8 @@ public class Database
 
     public static int GetEmptyId(String tableName)
     {
-        if(tableName == "Professors")
-            sql = "SELECT ProfId FROM Professors ";
+        if(tableName == "Lecturers")
+            sql = "SELECT ProfId FROM Lecturers ";
 
         else if(tableName == "Majors")
             sql = "SELECT MajorId FROM Majors";
