@@ -2,7 +2,9 @@ package poopprojekat.studentska_sluzba.Generators;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Random;
 
+import poopprojekat.studentska_sluzba.Database;
 import poopprojekat.studentska_sluzba.Index;
 import poopprojekat.studentska_sluzba.Lecturer;
 import poopprojekat.studentska_sluzba.Student;
@@ -26,6 +28,18 @@ public class Generate_random_data_point {
     }
 
     public static Lecturer get_random_lecturer() {
-        return new Lecturer(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(), 1);
+        String title;
+        switch (new Random().nextInt(4)) {
+            case 0:
+                title = "full-time professor";
+                break;
+            case 1:
+                title = "part-time professor";
+            case 2:
+                title = "docent";
+            default:
+                title = "assistant";
+        }
+        return new Lecturer(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(), title, Database.GetEmptyId("Lecturers"));
     }
 }

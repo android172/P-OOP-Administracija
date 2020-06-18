@@ -58,11 +58,11 @@ public class Database
         s = new Student("Student3", "Sestic", new Index("6/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "2223934448822", 2);
         AddStudent(s);
 
-        Lecturer p = new Lecturer("Lecturer1", "Profesanovic1", 1);
+        Lecturer p = new Lecturer("Lecturer1", "Profesanovic1", "assistant", 1);
         AddLecturer(p);
-        p = new Lecturer("Lecturer2", "Profesanovic2", 2);
+        p = new Lecturer("Lecturer2", "Profesanovic2", "part-time professor", 2);
         AddLecturer(p);
-        p = new Lecturer("Lecturer3", "Profesanovic3", 3);
+        p = new Lecturer("Lecturer3", "Profesanovic3", "full-time professor", 3);
         AddLecturer(p);
 
         Subject sub = new Subject("Predmet1", "M001", 7, 1, 2, 1);
@@ -807,7 +807,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            p = new Lecturer(res.getString("FirstName"), res.getString("LastName"), res.getInt("ProfId"));
+            p = new Lecturer(res.getString("FirstName"), res.getString("LastName"), "", res.getInt("ProfId"));
 
         }
         catch (SQLException throwables)

@@ -2,9 +2,6 @@ package poopprojekat.studentska_sluzba;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import poopprojekat.studentska_sluzba.Generators.Generate_random_data_point;
-
-import java.util.List;
 
 @SpringBootApplication
 public class StudentskaSluzbaApplication

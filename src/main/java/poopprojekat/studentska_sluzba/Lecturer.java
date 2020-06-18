@@ -7,6 +7,7 @@ public class Lecturer
     // Obavezne za dodavanje
     public String firstName;
     public String lastName;
+    public String title;
     public int lectId;
     //
     ArrayList<Subject> teach = new ArrayList<>();
@@ -16,11 +17,12 @@ public class Lecturer
         lectId = id;
     }
 
-    public Lecturer(String fname, String lname, int id)        // za unos u bazu
+    public Lecturer(String fname, String lname, String title, int id)        // za unos u bazu
     {
         firstName = fname;
         lastName = lname;
         lectId = id;
+        this.title = title;
     }
 
     public void GetSubjects()
