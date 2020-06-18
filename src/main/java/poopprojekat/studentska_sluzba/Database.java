@@ -443,7 +443,7 @@ public class Database
     public static boolean AddLecturer(Lecturer p) throws Exception       // LectId is unique
     {
         sql = "INSERT INTO Lecturers (LectId, FirstName, LastName) " +
-                "VALUES ( '" + p.lectId + "', '" + p.firstName +"', '" + p.lastName +"' )";
+                "VALUES ( '" + p.getLectId() + "', '" + p.getFirstName() +"', '" + p.getLastName() +"' )";
 
         try
         {
@@ -931,7 +931,7 @@ public class Database
     public static ArrayList<Subject> SubjectsOfLecturer(Lecturer p)
     {
         sql = "SELECT * FROM Subjects " +
-                "WHERE LectId = " + p.lectId + " ";
+                "WHERE LectId = " + p.getLectId() + " ";
 
         ResultSet res = null;
         Subject temp = null;

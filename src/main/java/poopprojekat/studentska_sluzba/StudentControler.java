@@ -9,11 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 // Controller for student list related requests
 // INCLUDES:
-// /students                                                    - returns list of students (index, first_name, last_name)
+// 
+//  Student filtering methods:
+// /students                    - returns list of students (index, first_name, last_name)
 // /students?date_of_birth=...&city=...&mayor=...&order_by=...  - returns filtered list of students (index, first_name,
 //                                                                last_name, ?column by which we order data)
-// /student?index=...                                           - returns student with given index
-// /student?jmbg=...                                            - returns student with given jmbg
+// /student?index=...           - returns student with given index
+// /student?jmbg=...            - returns student with given jmbg
+// 
+// Student manipulation methods:
+// // all of the following return conformation message or printed error
+// /add_student?first_name=&last_name=&br_ind=&date_of_birth=&city=&jmbg=&major_id=                 - add new student to database
+// /update_student?student=&first_name=&last_name=&br_ind=&date_of_birth=&city=&jmbg=&major_id=     - update existing student
+// /delete_student?index_num=...    - delete requested student from database
 @RestController
 public class StudentControler {
 
@@ -90,11 +98,11 @@ public class StudentControler {
     // add student
     @GetMapping("/add_student")
     public String add_student(@RequestParam("first_name") String first_name,
-            @RequestParam("last_name") String last_name, @RequestParam("br_ind") String br_ind,
+            @RequestParam("last_name") String last_name, @RequestParam("index_num") String index_num,
             @RequestParam("date_of_birth") String date_of_birth, @RequestParam("city") String city,
             @RequestParam("jmbg") String jmbg, @RequestParam("major_id") int major_id) {
         try {
-            Student new_student = new Student(first_name, last_name, new Index(br_ind), Date.valueOf(date_of_birth),
+            Student new_student = new Student(first_name, last_name, new Index(index_num), Date.valueOf(date_of_birth),
                     city, jmbg, major_id);
             if (Database.AddStudent(new_student)) {
                 return "Student was added";
@@ -110,7 +118,7 @@ public class StudentControler {
     @GetMapping("/update_student")
     public String update_student(@RequestParam("student") String index_of_student_to_update,
             @RequestParam("first_name") String first_name, @RequestParam("last_name") String last_name,
-            @RequestParam("br_ind") String br_ind, @RequestParam("date_of_birth") String date_of_birth,
+            @RequestParam("index_num") String index_num, @RequestParam("date_of_birth") String date_of_birth,
             @RequestParam("city") String city, @RequestParam("jmbg") String jmbg,
             @RequestParam("major_id") String major_id) {
         try {
@@ -124,8 +132,8 @@ public class StudentControler {
             if (last_name == "")
                 updated_student.setLastName(student_to_update.getLastName());
             else updated_student.setLastName(last_name);
-            if (br_ind != "")
-                updated_student.setIndex(new Index(br_ind));
+            if (index_num != "")
+                updated_student.setIndex(new Index(index_num));
             if (date_of_birth == "")
                 updated_student.setDateOfBirth(student_to_update.getDateOfBirth());
             else updated_student.setDateOfBirth(Date.valueOf(date_of_birth));
@@ -145,6 +153,12 @@ public class StudentControler {
             e.printStackTrace();
             return "Couldn't update student because of the following error: " + e.getMessage();
         }
+    }
+
+    // delete student
+    @GetMapping("/delete_student")
+    public String delete_student(@RequestParam("index_num") String index) {
+        return null;
     }
 
    //  // private methods
