@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 //                                                                last_name, ?column by which we order data)
 // /student?index=...                                           - returns student with given index
 // /student?jmbg=...                                            - returns student with given jmbg
-@RestController
+//@RestController
 public class StudentControler {
 
    //  // public methods
