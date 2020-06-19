@@ -158,7 +158,7 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Users " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "Username VARCHAR(30) not NULL, Unique " +      // ind/god ili ind-god
+                "Username VARCHAR(30) not NULL Unique, " +      // ind/god ili ind-god
                 "Password VARCHAR(30) not NULL," +
                 "Role VARCHAR(10) not NULL," +          // Student, Profesor, Admin
                 "PRIMARY KEY (id, Username)," +
@@ -308,7 +308,7 @@ public class Database
         sql = "CREATE TABLE IF NOT EXISTS ExamsArchive " +
                 "( id INTEGER not NULL AUTO_INCREMENT, " +
                 "IndexNum VARCHAR(10) not NULL, " +
-                "ExamDate DATE not NULL , " +
+                "ExamDate DATE not NULL, " +
                 "SubjectId VARCHAR(10) not NULL, " +
                 "Mark INTEGER not NULL, " +
                 "Show VARCHAR(5) not NULL, " +       // Pojavio se ili ne
