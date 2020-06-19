@@ -162,6 +162,9 @@ public class Database
                 "Password VARCHAR(30) not NULL, " +
                 "Role VARCHAR(10) not NULL, " +          // Student, Profesor, Admin
                 "PRIMARY KEY (id, Username), " +
+                "Password VARCHAR(30) not NULL," +
+                "Role VARCHAR(10) not NULL," +          // Student, Profesor, Admin
+                "PRIMARY KEY (id, Username)," +
                 "FOREIGN KEY (Username) REFERENCES Students (IndexNum) )";
 
         System.out.println("Creating table 'Users'");
@@ -402,7 +405,7 @@ public class Database
     public static boolean AddStudent(Student s) throws Exception       // JMBG and indexNum is unique
     {
         sql = "INSERT INTO Students (FirstName, LastName, IndexNum, JMBG, DateOfBirth, City, MajorId) " +
-                "VALUES ( '" + s.firstName + "', '" + s.lastName + "', '" + s.index + "', '" + s.jmbg + "', '" + s.dateOfBirth + "', '" + s.city + "', '" + s.majorId + "' )";
+                "VALUES ( '" + s.getFirstName() + "', '" + s.getLastName() + "', '" + s.getIndex() + "', '" + s.getJmbg() + "', '" + s.getDateOfBirth() + "', '" + s.getCity() + "', '" + s.getMajorId() + "' )";
         try
         {
             stat.executeUpdate(sql);
@@ -443,7 +446,7 @@ public class Database
     public static boolean AddLecturer(Lecturer p) throws Exception       // LectId is unique
     {
         sql = "INSERT INTO Lecturers (LectId, FirstName, LastName) " +
-                "VALUES ( '" + p.lectId + "', '" + p.firstName +"', '" + p.lastName +"' )";
+                "VALUES ( '" + p.getLectId() + "', '" + p.getFirstName() +"', '" + p.getLastName() +"' )";
 
         try
         {
@@ -931,7 +934,7 @@ public class Database
     public static ArrayList<Subject> SubjectsOfLecturer(Lecturer p)
     {
         sql = "SELECT * FROM Subjects " +
-                "WHERE LectId = " + p.lectId + " ";
+                "WHERE LectId = " + p.getLectId() + " ";
 
         ResultSet res = null;
         Subject temp = null;

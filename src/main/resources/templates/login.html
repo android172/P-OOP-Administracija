@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Studentska sluzba</title>
+	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
+	<link rel="stylesheet" type="text/css" href="../static/css/login-style.css" th:href="@{/css/login-style.css}"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="login-wrapper">
+			<form action="/login" id="login">
+				<h2> Log-in: </h2>
+				<br>
+	            <label>Username:</label>
+	            <input type="text" id="username" name="username" value="" placeholder="Username..."><br>
+	            <br>
+	            <label>Password:</label>
+	            <input type="password" id="password" name="password" value="" placeholder="Password..." minlength="8"><br><br>
+	            <input type="submit" value="Submit" class="submit">
+	            <input type="reset" value="Reset" class="reset">
+			</form>
+		</div>
+	</div>
+</body>
+</html>

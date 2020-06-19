@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class Lecturer
 {
     // Obavezne za dodavanje
-    public String firstName;
-    public String lastName;
-    public String title;
-    public int lectId;
+    private String firstName;
+    private String lastName;
+    private String title;
+    private int lectId;
     //
     ArrayList<Subject> teach = new ArrayList<>();
 
@@ -25,9 +25,38 @@ public class Lecturer
         this.title = title;
     }
 
-    public void GetSubjects()
-    {
+    // getters
+    public String getFirstName() {
+        return firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public int getLectId() {
+        return lectId;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public ArrayList<Subject> getSubjects() {
+        return teach;
+    }
+
+    // setters
+    public void setSubjects() {
         teach = Database.SubjectsOfLecturer(this);
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public void setLectId(int lectId) {
+        this.lectId = lectId;
+    }
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override

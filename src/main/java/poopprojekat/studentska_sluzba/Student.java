@@ -2,34 +2,31 @@ package poopprojekat.studentska_sluzba;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Student
 {
     //Obavezne za dodavanje
-    public String firstName;
-    public String lastName;
-    public Index index;
-    public Date dateOfBirth;        // Godina rodjenja - 1900 (zbog tabele)
-    public String city;
-    public String jmbg;
-    public String majorname;
+    private String firstName;
+    private String lastName;
+    private Index index;
+    private Date dateOfBirth;        // Godina rodjenja - 1900 (zbog tabele)
+    private String city;
+    private String jmbg;
+    private String majorname;
     //
     public int majorId;
-    public List<Subject> listen = new ArrayList<>();
+    public ArrayList<Subject> listen = new ArrayList<>();
 
-    public Student(Index brind)
-    {
+    // constructors
+    public Student(Index brind) {
         index = brind;
     }
-
     public Student(String fname, String lname, Index brind)        // za vracanje iz baze za spisak studenata
     {
         firstName = fname;
         lastName = lname;
         index = brind;
     }
-
     public Student(String fname, String lname, Index brind, Date dob, String city, String jmbg, int majorId)       // Za dodavanje studenta u bazu
     {
         this(fname, lname, brind);
@@ -37,20 +34,66 @@ public class Student
         this.city = city;
         this.jmbg = jmbg;
         this.majorId = majorId;
-        GetMajorName();
+        setMajorName();
     }
-    public void ApplyToListen(Subject s)
-    {
+
+    public void ApplyToListen(Subject s) {
         listen.add(s);
     }
 
-    public void GetAppliedSubjects()
-    {
-
+    // getters
+    public ArrayList<Subject> GetAppliedSubjects() {
+        return listen;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public Index getIndex() {
+        return index;
+    }
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+    public String getCity() {
+        return city;
+    }
+    public String getJmbg() {
+        return jmbg;
+    }
+    public int getMajorId() {
+        return majorId;
+    }
+    public String getMajorname() {
+        return majorname;
+    }
+    // setters
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public void setCity(String city) {
+        this.city = city;
+    }
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+    public void setIndex(Index index) {
+        this.index = index;
+    }
+    public void setJmbg(String jmbg) {
+        this.jmbg = jmbg;
+    }
+    public void setMajorId(int majorId) {
+        this.majorId = majorId;
+        setMajorName();
     }
 
-    public void GetMajorName()
-    {
+    private void setMajorName() {
         majorname = (Database.GetMajor(majorId)).name;
     }
 
