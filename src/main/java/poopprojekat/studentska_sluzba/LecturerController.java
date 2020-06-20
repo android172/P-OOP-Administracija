@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LecturerController {
 
     // return requested lecturer
-    @GetMapping("/lecturer")
+    @GetMapping("/get_lecturer")
     public Lecturer getLecturers(@RequestParam("lect_id") int lect_id) {
         return Database.GetLecturer(lect_id);
     }

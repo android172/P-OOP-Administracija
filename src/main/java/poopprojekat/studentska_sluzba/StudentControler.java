@@ -31,10 +31,10 @@ public class StudentControler {
     // // public methods
     // per page load we send full list of students including only index numbers,
     // first and last names
-    /*@GetMapping("/students")
+    @GetMapping("/students")
     public String[][] get_students() {
         return filter_students_from_database(null, null, null, 0, true);
-    }*/
+    }
 
     // returns filtered and ordered list of students
     @GetMapping("/get_students")
@@ -81,7 +81,7 @@ public class StudentControler {
     }
 
     // return selected student
-    /*@GetMapping("/student")
+    @GetMapping("/get_student")
     public Student get_student(@RequestParam("index") String index) {
         Index i;
         try {
@@ -93,7 +93,7 @@ public class StudentControler {
         return null;
     }
 
-    @GetMapping("/student")
+    @GetMapping("/get_student_by_jmbg")
     public Student get_student_wj(@RequestParam("jmbg") String jmbg) {
         return Database.GetStudent(jmbg);
     }
@@ -162,7 +162,7 @@ public class StudentControler {
     @GetMapping("/delete_student")
     public String delete_student(@RequestParam("index_num") String index) {
         return null;
-    }*/
+    }
 
    //  // private methods
    private String[][] filter_students_from_database(Date date_of_birth[], String city[], String major[], int order_by, boolean ascending) {
