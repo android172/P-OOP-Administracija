@@ -524,7 +524,6 @@ public class Database
                 sqlt += "DateofBirth = '" + dateOfBirth[i] + "' OR ";
             }
             sqlt += "0 ) ";
-
             uslov = true;
         }
         if(city != null)
@@ -603,15 +602,40 @@ public class Database
             if(!res.first())
                 return lista;
 
+
             Student s;
 
-            s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")));
-            lista.add(s);
-
-            while(res.next())
+            switch(orderBy)
             {
-                s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")));
-                lista.add(s);
+                case 3:
+                    do
+                    {
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getDate("DateOfBirth"));
+                        lista.add(s);
+                    }while (res.next());
+                    break;
+                case 4:
+                    do
+                    {
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getString("City"));
+                        lista.add(s);
+                    }while (res.next());
+                    break;
+                case 6:
+                    do
+                    {
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getInt("MajorId"));
+                        lista.add(s);
+                    }while (res.next());
+                    break;
+                default:
+                    do
+                    {
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")));
+                        lista.add(s);
+                    }while (res.next());
+                    break;
+
             }
 
         }
