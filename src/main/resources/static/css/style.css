@@ -35,3 +35,11 @@ h1 {
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 }
+
+#dataframe {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	width: 600px;
+	height: 600px;
+}

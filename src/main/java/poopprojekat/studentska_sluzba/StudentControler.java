@@ -37,10 +37,10 @@ public class StudentControler {
     }*/
 
     // returns filtered and ordered list of students
-    @GetMapping("/students")
+    @GetMapping("/get_students")
     public String[][] get_students(@RequestParam("date_of_birth") String date_of_birth,
             @RequestParam("city") String city, @RequestParam("major") String major,
-            @RequestParam("orderby") String order_by) {
+            @RequestParam("order_by") String order_by) {
 
         // format picked dates
         Date dates[] = null;

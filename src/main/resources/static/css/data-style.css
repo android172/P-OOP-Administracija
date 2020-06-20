@@ -1,5 +1,6 @@
 :root {
 	--element-size: 35px;
+	--select-size: 30px;
 }
 
 header {
@@ -43,7 +44,7 @@ header > * {
 
 #content-header {
 	width: 100%;
-	background-color: var(--color-light);
+	background-color: var(--color-dark);
 	border-radius: 5px;
 	display: flex;
 	position: relative;
@@ -75,6 +76,10 @@ button, input {
 	background-color: var(--color-dark);
 }
 
+a {
+	color: var(--color-highlight);
+}
+
 table {
 	width: 100%;
 }
@@ -82,9 +87,47 @@ table {
 th {
 	outline: 1px solid var(--color-highlight);
 	background-color: var(--color-highlight2);
+	color: var(--color-highlight);
 }
 
 td {
 	outline: 1px solid var(--color-highlight2);
 	background-color: var(--color-highlight);
+}
+
+select {
+	height: var(--select-size);
+	background-color: var(--color-highlight);
+	border: none;
+	-webkit-appearance: none;
+  	-moz-appearance: none;
+  	border-radius: 15px;
+}
+
+select:hover {
+	color: var(--color-highlight);
+	background-color: var(--color-highlight2);
+}
+
+label {
+	font-size: 12px;
+	text-align: center;
+	color: var(--color-highlight2);
+}
+
+#search {
+	display: flex;
+}
+
+#searchbar {
+	margin-right: 5px; 
+}
+
+.form-element {
+	height: var(--element-size);
+	background-color: var(--color-highlight);
+	margin: 0px 5px 0px 0px;
+	border: 2px solid var(--color-highlight2);
+	display: flex;
+	flex-direction: column;
 }
