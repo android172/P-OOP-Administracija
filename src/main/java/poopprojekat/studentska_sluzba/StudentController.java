@@ -26,12 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 // /update_student?student=&first_name=&last_name=&br_ind=&date_of_birth=&city=&jmbg=&major_id=     - update existing student
 // /delete_student?index_num=...    - delete requested student from database
 @RestController
-public class StudentControler {
+public class StudentController {
 
     // // public methods
     // per page load we send full list of students including only index numbers,
     // first and last names
-    @GetMapping("/students")
+    @GetMapping("/get_all_students")
     public String[][] get_students() {
         return filter_students_from_database(null, null, null, 0, true);
     }
