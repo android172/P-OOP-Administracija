@@ -45,19 +45,21 @@ public class StudentController {
         // format picked dates
         Date dates[] = null;
         if (!date_of_birth.equals("all")) {
-            String sd[] = date_of_birth.split("+");
+            String sd[] = date_of_birth.split("/+");
             dates = new Date[sd.length];
             for (int i = 0; i < sd.length; i++)
                 dates[i] = Date.valueOf(sd[i]);
         }
         // format picked cities
+
         String cities[] = null;
         if (!city.equals("all"))
-            cities = city.split("+");
+            cities = city.split("\\+");
+        System.out.println(cities);
         // format picked majors
         String majors[] = null;
         if (!major.equals("all"))
-            majors = major.split("+");
+            majors = major.split("\\+");
         // format order by
         int order_ctg;
         switch (order_by.split("-")[0]) {
@@ -169,6 +171,7 @@ public class StudentController {
        // get required data from database
        ArrayList<Student> requested_students = Database.GetStudents(date_of_birth, city, major, order_by , ascending);
        String[][] ret_s;
+       //System.out.println(requested_students);
 
        // we will append data with bonus column only if we chose to sort by said column,
        // otherwise only first_name, last_name and index columns are used
@@ -176,8 +179,9 @@ public class StudentController {
            ret_s = new String[requested_students.size()][4];
            switch (order_by) {
                case 3:
-                   for (int i = 0; i < ret_s.length; i++)
+                   for (int i = 0; i < ret_s.length; i++) {
                        ret_s[i][3] = requested_students.get(i).getDateOfBirth().toString();
+                   }
                    break;
                case 4:
                    for (int i = 0; i < ret_s.length; i++)

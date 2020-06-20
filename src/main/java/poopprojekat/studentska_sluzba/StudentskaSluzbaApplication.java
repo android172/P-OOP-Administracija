@@ -9,16 +9,16 @@ public class StudentskaSluzbaApplication
 {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
-        // Database db = new Database();
-
-    //    try
-    //    {
-    //        db.TestDummy();
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        e.printStackTrace();
-    //    }
+        Database db = new Database();
+//
+//        try
+//        {
+//            db.TestDummy();
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
 
 //        Subject s = new Subject("M002");
 //        s = Database.GetSubject(s);
