@@ -3,6 +3,8 @@ package poopprojekat.studentska_sluzba;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
+
 
 @SpringBootApplication
 public class StudentskaSluzbaApplication
@@ -10,6 +12,7 @@ public class StudentskaSluzbaApplication
     public static void main(String[] args) throws Exception {
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
         Database db = new Database();
+
 //
 //        try
 //        {
@@ -32,13 +35,13 @@ public class StudentskaSluzbaApplication
 //        stud = Database.GetStudent(stud);
 //        System.out.println(stud);
 
-//        ArrayList<Student> lista;
-//        lista = Database.GetStudents(null, null, null, 0, false);
-//
-//        for (Student st:lista)
-//        {
-//            System.out.println(st);
-//        }
+        ArrayList<Student> lista;
+        lista = Database.GetStudents(null, new String[]{"Prvogradic", "Drugogradic"}, null, 4, false);
+
+        for (Student st:lista)
+        {
+            System.out.println(st);
+        }
 
 //        ArrayList<Subject> subs = Database.GetSubjects(null, 0, null, null);
 //

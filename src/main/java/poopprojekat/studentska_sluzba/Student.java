@@ -37,6 +37,24 @@ public class Student
         setMajorName();
     }
 
+    public Student(String fname, String lname, Index brind, Date dob)
+    {
+        this(fname, lname, brind);
+        dateOfBirth = dob;
+    }
+
+    public Student(String fname, String lname, Index brind, String city)
+    {
+        this(fname, lname, brind);
+        this.city = city;
+    }
+
+    public Student(String fname, String lname, Index brind, int id)
+    {
+        this(fname, lname, brind);
+        this.majorId = id;
+    }
+
     public void ApplyToListen(Subject s) {
         listen.add(s);
     }
