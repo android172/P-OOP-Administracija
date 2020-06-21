@@ -31,6 +31,16 @@ import java.util.List;
 // GetEmptyId(tableName) - prima tabelu "Lecturers" ili "Majors" i vraca 1. slobodan Id
 // GetUser(String username, String password) - pretrazuje korisnika u bazi, ako postoji vraca String role, u suprotnom vraca null
 
+// EditStudent(Index index, Student updated) - prima index studenta kog treba izmeniti i promenjivu Student sa izmenjenim podacima
+// EditLecturer(int lectId, Lecturer updated) - prima id profesora kog treba izmeniti i Lecturer sa izmenjenim podacima
+// EditSubject(String subjectId, Subject updated) - prima id predmeta koji treba izmeniti i Subject sa izmenjenim podacima
+// EditMajor(int majorId, Major updated) - prima id smera koji treba izmeniti i Major sa izmenjenim podacima
+
+// DeleteStudent(Index index) - prima indeks studenta kog treba obrisati iz baze
+// DeleteLecturer(int lectId) - prima id profesora kog treba obrisati iz baze
+// DeleteMajor(int majorId) - prima id smera koji treba obrisati iz baze
+// DeleteSubject(int subjectId) - prima id predmeta koji treba obrisati iz baze
+
 public class Database
 {
     private static Connection conn = null;
@@ -43,6 +53,20 @@ public class Database
 
         CreateDatabase("Testing");
 
+    }
+
+    public void Close()
+    {
+        try
+        {
+            conn.close();
+            stat.close();
+            System.out.println("Connection closed");
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
     }
 
     public void TestDummy() throws Exception
@@ -70,6 +94,8 @@ public class Database
         AddStudent(s);
         s = new Student("Student3", "Sestic", new Index("7/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "3223934448822", 2);
         AddStudent(s);
+
+        AddUser("1/2020", "0123456789123", "Student");
 
         Lecturer p = new Lecturer("Lecturer1", "Profesanovic1", "assistant", 1);
         AddLecturer(p);
@@ -126,9 +152,9 @@ public class Database
             System.out.println("Database " + name + " has been created");
             ConnectToDatabase(name);
 
+            CreateTableMajors();
             CreateTableStudents();
             CreateTableLecturers();
-            CreateTableMajors();
             CreateTableUsers();
             CreateTableSubjects();
             CreateTableExams();
@@ -158,14 +184,11 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Users " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "Username VARCHAR(30) not NULL Unique, " +      // ind/god ili ind-god
-                "Password VARCHAR(30) not NULL, " +
+                "Username VARCHAR(10) not NULL Unique, " +      // ind/god ili ind-god
+                "Password VARCHAR(20) not NULL, " +
                 "Role VARCHAR(10) not NULL, " +          // Student, Profesor, Admin
                 "PRIMARY KEY (id, Username), " +
-                "Password VARCHAR(30) not NULL," +
-                "Role VARCHAR(10) not NULL," +          // Student, Profesor, Admin
-                "PRIMARY KEY (id, Username)," +
-                "FOREIGN KEY (Username) REFERENCES Students (IndexNum) )";
+                "CONSTRAINT fk_key FOREIGN KEY (Username) REFERENCES Students (IndexNum) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB";
 
         System.out.println("Creating table 'Users'");
 
@@ -184,16 +207,16 @@ public class Database
     private void CreateTableSubjects()
     {
         sql = "CREATE TABLE IF NOT EXISTS Subjects " +
-                "( id INTEGER not NULL AUTO_INCREMENT," +
-                "SubjectName VARCHAR(30) not NULL," +
-                "SubjectId VARCHAR(10) not NULL UNIQUE ," +
-                "Year INTEGER not NULL," +
-                "ESPB INTEGER not NULL," +
-                "MajorId INTEGER not NULL," +
-                "LectId INTEGER not NULL," +
-                "PRIMARY KEY (id, SubjectId)," +
-                "FOREIGN KEY (MajorId) REFERENCES Majors (MajorId)," +
-                "FOREIGN KEY (LectId) REFERENCES Lecturers (LectId) )";
+                "( id INTEGER not NULL AUTO_INCREMENT, " +
+                "SubjectName VARCHAR(30) not NULL, " +
+                "SubjectId VARCHAR(10) not NULL UNIQUE , " +
+                "Year INTEGER not NULL, " +
+                "ESPB INTEGER not NULL, " +
+                "MajorId INTEGER not NULL, " +
+                "LectId INTEGER not NULL, " +
+                "PRIMARY KEY (id, SubjectId), " +
+                "FOREIGN KEY (MajorId) REFERENCES Majors (MajorId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+                "FOREIGN KEY (LectId) REFERENCES Lecturers (LectId) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'Subjects'");
 
@@ -221,7 +244,7 @@ public class Database
                 "City VARCHAR(15) not NULL," +
                 "MajorId INTEGER not NULL, " +
                 "PRIMARY KEY (id, JMBG, IndexNum), " +
-                "FOREIGN KEY (MajorId) REFERENCES Majors(MajorId))";
+                "FOREIGN KEY (MajorId) REFERENCES Majors(MajorId) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'Students'");
 
@@ -244,7 +267,7 @@ public class Database
                 "IndexNum VARCHAR(10) not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
                 "Year INTEGER not NULL," +      // Na kojoj godini je predmet
-                "PRIMARY KEY (id, IndexNum, SubjectId) )";
+                "PRIMARY KEY (id, IndexNum, SubjectId) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'AppliedToListen'");
 
@@ -267,7 +290,7 @@ public class Database
                 "ExamDate DATE not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
                 "LecturerId INTEGER not NULL," +
-                "PRIMARY KEY (id, ExamDate, SubjectId) )";
+                "PRIMARY KEY (id, ExamDate, SubjectId) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'Exams'");
 
@@ -290,7 +313,7 @@ public class Database
                 "IndexNum VARCHAR(10) not NULL," +
                 "ExamDate DATE not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
-                "PRIMARY KEY (id, IndexNum, ExamDate, SubjectId) )";
+                "PRIMARY KEY (id, IndexNum, ExamDate, SubjectId) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'ExamApplication'");
 
@@ -316,7 +339,7 @@ public class Database
                 "Mark INTEGER not NULL, " +
                 "Show VARCHAR(5) not NULL, " +       // Pojavio se ili ne
                 "Status VARCHAR(8) not NULL, " +     // Passed/Failed
-                "PRIMARY KEY (id, IndexNum, ExamDate, SubjectId) )";
+                "PRIMARY KEY (id, IndexNum, ExamDate, SubjectId) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'ExamsArchive'");
         try
@@ -337,8 +360,9 @@ public class Database
                 "( id INTEGER not NULL AUTO_INCREMENT," +
                 "LectId INTEGER not NULL UNIQUE ," +
                 "FirstName VARCHAR(15) not NULL," +
-                "LastName VARCHAR(15) not NULL," +
-                "PRIMARY KEY (id, LectId) )";
+                "LastName VARCHAR(15) not NULL, " +
+                "Title VARCHAR(30) not NULL, " +
+                "PRIMARY KEY (id, LectId) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'ExamsArchive'");
 
@@ -360,7 +384,7 @@ public class Database
                 "( id INTEGER not NULL AUTO_INCREMENT," +
                 "MajorId INTEGER not NULL UNIQUE ," +
                 "MajorName VARCHAR(30) not NULL," +
-                "PRIMARY KEY(id, MajorId) )";
+                "PRIMARY KEY(id, MajorId) ) ENGINE=InnoDB";
 
         System.out.println("Creating table 'Majors'");
 
@@ -445,8 +469,8 @@ public class Database
 
     public static boolean AddLecturer(Lecturer p) throws Exception       // LectId is unique
     {
-        sql = "INSERT INTO Lecturers (LectId, FirstName, LastName) " +
-                "VALUES ( '" + p.getLectId() + "', '" + p.getFirstName() +"', '" + p.getLastName() +"' )";
+        sql = "INSERT INTO Lecturers (LectId, FirstName, LastName, Title) " +
+                "VALUES ( '" + p.getLectId() + "', '" + p.getFirstName() +"', '" + p.getLastName() +"', '" + p.getTitle() + "' )";
 
         try
         {
@@ -488,7 +512,7 @@ public class Database
     public static boolean AddUser(String userName, String password, String role) throws Exception
     {
         sql = "INSERT INTO Users (Username, Password, Role) " +
-                "VALUES ( '" + userName + "', '" + password + "', " + role + " ) ";
+                "VALUES ( '" + userName + "', '" + password + "', '" + role + "' ) ";
 
         try
         {
@@ -856,7 +880,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            p = new Lecturer(res.getString("FirstName"), res.getString("LastName"), "", res.getInt("LectId"));
+            p = new Lecturer(res.getString("FirstName"), res.getString("LastName"), res.getString("Title"), res.getInt("LectId"));
 
         }
         catch (SQLException throwables)
@@ -1072,5 +1096,282 @@ public class Database
         }
 
         return null;
+    }
+
+    // Remove f-je
+
+    public static void DeleteStudent(Index index)
+    {
+        sql = "DELETE FROM Students " +
+                "WHERE IndexNum = '" + index + "' ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void DeleteLecturer(int lectId)
+    {
+        sql = "DELETE FROM Lecturers " +
+                "WHERE LectId = " + lectId + " ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void DeleteMajor(int majorId)
+    {
+        sql = "DELETE FROM Majors " +
+                "WHERE MajorId = " + majorId + " ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void DeleteSubject(int subjectId)
+    {
+        sql = "DELETE FROM Subjects " +
+                "WHERE SubjectId = " + subjectId + " ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    // Edit f-je
+
+    public static void EditStudent(Index index, Student updated)
+    {
+        sql = "UPDATE Students SET ";
+        boolean uslov = false;
+
+        if(updated.getFirstName() != null)
+        {
+            sql += "FirstName = '" + updated.getFirstName() + "' ";
+            uslov = true;
+        }
+        if(updated.getLastName() != null)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "LastName = '" + updated.getLastName() + "' ";
+            uslov = true;
+        }
+        if(updated.getIndex() != null)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "IndexNum = '" + updated.getIndex() + "' ";
+            uslov = true;
+        }
+        if(updated.getJmbg() != null)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "JMBG = '" + updated.getJmbg() + "' ";
+            uslov = true;
+        }
+        if(updated.getDateOfBirth() != null)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "DateOfBirth = '" + updated.getDateOfBirth() + "' ";
+            uslov = true;
+        }
+        if(updated.getCity() != null)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "City = '" + updated.getCity() + "' ";
+            uslov = true;
+        }
+        if(updated.getMajorId() != 0)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "MajorId = " + updated.getMajorId() + " ";
+            uslov = true;
+        }
+
+        sql += "WHERE IndexNum = '" + index + "' ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public static void EditLecturer(int lectId, Lecturer updated)
+    {
+        sql = "UPDATE Lecturers SET ";
+        boolean uslov = false;
+
+        if(updated.getFirstName() != null)
+        {
+            sql += "FirstName = '" + updated.getFirstName() + "' ";
+            uslov = true;
+        }
+        if(updated.getLastName() != null)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "LastName = '" + updated.getLastName() + "' ";
+            uslov = true;
+        }
+        if(updated.getLectId() != 0)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "LectId = " + updated.getLectId() + " ";
+            uslov = true;
+        }
+        if(updated.getTitle() != null)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "Title = '" + updated.getTitle() + "' ";
+            uslov = true;
+        }
+
+        sql += "WHERE LectId = " + lectId + " ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void EditSubject(String subjectId, Subject updated)
+    {
+        sql = "UPDATE Subjects SET ";
+        boolean uslov = false;
+
+        if(updated.subjectName != null)
+        {
+            sql += "SubjectName = '" + updated.subjectName + "' ";
+            uslov = true;
+        }
+        if(updated.subjectId != null)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "SubjectId = '" + updated.subjectId + "' ";
+            uslov = true;
+        }
+        if(updated.espb != 0)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "ESPB = " + updated.espb + " ";
+            uslov = true;
+        }
+        if(updated.year != 0)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "Year = " + updated.year + " ";
+            uslov = true;
+        }
+        if(updated.lectid != 0)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "LectId = " + updated.lectid + " ";
+            uslov = true;
+        }
+        if(updated.majorid != 0)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "MajorId = " + updated.majorid + " ";
+            uslov = true;
+        }
+
+        sql += "WHERE SubjectId = '" + subjectId + "' ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void EditMajor(int majorId, Major updated)
+    {
+        sql = "UPDATE Majors SET ";
+        boolean uslov = false;
+
+        if(updated.name != null)
+        {
+            sql += "MajorName = '" + updated.name + "' ";
+            uslov = true;
+        }
+        if(updated.id != 0)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "MajorId = " + updated.id + " ";
+            uslov = true;
+        }
+
+        sql += "WHERE MajorId = " + majorId + " ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
     }
 }

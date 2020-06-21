@@ -3,6 +3,8 @@ package poopprojekat.studentska_sluzba;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.xml.crypto.Data;
+import java.sql.Date;
 import java.util.ArrayList;
 
 
@@ -13,7 +15,7 @@ public class StudentskaSluzbaApplication
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
         Database db = new Database();
 
-//
+
 //        try
 //        {
 //            db.TestDummy();
@@ -35,13 +37,13 @@ public class StudentskaSluzbaApplication
 //        stud = Database.GetStudent(stud);
 //        System.out.println(stud);
 
-        ArrayList<Student> lista;
-        lista = Database.GetStudents(null, new String[]{"Prvogradic", "Drugogradic"}, null, 4, false);
-
-        for (Student st:lista)
-        {
-            System.out.println(st);
-        }
+//        ArrayList<Student> lista;
+//        lista = Database.GetStudents(null, new String[]{"Prvogradic", "Drugogradic"}, null, 4, false);
+//
+//        for (Student st:lista)
+//        {
+//            System.out.println(st);
+//        }
 
 //        ArrayList<Subject> subs = Database.GetSubjects(null, 0, null, null);
 //
@@ -67,7 +69,15 @@ public class StudentskaSluzbaApplication
 
 //        System.out.println("Resenje: " + Database.GetEmptyId("Majors"));
 
+//        System.out.println(Database.GetUser("1/2020", "0123456789123"));
+//
+//        Database.DeleteStudent(new Index("1/2020"));
+//
+//        System.out.println(Database.GetUser("1/2020", "0123456789123"));
+
         //Database.DropDatabase("testing");
+
+        db.Close();
 
     }
 

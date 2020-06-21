@@ -10,8 +10,8 @@ public class Subject
     public int lectid;
     public int majorid;
     //
-    public String prof;
-    public String major;
+    public String lectName;
+    public String majorName;
 
     public Subject(String id)
     {
@@ -26,11 +26,24 @@ public class Subject
         this.year = year;
         this.lectid = profId;
         this.majorid = majorId;
+        GetLectName();
+        GetMajorName();
+    }
+
+    private void GetLectName()
+    {
+       Lecturer temp = Database.GetLecturer(lectid);
+       lectName = temp.getFirstName() + " " + temp.getLastName();
+    }
+
+    private void GetMajorName()
+    {
+        majorName = Database.GetMajor(majorid).name;
     }
 
     @Override
     public String toString()
     {
-        return subjectName + " " + subjectId + " ESPB: " + espb + " Year: " + year + " " + prof + " " + major;
+        return subjectName + " " + subjectId + " ESPB: " + espb + " Year: " + year + " " + lectName + " " + majorName;
     }
 }
