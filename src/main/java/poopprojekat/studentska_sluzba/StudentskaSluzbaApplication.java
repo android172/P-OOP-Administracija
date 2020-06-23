@@ -15,7 +15,6 @@ public class StudentskaSluzbaApplication
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
         Database db = new Database();
 
-
 //        try
 //        {
 //            db.TestDummy();
@@ -77,7 +76,7 @@ public class StudentskaSluzbaApplication
 
         //Database.DropDatabase("testing");
 
-        db.Close();
+        //db.Close();
 
     }
 

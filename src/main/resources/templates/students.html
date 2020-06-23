@@ -4,17 +4,18 @@
 	<title>Studentska sluzba</title>
 	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
 	<link rel="stylesheet" type="text/css" href="../static/css/data-style.css" th:href="@{/css/data-style.css}"/>
+	<script type="text/javascript" language="Javascript" src="../static/js/loader.js" th:src="@{/js/loader.js}"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
 </head>
-<body>
+<body onload="loadDataToTable(); initializeMultiSelect();">
 	<div id="wrapper">
 		<header>
 			<h1><a href="admin">Admin</a> / Studenti</h1>
 			<div id="user">
 				<p>Ime Prezime</p>
-				<img src="../images/user-img.bmp" id="user-img">
+				<img src="../images/user-img.bmp" th:href="@{/images/user-img.bmp}" id="user-img">
 			</div>
 		</header>
 		<div id="content">
@@ -23,32 +24,54 @@
 					<input type="text" id="searchbar" value="" placeholder="Search...">
 
 					<div class="form-element">
-						<label for="date_of_birth">Datum rodjenja:</label>
+						<label class="select-label" for="date_of_birth">Datum rodjenja:</label>
 						<select name="date_of_birth" onchange="this.form.submit()">
 							<option>all</option>
-
 						</select>
 					</div>
 
-					<div class="form-element">
+					<!--<div class="form-element">
 						<label for="city">Grad:</label>
-						<select type="text" name="city" onchange="this.form.submit()">
+						<select type="text" name="city" onchange="this.form.submit()" multiple>
 							<option>all</option>
 							<option>Prvogradic</option>
 							<option>Prvogradic+Drugogradic</option>
 						</select>
+					</div>-->
+					<div class="multiselect form-element">
+	    				<div class="selectBox">
+	    					<label class="select-label" for="multiselect-1">Grad:</label>
+						      	<select id="multiselect-1" name="city">
+						        	<option value="all">all</option>
+						      	</select>
+					    <div class="overSelect" id="multiselect-1-area"></div>
+					    </div>
+					    <div id="checkboxes">
+					    	<label class="option-label" for="all">
+					        	All
+					        	<input type="checkbox" id="all" onchange="updateCheckboxValue()"/>
+					    	</label>
+					    	<label class="option-label" for="Prvogradic">
+					        	Prvogradic
+					        	<input type="checkbox" id="Prvogradic" onchange="updateCheckboxValue()"/>
+					        </label>
+					      	<label class="option-label" for="Drugogradic">
+					        	Drugogradic
+					        	<input type="checkbox" id="Drugogradic" onchange="updateCheckboxValue()"/>
+					    	</label>
+					    </div>
 					</div>
 
 					<div class="form-element">
-						<label for="major">Smer:</label>
+						<label class="select-label" for="major">Smer:</label>
 						<select type="text" name="major" onchange="this.form.submit()">
 							<option>all</option>
 						</select>
 					</div>
 
 					<div class="form-element">
-						<label for="order_by">Redosled:</label>
-						<select type="text" name="order_by" onchange="this.form.submit()">
+						<label class="select-label" for="order_by">Redosled:</label>
+						<select type="text" name="order_by" id="last_col" onchange="this.form.submit()">
 							<option value="birthyear-asc">birthyear-asc</option>
 							<option value="first_name-asc">Ime rastuce</option>
 							<option value="last_name-asc">Prezime rastuce</option>
@@ -57,21 +80,19 @@
 					
 					<input type="submit" value="S">
 				</form>
-				<button onclick="showAddStudentForm();">+</button>
+				<button onclick="loadDataToTable()//showAddStudentForm();">+</button>
 			</div>
-			<table>
+			<table id="data">
 				<tr>
 					<th>Ime</th><th>Prezime</th><th>Indeks</th>
 				</tr>
-
 				<tr>
-					<td>Danijel</td><td>Andjelkovic</td><td>32/2018</td>
+					<td>Ime</td><td>Prezime</td><td>Indeks</td>
 				</tr>
-
 			</table>
 		</div>
 
-		 <iframe src="login" name="dataframe" id="dataframe" title="data"></iframe> 
+		 <iframe src="" name="dataframe" id="dataframe" onload="fillTable()"></iframe> 
 	</div>
 </body>
 </html>

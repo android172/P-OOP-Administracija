@@ -5,7 +5,7 @@
 	--color-highlight: #907AD6;
 	--color-highlight2: #DABFFF;
 	--color-text: #EDE0FF;
-	--color-header: lightgray;
+	--color-header: purple;
 }
 
 * {
@@ -40,6 +40,6 @@ h1 {
 	position: absolute;
 	right: 0px;
 	bottom: 0px;
-	width: 600px;
-	height: 600px;
+	width: 400px;
+	height: 400px;
 }

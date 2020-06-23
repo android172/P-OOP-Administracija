@@ -95,13 +95,18 @@ td {
 	background-color: var(--color-highlight);
 }
 
+tr:hover>td {
+	cursor: pointer;
+	background-color: var(--color-header);
+}
+
 select {
 	height: var(--select-size);
 	background-color: var(--color-highlight);
 	border: none;
 	-webkit-appearance: none;
   	-moz-appearance: none;
-  	border-radius: 15px;
+  	border-radius: 3px;
 }
 
 select:hover {
@@ -109,8 +114,10 @@ select:hover {
 	background-color: var(--color-highlight2);
 }
 
-label {
-	font-size: 12px;
+.select-label {
+	font-size: 14px;
+	padding-bottom: 2px;
+	margin-top: -2px;
 	text-align: center;
 	color: var(--color-highlight2);
 }
@@ -121,6 +128,11 @@ label {
 
 #searchbar {
 	margin-right: 5px; 
+	padding: 7px;
+}
+
+#multiselect-1{
+	height: 20px;
 }
 
 .form-element {
@@ -130,4 +142,53 @@ label {
 	border: 2px solid var(--color-highlight2);
 	display: flex;
 	flex-direction: column;
+	padding: 7px;
+}
+
+.option-label {
+	height: 25px;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: flex-start !important;
+	position: relative;
+	background-color: var(--color-highlight2);
+}
+
+.option-label>input {
+	position: absolute;
+	right: 2px;
+}
+
+.multiselect {
+  width: 150px;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+  font-weight: bold;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#checkboxes {
+  display: none;
+  border: 1px #dadada solid;
+}
+
+#checkboxes label {
+  display: block;
+}
+
+#checkboxes label:hover {
+  background-color: #1e90ff;
 }
