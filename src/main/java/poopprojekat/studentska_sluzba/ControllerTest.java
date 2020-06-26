@@ -1,4 +1,4 @@
-package poopprojekat.studentska_sluzba.Generators;
+package poopprojekat.studentska_sluzba;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

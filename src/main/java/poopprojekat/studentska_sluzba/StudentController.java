@@ -10,21 +10,18 @@ import org.springframework.web.bind.annotation.RestController;
 // Controller for student list related requests
 // INCLUDES:
 // 
-//  Student filtering methods:
-// /students                    - returns list of students (index, first_name, last_name)
-// /students?date_of_birth=...&city=...&mayor=...&order_by=...  - returns filtered list of students (index, first_name,
-//                                                                last_name, ?column by which we order data)
-// /student?index=...                                           - returns student with given index
-// /student?jmbg=...                                            - returns student with given jmbg
-//@RestController
-// /student?index=...           - returns student with given index
-// /student?jmbg=...            - returns student with given jmbg
+// Student filtering methods:
+// /get_all_students            - returns list of students (index, first_name, last_name)
+// /get_students?date_of_birth=&city=&mayor=&order_by=  - returns filtered list of students (index, first_name,
+//                                                        last_name, ?(column by which we order data))
+// /get_student?index=          - returns student with given index
+// /get_student_by_jmbg?jmbg=   - returns student with given jmbg
 // 
 // Student manipulation methods:
 // // all of the following return conformation message or printed error
 // /add_student?first_name=&last_name=&br_ind=&date_of_birth=&city=&jmbg=&major_id=                 - add new student to database
 // /update_student?student=&first_name=&last_name=&br_ind=&date_of_birth=&city=&jmbg=&major_id=     - update existing student
-// /delete_student?index_num=...    - delete requested student from database
+// /delete_student?index_num=   - delete requested student from database
 @RestController
 public class StudentController {
 
@@ -45,21 +42,19 @@ public class StudentController {
         // format picked dates
         Date dates[] = null;
         if (!date_of_birth.equals("all")) {
-            String sd[] = date_of_birth.split("/+");
+            String sd[] = date_of_birth.split("+");
             dates = new Date[sd.length];
             for (int i = 0; i < sd.length; i++)
                 dates[i] = Date.valueOf(sd[i]);
         }
         // format picked cities
-
         String cities[] = null;
         if (!city.equals("all"))
-            cities = city.split("\\+");
-        System.out.println(cities);
+            cities = city.split("+");
         // format picked majors
         String majors[] = null;
         if (!major.equals("all"))
-            majors = major.split("\\+");
+            majors = major.split("+");
         // format order by
         int order_ctg;
         switch (order_by.split("-")[0]) {
@@ -109,7 +104,7 @@ public class StudentController {
         try {
             Student new_student = new Student(first_name, last_name, new Index(index_num), Date.valueOf(date_of_birth),
                     city, jmbg, major_id);
-            if (Database.AddStudent(new_student)) {
+            if (Database.AddStudent(new_student) && Database.AddUser(first_name.toLowerCase() + "." + last_name.toLowerCase(), jmbg, "Student")) {
                 return "Student was added";
             } else
                 return "Database related error occurred; Student could not be added";
@@ -128,31 +123,30 @@ public class StudentController {
             @RequestParam("major_id") String major_id) {
         try {
             Index req_index = new Index(index_of_student_to_update);
-            Student student_to_update = Database.GetStudent(req_index);
             Student updated_student = new Student(req_index);
 
             if (first_name == "")
-                updated_student.setFirstName(student_to_update.getFirstName());
+                updated_student.setFirstName(null);
             else updated_student.setFirstName(first_name);
             if (last_name == "")
-                updated_student.setLastName(student_to_update.getLastName());
+                updated_student.setLastName(null);
             else updated_student.setLastName(last_name);
             if (index_num != "")
                 updated_student.setIndex(new Index(index_num));
             if (date_of_birth == "")
-                updated_student.setDateOfBirth(student_to_update.getDateOfBirth());
+                updated_student.setDateOfBirth(null);
             else updated_student.setDateOfBirth(Date.valueOf(date_of_birth));
             if (city == "")
-                updated_student.setCity(student_to_update.getCity());
+                updated_student.setCity(null);
             else updated_student.setCity(city);
             if (jmbg == "")
-                updated_student.setJmbg(student_to_update.getJmbg());
+                updated_student.setJmbg(null);
             else updated_student.setJmbg(jmbg);
             if (major_id == "")
-                updated_student.setMajorId(student_to_update.getMajorId());
+                updated_student.setMajorId(0);
             else updated_student.setMajorId(Integer.parseInt(major_id));
 
-            // Database.AddStudent(updated_student);
+            Database.EditStudent(req_index, updated_student);
             return "Student was updated";
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,7 +157,14 @@ public class StudentController {
     // delete student
     @GetMapping("/delete_student")
     public String delete_student(@RequestParam("index_num") String index) {
-        return null;
+        try {
+            Index req_index = new Index(index);
+            Database.DeleteStudent(req_index);
+            return "Student was deleted";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Couldn't delete student because of the following error: " + e.getMessage();
+        }
     }
 
    //  // private methods
@@ -171,7 +172,6 @@ public class StudentController {
        // get required data from database
        ArrayList<Student> requested_students = Database.GetStudents(date_of_birth, city, major, order_by , ascending);
        String[][] ret_s;
-       //System.out.println(requested_students);
 
        // we will append data with bonus column only if we chose to sort by said column,
        // otherwise only first_name, last_name and index columns are used
@@ -179,9 +179,8 @@ public class StudentController {
            ret_s = new String[requested_students.size()][4];
            switch (order_by) {
                case 3:
-                   for (int i = 0; i < ret_s.length; i++) {
+                   for (int i = 0; i < ret_s.length; i++)
                        ret_s[i][3] = requested_students.get(i).getDateOfBirth().toString();
-                   }
                    break;
                case 4:
                    for (int i = 0; i < ret_s.length; i++)

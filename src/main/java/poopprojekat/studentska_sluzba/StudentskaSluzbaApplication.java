@@ -3,8 +3,6 @@ package poopprojekat.studentska_sluzba;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.xml.crypto.Data;
-import java.sql.Date;
 import java.util.ArrayList;
 
 
@@ -13,7 +11,7 @@ public class StudentskaSluzbaApplication
 {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
-        Database db = new Database();
+        new Database();
 
 //        try
 //        {
