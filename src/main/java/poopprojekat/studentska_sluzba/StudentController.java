@@ -42,7 +42,7 @@ public class StudentController {
         // format picked dates
         Date dates[] = null;
         if (!date_of_birth.equals("all")) {
-            String sd[] = date_of_birth.split("+");
+            String sd[] = date_of_birth.split("\\+");
             dates = new Date[sd.length];
             for (int i = 0; i < sd.length; i++)
                 dates[i] = Date.valueOf(sd[i]);
@@ -50,11 +50,11 @@ public class StudentController {
         // format picked cities
         String cities[] = null;
         if (!city.equals("all"))
-            cities = city.split("+");
+            cities = city.split("\\+");
         // format picked majors
         String majors[] = null;
         if (!major.equals("all"))
-            majors = major.split("+");
+            majors = major.split("\\+");
         // format order by
         int order_ctg;
         switch (order_by.split("-")[0]) {

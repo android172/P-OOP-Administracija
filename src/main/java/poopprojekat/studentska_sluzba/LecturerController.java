@@ -34,11 +34,11 @@ public class LecturerController {
         // format picked subjects
         String subjects[] = null;
         if (!subject.equals("all"))
-            subjects = subject.split("+");
+            subjects = subject.split("\\+");
         // format picked majors
         String majors[] = null;
         if (!major.equals("all"))
-            majors = major.split("+");
+            majors = major.split("\\+");
 
         return Database.GetLecturers(subjects, majors);
     }
