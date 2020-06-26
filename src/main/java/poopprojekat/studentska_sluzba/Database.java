@@ -188,7 +188,7 @@ public class Database
                 "Password VARCHAR(20) not NULL, " +
                 "Role VARCHAR(10) not NULL, " +          // Student, Profesor, Admin
                 "PRIMARY KEY (id, Username), " +
-                "CONSTRAINT fk_key FOREIGN KEY (Username) REFERENCES Students (IndexNum) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB";
+                "FOREIGN KEY (Username) REFERENCES Students (IndexNum) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB";
 
         System.out.println("Creating table 'Users'");
 
@@ -917,6 +917,78 @@ public class Database
         }
 
         return LectIds;
+    }
+
+    public static ArrayList<Lecturer> GetLecturers(String subjects[], String majors[])
+    {
+        ArrayList<Lecturer> lista = new ArrayList<>();
+        boolean uslov = false;
+        ResultSet res;
+        String sqlt = "SELECT * FROM Lecturers as l join Subjects as s on l.LectId = s.LectId join Majors as m on s.MajorId = m.MajorId " +
+                "WHERE ";
+
+        if(subjects != null)
+        {
+            sqlt += "( ";
+
+            for(int i=0; i<subjects.length; i++)
+            {
+                sqlt += " s.SubjectName = '" + subjects[i] + "' OR ";
+            }
+
+            sqlt += " 0) ";
+
+            uslov = true;
+        }
+        if(majors != null)
+        {
+            if(uslov)
+                sqlt += "AND ";
+
+            sqlt += "( ";
+
+            for(int i=0; i<majors.length; i++)
+            {
+                sqlt += " m.MajorName = '" + majors[i] + "' OR ";
+            }
+
+            sqlt += " 0) ";
+
+            uslov = true;
+        }
+
+        if(uslov)
+            sqlt += "AND ";
+
+        sqlt += "1 ";
+
+        try
+        {
+            res = stat.executeQuery(sqlt);
+
+            if(!res.first())
+                return lista;
+
+            Lecturer l;
+
+            do
+            {
+                l = new Lecturer(res.getString("FirstName"), res.getString("LastName"), res.getString("Title"), res.getInt("LectId"));
+                lista.add(l);
+            }while(res.next());
+
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return lista;
+
     }
 
     public static ArrayList<Major> GetMajors(String majorName)

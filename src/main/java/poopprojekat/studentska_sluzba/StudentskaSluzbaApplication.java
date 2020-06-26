@@ -74,6 +74,12 @@ public class StudentskaSluzbaApplication
 //
 //        System.out.println(Database.GetUser("1/2020", "0123456789123"));
 
+        ArrayList<Lecturer> lect = Database.GetLecturers(new String[]{"Predmet1"}, new String[]{"Smer1"});
+        for(Lecturer l: lect)
+        {
+            System.out.println(l);
+        }
+
         //Database.DropDatabase("testing");
 
         //db.Close();
