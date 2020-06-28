@@ -4,17 +4,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+
 @RestController
 public class MajorsController {
 
 
-//    @GetMapping("/get_all_majors")
-//    public ArrayList<Major> get_all_majors(){
-//
-//        ArrayList<Major> lista = Database.GetMajors(null);
-//
-//        return lista;
-//    }
+    @GetMapping("/get_all_majors")
+    public ArrayList<Major> get_all_majors(){
+
+        ArrayList<Major> lista = Database.GetMajors(null);
+
+        return lista;
+    }
+
+    @GetMapping("/get_major")
+    public Major get_major(@RequestParam("major_id") int id){
+
+        return Database.GetMajor(id);
+    }
 
 
     @GetMapping("/add_major")
@@ -34,7 +42,7 @@ public class MajorsController {
         }
     }
 
-    //todo da se doda jos neka kontrola gresaka
+    //TODO da se doda jos neka kontrola gresaka
     @GetMapping("/update_major")
     public String update_major(@RequestParam("major_id") int id,
                                @RequestParam("new_major_id") int new_id,
