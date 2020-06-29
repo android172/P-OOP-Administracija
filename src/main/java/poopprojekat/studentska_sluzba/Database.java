@@ -30,16 +30,19 @@ import java.util.List;
 // GetHighestIndex(int year) - Vraca najveci br indeksa za zadatu godinu
 // GetEmptyId(tableName) - prima tabelu "Lecturers" ili "Majors" i vraca 1. slobodan Id
 // GetUser(String username, String password) - pretrazuje korisnika u bazi, ako postoji vraca String role, u suprotnom vraca null
+// GetLecturers(String subjects[], String majors[]) - pretrazuje po imenima predmeta i/ili smera i vraca listu Lecturers
 
 // EditStudent(Index index, Student updated) - prima index studenta kog treba izmeniti i promenjivu Student sa izmenjenim podacima
 // EditLecturer(int lectId, Lecturer updated) - prima id profesora kog treba izmeniti i Lecturer sa izmenjenim podacima
 // EditSubject(String subjectId, Subject updated) - prima id predmeta koji treba izmeniti i Subject sa izmenjenim podacima
 // EditMajor(int majorId, Major updated) - prima id smera koji treba izmeniti i Major sa izmenjenim podacima
+// EditUser(String username, User updated) - prima username i User-a kome treba izmeniti username/password/role
 
 // DeleteStudent(Index index) - prima indeks studenta kog treba obrisati iz baze
 // DeleteLecturer(int lectId) - prima id profesora kog treba obrisati iz baze
 // DeleteMajor(int majorId) - prima id smera koji treba obrisati iz baze
 // DeleteSubject(int subjectId) - prima id predmeta koji treba obrisati iz baze
+// DeleteUser(String id) - prima brind ili id profesora i brise user-a iz tabele Users
 
 public class Database
 {
@@ -95,7 +98,7 @@ public class Database
         s = new Student("Student3", "Sestic", new Index("7/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "3223934448822", 2);
         AddStudent(s);
 
-        AddUser("1/2020", "0123456789123", "Student");
+        //AddUser("1/2020", "0123456789123", "Student");
 
         Lecturer p = new Lecturer("Lecturer1", "Profesanovic1", "assistant", 1);
         AddLecturer(p);
@@ -187,8 +190,8 @@ public class Database
                 "Username VARCHAR(10) not NULL Unique, " +      // ind/god ili ind-god
                 "Password VARCHAR(20) not NULL, " +
                 "Role VARCHAR(10) not NULL, " +          // Student, Profesor, Admin
-                "PRIMARY KEY (id, Username), " +
-                "FOREIGN KEY (Username) REFERENCES Students (IndexNum) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB";
+                "UniqueId VARCHAR(10) not NULL UNIQUE , " +
+                "PRIMARY KEY (id, Username) ) ENGINE=InnoDB";
 
         System.out.println("Creating table 'Users'");
 
@@ -509,10 +512,10 @@ public class Database
         return false;
     }
 
-    public static boolean AddUser(String userName, String password, String role) throws Exception
+    public static boolean AddUser(User user, String id) throws Exception
     {
         sql = "INSERT INTO Users (Username, Password, Role) " +
-                "VALUES ( '" + userName + "', '" + password + "', '" + role + "' ) ";
+                "VALUES ( '" + user.username + "', '" + user.password + "', '" + user.role + "', '" + id + "' ) ";
 
         try
         {
@@ -1232,6 +1235,21 @@ public class Database
         }
     }
 
+    public static void DeleteUser(String id)
+    {
+        sql = "DELETE FROM Users " +
+                "WHERE UniqueId = '" + id + "' ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
     // Edit f-je
 
     public static void EditStudent(Index index, Student updated)
@@ -1436,6 +1454,45 @@ public class Database
         }
 
         sql += "WHERE MajorId = " + majorId + " ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void EditUser(String username, User updated)
+    {
+        sql = "UDPATE Users SET ";
+        boolean uslov = false;
+
+        if(updated.username != null)
+        {
+            sql += "Username = '" + updated.username + "' ";
+            uslov = true;
+        }
+        if(updated.password != null)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "Password = '" + updated.password + "' ";
+            uslov = true;
+        }
+        if(updated.role != null)
+        {
+            if(uslov)
+                sql += ", ";
+
+            sql += "UniqueId = '" + updated.password + "' ";
+            uslov = true;
+        }
+
+        sql += "WHERE Username = '" + username + "' ";
 
         try
         {
