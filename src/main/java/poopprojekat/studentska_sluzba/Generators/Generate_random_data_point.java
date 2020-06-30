@@ -2,11 +2,13 @@ package poopprojekat.studentska_sluzba.Generators;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Random;
 
 import poopprojekat.studentska_sluzba.Database;
 import poopprojekat.studentska_sluzba.Index;
 import poopprojekat.studentska_sluzba.Lecturer;
+import poopprojekat.studentska_sluzba.Major;
 import poopprojekat.studentska_sluzba.Student;
 
 // Class for generating random data to be pushed to database
@@ -15,12 +17,15 @@ import poopprojekat.studentska_sluzba.Student;
 // get_random_lecturer - method for generating random professor object
 public class Generate_random_data_point {
 
+    // Class cannot be initialized
+    private Generate_random_data_point() {}
+
     public static Student get_random_student() {
         LocalDate rng_d = Birthday_gen.get_random_birth_date();
         String jmbg = Birthday_gen.get_random_jmbg(rng_d);
         try {
             return new Student(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(),
-                    new Index(rng_d.getYear() + 19), Date.valueOf(rng_d), Name_gen.get_random_city(), jmbg, 1);
+                    new Index(rng_d.getYear() + 19), Date.valueOf(rng_d), Name_gen.get_random_city(), jmbg, random_major_id());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,5 +46,10 @@ public class Generate_random_data_point {
                 title = "assistant";
         }
         return new Lecturer(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(), title, Database.GetEmptyId("Lecturers"));
+    }
+
+    private static int random_major_id() {
+        ArrayList<Major> majors = Database.GetMajors(null);
+        return majors.get(new Random().nextInt(majors.size())).id;
     }
 }

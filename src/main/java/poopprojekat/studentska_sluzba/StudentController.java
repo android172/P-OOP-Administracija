@@ -104,7 +104,7 @@ public class StudentController {
         try {
             Student new_student = new Student(first_name, last_name, new Index(index_num), Date.valueOf(date_of_birth),
                     city, jmbg, major_id);
-            if (Database.AddStudent(new_student) && Database.AddUser(first_name.toLowerCase() + "." + last_name.toLowerCase(), jmbg, "Student")) {
+            if (Database.AddStudent(new_student) && Database.AddUser(new User(index_num, jmbg, "Student"), index_num)) {
                 return "Student was added";
             } else
                 return "Database related error occurred; Student could not be added";
@@ -160,6 +160,7 @@ public class StudentController {
         try {
             Index req_index = new Index(index);
             Database.DeleteStudent(req_index);
+            Database.DeleteUser(index);
             return "Student was deleted";
         } catch (Exception e) {
             e.printStackTrace();
