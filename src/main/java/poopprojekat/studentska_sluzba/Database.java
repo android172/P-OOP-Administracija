@@ -12,14 +12,14 @@ import java.util.List;
 // AddMajor(Major m) - prima Major i ubacuje u bazu. Pogledati obavezne promenjive u Major
 // AddUser(String username, String password, String role) - sve promenjive moraju biti != null i username mora biti unique (brind), ubacuje ih u tabelu Users
 // sve Add f-je vracaju true ako je uspesno dodalo, false ako nije
-// GetStudents(Date dateOfBirth, String city, String MajorName, int orderBy, boolean ascending) - prima DoB/City/MajorName,
+// GetStudents(Date dateOfBirth[], String city[], String MajorName[], int orderBy, boolean ascending) - prima DoB/City/MajorName,
 //                                      orderby: 3 - sortira po DoB 4 - sortira po City, 6 - sortira po MajorId,
 //                                      ascending - da li sortira od manjeg ka vecem ili obrnuto (vrednost nije bitna ako orderby nije 3,4 ili 6)
 //                                      f-ja vraca ArrayList<Student>
 //                                      Ukoliko su svi parametri null, f-ja vraca sve studente iz tabele Students
 // GetStudent(String jmbg) - prima jmbg studenta, vraca Student
 // GetStudent(Index index) - prima index studenta, vraca Student
-// GetSubjets(String subjectName, int year, String profName, String majorName) - prima 1 ili vise parametra (ostali 0 ili null)
+// GetSubjets(String subjectName[], int year[], String profName[], String majorName[]) - prima 1 ili vise parametra (ostali null)
 //                                                                               i pretrazuje ih, Vraca ArrayList<Subject>
 //                                                                               Ukoliko su svi parametri null, f-ja vraca sve predmete iz tabele Subjects
 // GetSubject(String SubjectId) - prima id predmeta, vraca Subject
@@ -42,7 +42,7 @@ import java.util.List;
 // DeleteLecturer(int lectId) - prima id profesora kog treba obrisati iz baze
 // DeleteMajor(int majorId) - prima id smera koji treba obrisati iz baze
 // DeleteSubject(int subjectId) - prima id predmeta koji treba obrisati iz baze
-// DeleteUser(String id) - prima brind ili id profesora i brise user-a iz tabele Users
+// DeleteUser(String id) - prima brind ili id profesora (kao String) i brise user-a iz tabele Users
 
 public class Database
 {
@@ -52,10 +52,7 @@ public class Database
 
     public Database()       // First time run
     {
-        ConnectToDatabase("");
-
-        CreateDatabase("Testing");
-
+        ConnectToDatabase("Testing");
     }
 
     public void Close()
@@ -98,7 +95,7 @@ public class Database
         s = new Student("Student3", "Sestic", new Index("7/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "3223934448822", 2);
         AddStudent(s);
 
-        //AddUser("1/2020", "0123456789123", "Student");
+        AddUser(new User("Student1", "0123456789123", "Student"), "1/2020");
 
         Lecturer p = new Lecturer("Lecturer1", "Profesanovic1", "assistant", 1);
         AddLecturer(p);
@@ -117,20 +114,24 @@ public class Database
 
     public void ConnectToDatabase(String name)
     {
-        System.out.println("Connecting to database");
+        if(name != "")
+            System.out.println("Connecting to database");
 
         try
         {
             conn = DriverManager.getConnection("jdbc:mariadb://localhost/" + name, "root", "");
             stat = conn.createStatement();
 
-            System.out.println("Connection successful");
+            if(name != "")
+                System.out.println("Connection successful");
         }
         catch (SQLException throwables)
         {
             if(throwables.getErrorCode() == 1049)       // Database doesn't exsist
             {
                 System.out.println("Database doesn't exist");
+                ConnectToDatabase("");
+                CreateDatabase(name);
             }
             else        // other errors
             {
@@ -514,7 +515,7 @@ public class Database
 
     public static boolean AddUser(User user, String id) throws Exception
     {
-        sql = "INSERT INTO Users (Username, Password, Role) " +
+        sql = "INSERT INTO Users (Username, Password, Role, UniqueId) " +
                 "VALUES ( '" + user.username + "', '" + user.password + "', '" + user.role + "', '" + id + "' ) ";
 
         try
@@ -739,7 +740,7 @@ public class Database
         return s;
     }
 
-    public static ArrayList<Subject> GetSubjects(String subjectName, int year, String profName, String majorName)
+    public static ArrayList<Subject> GetSubjects(String subjectName[], int year[], String profName[], String majorName[])
     {
         String sqlt = "SELECT * FROM Subjects " +
                 "WHERE ";
@@ -751,67 +752,68 @@ public class Database
 
         if(subjectName != null)
         {
-            sqlt += "SubjectName = '" + subjectName + "' ";
+            sqlt += "( ";
+            for(int i = 0;i<subjectName.length; i++)
+            {
+                sqlt += "SubjectName = '" + subjectName[i] + "' OR ";
+            }
+            sqlt += "0 ) ";
             uslov = true;
         }
-        if(year != 0)
+        if(year != null)
         {
             if(uslov)
                 sqlt += "AND ";
-            sqlt += "Year = " + year + " ";
+
+            sqlt += "( ";
+            for(int i = 0;i<year.length;i++)
+            {
+                sqlt += "Year = " + year[i] + " OR ";
+            }
+            sqlt += "0 ) ";
             uslov = true;
         }
         if(profName != null)
         {
             if(uslov)
                 sqlt += "AND ";
-
-            String temp[] = profName.split(" ");
-
-            ArrayList<Integer> LectIds = GetLecturers(temp[0], temp[1]);
-
-            if(LectIds != null)
+            sqlt += "( ";
+            for(int i = 0;i<profName.length;i++)
             {
-                if(LectIds.size() > 1)
+                String temp[] = profName[i].split(" ");
+
+                ArrayList<Integer> LectIds = GetLecturers(temp[0], temp[1]);
+
+                if(LectIds != null)
                 {
-                    sqlt += "( ";
-                    for(int id : LectIds)
+                    for (int id : LectIds)
                     {
                         sqlt += "LectId = " + id + " OR ";
                     }
-                    sqlt += "0 ) ";
-                }
-                else
-                {
-                    sqlt += "LectId = " + LectIds.get(0) + " ";
                 }
             }
+
+            sqlt += "0 ) ";
             uslov = true;
         }
         if(majorName != null)
         {
             if(uslov)
                 sqlt += "AND ";
-
-            ArrayList<Major> majorIds = GetMajors(majorName);
-
-            if(majorIds != null)
+            sqlt += "( ";
+            for(int i = 0;i<majorName.length;i++)
             {
-                if(majorIds.size() > 1)
+                ArrayList<Major> majorIds = GetMajors(majorName[i]);
+
+                if(majorIds != null)
                 {
-                    sqlt += "( ";
                     for(Major m : majorIds)
                     {
                         sqlt += "MajorId = " + m.id + " OR ";
                     }
-                    sqlt += "0 ) ";
-                }
-                else
-                {
-                    sqlt += "LectId = " + majorIds.get(0) + " ";
                 }
             }
-
+            sqlt += "0 ) ";
             uslov = true;
         }
         if(!uslov)
@@ -824,14 +826,11 @@ public class Database
             if(!res.first())
                 return null;
 
-            tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getInt("LectId"), res.getInt("MajorId"));
-            subjects.add(tempsubject);
-
-            while(res.next())
+            do
             {
                 tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getInt("LectId"), res.getInt("MajorId"));
                 subjects.add(tempsubject);
-            }
+            }while(res.next());
 
         }
         catch (SQLException throwables)
@@ -1467,7 +1466,7 @@ public class Database
 
     public static void EditUser(String username, User updated)
     {
-        sql = "UDPATE Users SET ";
+        sql = "UPDATE Users SET ";
         boolean uslov = false;
 
         if(updated.username != null)
@@ -1488,12 +1487,12 @@ public class Database
             if(uslov)
                 sql += ", ";
 
-            sql += "UniqueId = '" + updated.password + "' ";
+            sql += "Role = '" + updated.role + "' ";
             uslov = true;
         }
 
         sql += "WHERE Username = '" + username + "' ";
-
+        System.out.println(sql);
         try
         {
             stat.executeUpdate(sql);
