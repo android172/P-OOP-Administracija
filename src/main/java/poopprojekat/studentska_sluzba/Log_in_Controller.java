@@ -1,25 +1,34 @@
 package poopprojekat.studentska_sluzba;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @RestController
 public class Log_in_Controller {
-    
+
     private static ArrayList<cashed_user> cashed_users = new ArrayList<>();
 
-    @PostMapping(value="/login_req")
-    public long getMethodName(@RequestParam("username") String username, @RequestParam("password") String password) {
+    @PostMapping(value = "/login_req")
+    public long getMethodName(HttpServletResponse response, @RequestParam("username") String username,
+            @RequestParam("password") String password) {
         String role = Database.GetUser(username, password);
         if (role == null)
             return 0;
         long token = new Random().nextLong();
         cashed_users.add(new cashed_user(token, role));
+        if (role == "Admin")
+            try {
+                response.sendRedirect("/admin?token=" + token);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         return token;
     }
     
