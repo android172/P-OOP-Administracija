@@ -56,7 +56,7 @@ public class LecturerController {
             @RequestParam("lect_id") int lect_id) {
         Lecturer new_lecturer = new Lecturer(first_name, last_name, title, lect_id);
         try {
-            if (Database.AddLecturer(new_lecturer))
+            if (Database.AddLecturer(new_lecturer) && Database.AddUser(new User("username", String.valueOf(lect_id), "Lecturer"), String.valueOf(lect_id)))
                 return "Lecturer was added";
             return "An database level error occurred; Lecturer could not be added";
         } catch (Exception e) {
@@ -97,6 +97,7 @@ public class LecturerController {
     public String delete_lecturer(@RequestParam("lecturer") int lect_id) {
         try {
             Database.DeleteLecturer(lect_id);
+            Database.DeleteUser(String.valueOf(lect_id));
             return "Lecturer was deleted";
         } catch (Exception e) {
             e.printStackTrace();

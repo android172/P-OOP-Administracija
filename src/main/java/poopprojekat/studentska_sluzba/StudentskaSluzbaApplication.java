@@ -3,6 +3,7 @@ package poopprojekat.studentska_sluzba;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 
@@ -11,7 +12,7 @@ public class StudentskaSluzbaApplication
 {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
-        new Database();
+        Database db = new Database();
 
 //        try
 //        {
@@ -42,7 +43,7 @@ public class StudentskaSluzbaApplication
 //            System.out.println(st);
 //        }
 
-//        ArrayList<Subject> subs = Database.GetSubjects(null, 0, null, null);
+//        ArrayList<Subject> subs = Database.GetSubjects(null, null, null, null);
 //
 //        for(Subject s: subs)
 //        {
@@ -72,11 +73,11 @@ public class StudentskaSluzbaApplication
 //
 //        System.out.println(Database.GetUser("1/2020", "0123456789123"));
 
-        ArrayList<Lecturer> lect = Database.GetLecturers(new String[]{"Predmet1"}, new String[]{"Smer1"});
-        for(Lecturer l: lect)
-        {
-            System.out.println(l);
-        }
+//        ArrayList<Lecturer> lect = Database.GetLecturers(new String[]{"Predmet1"}, new String[]{"Smer1"});
+//        for(Lecturer l: lect)
+//        {
+//            System.out.println(l);
+//        }
 
         //Database.DropDatabase("testing");
 
