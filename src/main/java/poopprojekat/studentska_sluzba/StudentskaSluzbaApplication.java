@@ -82,8 +82,6 @@ public class StudentskaSluzbaApplication
         //Database.DropDatabase("testing");
 
         //db.Close();
-
-        //proba
     }
 
 }
