@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -21,42 +20,72 @@ public class Redirect_Controller {
     }
 
     @GetMapping("/admin")
-    public String index(@RequestParam("token") long token){
-        return redirect_to(token, "admin");
+    public String index(HttpServletResponse response, @RequestParam("token") long token){
+        String role = Log_in_Controller.contains_user(token);
+        if (role == "Admin") return "admin";
+
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @GetMapping("/students")
-    public String students(@RequestParam("token") long token){
-        return redirect_to(token, "students");
+    public String students(HttpServletResponse response, @RequestParam("token") long token){
+        String role = Log_in_Controller.contains_user(token);
+        if (role == "Admin") return "students";
+        
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @GetMapping("/staff")
-    public String staff(@RequestParam("token") long token){
-        return redirect_to(token, "staff");
+    public String staff(HttpServletResponse response, @RequestParam("token") long token){
+        String role = Log_in_Controller.contains_user(token);
+        if (role == "Admin") return "staff";
+        
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @GetMapping("/courses")
-    public String courses(@RequestParam("token") long token){
-        return redirect_to(token, "courses");
+    public String courses(HttpServletResponse response, @RequestParam("token") long token){
+        String role = Log_in_Controller.contains_user(token);
+        if (role == "Admin") return "courses";
+        
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @GetMapping("/majors")
-    public String majors(@RequestParam("token") long token){
-        return redirect_to(token, "majors");
+    public String majors(HttpServletResponse response, @RequestParam("token") long token){
+        String role = Log_in_Controller.contains_user(token);
+        if (role == "Admin") return "majors";
+        
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @GetMapping("/login")
     public String login(){
         return "login";
-    }
-
-    private String redirect_to(long token, String requested) {
-        String role = Log_in_Controller.contains_user(token);
-        if (role == null) return "login";
-        if (role == "Admin") return requested;
-        if (role == "Lecturer") {
-            return null;
-        }
-        return null;
     }
 }
