@@ -1,13 +1,25 @@
 package poopprojekat.studentska_sluzba;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class Redirect_Controller
-{
+public class Redirect_Controller {
     @PostMapping("/")
+    public void redirect_to_login(HttpServletResponse response) {
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping("/admin")
     public String index(@RequestParam("token") long token){
         return redirect_to(token, "admin");
     }
