@@ -13,7 +13,7 @@ public class Log_in_Controller {
     
     private static ArrayList<cashed_user> cashed_users = new ArrayList<>();
 
-    @PostMapping(value="/login")
+    @PostMapping(value="/login_req")
     public long getMethodName(@RequestParam("username") String username, @RequestParam("password") String password) {
         String role = Database.GetUser(username, password);
         if (role == null)
@@ -28,23 +28,23 @@ public class Log_in_Controller {
             if (cs.equals(token)) return cs.getRole();
         return null;
     }
-}
 
-class cashed_user {
+    private class cashed_user {
 
-    private long token;
-    private String role;
-
-    cashed_user(long token, String role) {
-        this.token = token;
-        this.role = role;
-    }
-
-    String getRole() {
-        return role;
-    }
-
-    boolean equals(long token) {
-        return token == this.token;
+        private long token;
+        private String role;
+    
+        cashed_user(long token, String role) {
+            this.token = token;
+            this.role = role;
+        }
+    
+        String getRole() {
+            return role;
+        }
+    
+        boolean equals(long token) {
+            return token == this.token;
+        }
     }
 }
