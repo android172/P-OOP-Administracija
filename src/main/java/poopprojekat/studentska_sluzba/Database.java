@@ -5,20 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Database class Includes:
-// DropDatabase(String name) - Brise bazu
-// AddStudent(Student s) - prima studenta i ubacuje u bazu. Pogledati obavezne promenjive u Student
-// AddSubject(Subject s) - prima predmet i ubacuje u bazu. Pogledati obavezne promenjive u Subject
-// AddLecturer(Lecturer p) - prima Lecturer i ubacuje u bazu. Pogledati obavezne promenjive u Lecturer
-// AddMajor(Major m) - prima Major i ubacuje u bazu. Pogledati obavezne promenjive u Major
-// AddUser(String username, String password, String role) - sve promenjive moraju biti != null i username mora biti unique (brind), ubacuje ih u tabelu Users
-// sve Add f-je vracaju true ako je uspesno dodalo, false ako nije
-// GetStudents(Date dateOfBirth[], String city[], String MajorName[], int orderBy, boolean ascending) - prima DoB/City/MajorName,
-//                                      orderby: 3 - sortira po DoB 4 - sortira po City, 6 - sortira po MajorId,
-//                                      ascending - da li sortira od manjeg ka vecem ili obrnuto (vrednost nije bitna ako orderby nije 3,4 ili 6)
-//                                      f-ja vraca ArrayList<Student>
-//                                      Ukoliko su svi parametri null, f-ja vraca sve studente iz tabele Students
-// GetStudent(String jmbg) - prima jmbg studenta, vraca Student
-// GetStudent(Index index) - prima index studenta, vraca Student
+// ConnectToDatabase(String name) - Connects to database if exists otherwise creates new database
+// Close() - Closes connection to database
+// DropDatabase(String name) - Delete database
+
+// AddStudent(Student s) - Adds student
+// AddSubject(Subject s) - Adds subject
+// AddLecturer(Lecturer p) - Adds lecturer
+// AddMajor(Major m) - Adds Major
+// AddUser(User user, String id) - Adds user, id is unique to lectuer/student, id for admin is -x
+// Add functions return true if sucessfull, false if not
+// GetStudents(Date dateOfBirth[], String city[], String MajorName[], int orderBy, boolean ascending) - accepts DoB/City/MajorName,
+//                                      orderby: 3 - sorts po DoB 4 - sorts po City, 6 - sorts po MajorId,
+//                                      ascending - true/false.. doesn't matter if orderby != 3/4/6
+//                                      function returns ArrayList<Student>
+//                                      if all params are null, returns all Students from table
+// GetStudent(String jmbg) - return Student with forwarded jmbg
+// GetStudent(Index index) - return Student with forwarded index number
 // GetSubjets(String subjectName[], int year[], String profName[], String majorName[]) - prima 1 ili vise parametra (ostali null)
 //                                                                               i pretrazuje ih, Vraca ArrayList<Subject>
 //                                                                               Ukoliko su svi parametri null, f-ja vraca sve predmete iz tabele Subjects
@@ -50,9 +53,9 @@ public class Database
     private static Statement stat = null;
     private static String sql = null;
 
-    public Database()       // First time run
+    public Database(String name)       // First time run
     {
-        ConnectToDatabase("Testing");
+        ConnectToDatabase(name);
     }
 
     public void Close()
@@ -1174,14 +1177,15 @@ public class Database
 
     // Remove f-je
 
-    public static void DeleteStudent(Index index)
+    public static void DeleteStudent(Index index) throws Exception
     {
         sql = "DELETE FROM Students " +
                 "WHERE IndexNum = '" + index + "' ";
 
         try
         {
-            stat.executeUpdate(sql);
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("Student doesn't exist");
         }
         catch (SQLException throwables)
         {
@@ -1189,14 +1193,15 @@ public class Database
         }
     }
 
-    public static void DeleteLecturer(int lectId)
+    public static void DeleteLecturer(int lectId) throws Exception
     {
         sql = "DELETE FROM Lecturers " +
                 "WHERE LectId = " + lectId + " ";
 
         try
         {
-            stat.executeUpdate(sql);
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("Lecturer doesn't exist");
         }
         catch (SQLException throwables)
         {
@@ -1204,14 +1209,15 @@ public class Database
         }
     }
 
-    public static void DeleteMajor(int majorId)
+    public static void DeleteMajor(int majorId) throws Exception
     {
         sql = "DELETE FROM Majors " +
                 "WHERE MajorId = " + majorId + " ";
 
         try
         {
-            stat.executeUpdate(sql);
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("Major doesn't exist");
         }
         catch (SQLException throwables)
         {
@@ -1219,14 +1225,15 @@ public class Database
         }
     }
 
-    public static void DeleteSubject(int subjectId)
+    public static void DeleteSubject(int subjectId) throws Exception
     {
         sql = "DELETE FROM Subjects " +
                 "WHERE SubjectId = " + subjectId + " ";
 
         try
         {
-            stat.executeUpdate(sql);
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("Subject doesn't exist");
         }
         catch (SQLException throwables)
         {
@@ -1234,14 +1241,15 @@ public class Database
         }
     }
 
-    public static void DeleteUser(String id)
+    public static void DeleteUser(String id) throws Exception
     {
         sql = "DELETE FROM Users " +
                 "WHERE UniqueId = '" + id + "' ";
 
         try
         {
-            stat.executeUpdate(sql);
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("User doesn't exist");
         }
         catch (SQLException throwables)
         {
@@ -1251,7 +1259,7 @@ public class Database
 
     // Edit f-je
 
-    public static void EditStudent(Index index, Student updated)
+    public static void EditStudent(Index index, Student updated) throws Exception
     {
         sql = "UPDATE Students SET ";
         boolean uslov = false;
@@ -1314,7 +1322,8 @@ public class Database
 
         try
         {
-            stat.executeUpdate(sql);
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("Student doesn't exist");
         }
         catch (SQLException throwables)
         {
@@ -1323,7 +1332,7 @@ public class Database
 
     }
 
-    public static void EditLecturer(int lectId, Lecturer updated)
+    public static void EditLecturer(int lectId, Lecturer updated) throws Exception
     {
         sql = "UPDATE Lecturers SET ";
         boolean uslov = false;
@@ -1362,7 +1371,8 @@ public class Database
 
         try
         {
-            stat.executeUpdate(sql);
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("Lecturer doesn't exist");
         }
         catch (SQLException throwables)
         {
@@ -1370,7 +1380,7 @@ public class Database
         }
     }
 
-    public static void EditSubject(String subjectId, Subject updated)
+    public static void EditSubject(String subjectId, Subject updated) throws Exception
     {
         sql = "UPDATE Subjects SET ";
         boolean uslov = false;
@@ -1425,7 +1435,8 @@ public class Database
 
         try
         {
-            stat.executeUpdate(sql);
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("Subject doesn't exist");
         }
         catch (SQLException throwables)
         {
@@ -1433,7 +1444,7 @@ public class Database
         }
     }
 
-    public static void EditMajor(int majorId, Major updated)
+    public static void EditMajor(int majorId, Major updated) throws Exception
     {
         sql = "UPDATE Majors SET ";
         boolean uslov = false;
@@ -1456,7 +1467,8 @@ public class Database
 
         try
         {
-            stat.executeUpdate(sql);
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("Major doesn't exist");
         }
         catch (SQLException throwables)
         {
@@ -1464,7 +1476,7 @@ public class Database
         }
     }
 
-    public static void EditUser(String username, User updated)
+    public static void EditUser(String username, User updated) throws Exception
     {
         sql = "UPDATE Users SET ";
         boolean uslov = false;
@@ -1492,10 +1504,11 @@ public class Database
         }
 
         sql += "WHERE Username = '" + username + "' ";
-        System.out.println(sql);
+
         try
         {
-            stat.executeUpdate(sql);
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("User doesn't exist");
         }
         catch (SQLException throwables)
         {

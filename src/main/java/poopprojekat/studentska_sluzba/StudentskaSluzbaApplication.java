@@ -12,7 +12,7 @@ public class StudentskaSluzbaApplication
 {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
-        Database db = new Database();
+        Database db = new Database("testing");
 
 //        try
 //        {
