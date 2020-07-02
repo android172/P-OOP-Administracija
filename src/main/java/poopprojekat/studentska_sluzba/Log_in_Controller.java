@@ -13,14 +13,14 @@ public class Log_in_Controller {
     private static ArrayList<Cashed_user> cashed_users = new ArrayList<>();
 
     @GetMapping(value = "/login_req")
-    public Cashed_user getMethodName(@RequestParam("username") String username,
+    public String getMethodName(@RequestParam("username") String username,
             @RequestParam("password") String password) {
         String role = Database.GetUser(username, password);
         if (role == null)
             return null;
         Cashed_user cu = new Cashed_user(new Random().nextLong(), role);
         cashed_users.add(cu);
-        return cu;
+        return (cu.role + ":" + cu.token);
     }
     
     public static String contains_user(long token) {

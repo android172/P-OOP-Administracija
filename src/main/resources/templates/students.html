@@ -8,11 +8,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 </head>
-<body onload="loadDataToTable(); initializeMultiSelect();">
+<body onload="loadDataToTable(); initializeMultiSelect(); getToken(); addTokenToLinks();">
 	<div id="wrapper">
 		<header>
-			<h1><a href="admin">Admin</a> / Studenti</h1>
+			<h1><a href="admin" class="tokenify">Admin</a> / Studenti</h1>
 			<div id="user">
 				<p>Ime Prezime</p>
 				<img src="../images/user-img.bmp" th:href="@{/images/user-img.bmp}" id="user-img">
