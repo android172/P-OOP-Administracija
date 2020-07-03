@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 //INCLUDES:
 //
-// /get_all_majors -returns list of all majors todo da se proveri u database kako to ide
-// /get_major?major_id= -returns major with given id
+// /get_all_majors -returns list of all majors
+// /get_major?id= -returns major with given id
 //
 // /add_major?name= -adds new major with first empty id
 // /update_major?id=new_id=name= -updates major with given id
@@ -23,13 +23,13 @@ public class MajorsController {
     @GetMapping("/get_all_majors")
     public ArrayList<Major> get_all_majors(){
 
-        ArrayList<Major> lista = Database.GetMajors(null);  //jos ne znam da li moze da se salje null, to treba u database da se namesti
+        ArrayList<Major> lista = Database.GetMajors(null);
 
         return lista;
     }
 
     @GetMapping("/get_major")
-    public Major get_major(@RequestParam("major_id") int id){
+    public Major get_major(@RequestParam("id") int id){
 
         return Database.GetMajor(id);
     }
@@ -51,7 +51,7 @@ public class MajorsController {
         }
     }
 
-    //TODO da se doda jos neka kontrola gresaka
+
     @GetMapping("/update_major")
     public String update_major(@RequestParam("id") int id,
                                @RequestParam("new_id") int new_id,
@@ -60,16 +60,26 @@ public class MajorsController {
 
         Major updated_major = new Major(new_id, new_major_name);
 
-        Database.EditMajor(id, updated_major);
+        try {
+            Database.EditMajor(id, updated_major);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Couldn't update major because of the following error: " + e.getMessage();
+        }
         return "Major successfuly updated";
     }
 
     @GetMapping("/delete_major")
     public String delete_major(@RequestParam("id") int id){
 
-        Database.DeleteMajor(id);
+        try {
+            Database.DeleteMajor(id);
 
+        }catch (Exception e){
+            e.printStackTrace();
+            return "Couldn't delete major because of the following error: " + e.getMessage();
+        }
         return "Major successfully deleted";
     }
 }

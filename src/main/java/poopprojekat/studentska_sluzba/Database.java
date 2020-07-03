@@ -996,8 +996,12 @@ public class Database
     public static ArrayList<Major> GetMajors(String majorName)
     {
         ArrayList<Major> lista = new ArrayList<>();
-        sql = "SELECT * FROM Majors " +
-                "WHERE MajorName = '" + majorName + "' ";
+
+        sql = "SELECT * FROM Majors ";
+        if (majorName != null) {
+            sql +=
+                    "WHERE MajorName = '" + majorName + "' ";
+        }
 
         ResultSet res = null;
 
