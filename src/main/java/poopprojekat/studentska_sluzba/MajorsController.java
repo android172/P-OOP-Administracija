@@ -12,7 +12,7 @@ import java.util.ArrayList;
 // /get_major?id= -returns major with given id
 //
 // /add_major?name= -adds new major with first empty id
-// /update_major?id=new_id=name= -updates major with given id
+// /update_major?id=&new_id=&name= -updates major with given id
 // /delete_major?id= -deletes major with given id
 
 
@@ -41,7 +41,7 @@ public class MajorsController {
         try {
             Major new_major = new Major(Database.GetEmptyId("Majors"), name);
             if (Database.AddMajor(new_major))
-                return "Major was added";
+                return "Major successfully added";
             else {
                 return "Database related error occurred; Major could not be added";
             }
@@ -67,7 +67,7 @@ public class MajorsController {
             e.printStackTrace();
             return "Couldn't update major because of the following error: " + e.getMessage();
         }
-        return "Major successfuly updated";
+        return "Major successfully updated";
     }
 
     @GetMapping("/delete_major")

@@ -19,7 +19,7 @@ import java.util.List;
 //                                      Ukoliko su svi parametri null, f-ja vraca sve studente iz tabele Students
 // GetStudent(String jmbg) - prima jmbg studenta, vraca Student
 // GetStudent(Index index) - prima index studenta, vraca Student
-// GetSubjets(String subjectName[], int year[], String profName[], String majorName[]) - prima 1 ili vise parametra (ostali null)
+// GetSubjects(String subjectName[], int year[], String profName[], String majorName[]) - prima 1 ili vise parametra (ostali null)
 //                                                                               i pretrazuje ih, Vraca ArrayList<Subject>
 //                                                                               Ukoliko su svi parametri null, f-ja vraca sve predmete iz tabele Subjects
 // GetSubject(String SubjectId) - prima id predmeta, vraca Subject
