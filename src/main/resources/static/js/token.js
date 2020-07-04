@@ -20,6 +20,14 @@ function getCookie(cname) {
   	return "";
 }
 
+function addTokenToForm(formID){
+    var inputEl = document.createElement("input");
+    inputEl.name = "token";
+    inputEl.value = token;
+    inputEl.style.display = "none";
+    document.getElementById(formID).appendChild(inputEl);
+}
+
 function addTokenToLinks(){
 	var links = document.getElementsByClassName("tokenify");
 	var len = links.length;

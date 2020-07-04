@@ -4,7 +4,8 @@ function redirect(){
 	if(initialized){
 		var dataStr = document.getElementById("loginframe").contentWindow.document.body.innerHTML;
 		//alert(dataStr);
-		if(dataStr=="<pre></pre>"){
+
+		if(dataStr=="access denied"){
 			//Bad login
 			var badlogin = document.getElementById("badlogin");
 			badlogin.style.display = "block";

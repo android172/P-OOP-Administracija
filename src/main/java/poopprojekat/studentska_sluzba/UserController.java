@@ -17,10 +17,11 @@ public class UserController {
     public String get_user_role(@RequestParam("username") String username,
                                 @RequestParam("password") String password){
 
-        String tmp = Database.GetUser(username, password);
+        /*String tmp = Database.GetUser(username, password);
 
         if (tmp == null) return "User don't exist";
-        return tmp;
+        return tmp;*/
+        return null;
     }
 
     @GetMapping("/add_user")

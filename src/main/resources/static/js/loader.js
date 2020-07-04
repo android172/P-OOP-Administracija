@@ -1,8 +1,8 @@
-var th = [];
-var hasHeaders = false;
+//var th = [];
+//var hasHeaders = false;
 var hasData = false;
 
-function setHeaders(){
+/*function setHeaders(){
 	var table = document.getElementById("data");
 
 	var header = table.rows[0].cells;
@@ -14,12 +14,9 @@ function setHeaders(){
 		th.push(header[i].innerHTML);
 	}
 	hasHeaders = true;
-}
+}*/
 
 function loadDataToTable(){
-	if(!hasHeaders)
-		setHeaders();
-
 	if(!hasData){
 		document.getElementById("search").submit();
 		hasData = true;
@@ -36,27 +33,28 @@ function fillTable(){
 	//alert(data);
 	var table = document.getElementById("data");
 	var header = document.createElement("tr");
-	var len = th.length;
-	for(var i=0; i<len; i++){
+
+	var data = JSON.parse(dataStr);
+    var rows = data.length;
+    var cols = data[0].length;
+
+	for(var i=0; i<cols; i++){
 		var head = document.createElement("th");
-		head.innerHTML = th[i];
+		head.innerHTML = data[0][i];
 		header.appendChild(head);
 	}
 
-	var lastColumn = document.createElement("th");
+	/*var lastColumn = document.createElement("th");
 	lastColumn.innerHTML = document.getElementById("last_col").value;
-	header.appendChild(lastColumn);
+	header.appendChild(lastColumn);*/
 
 	table.innerHTML = "";
-	table.appendChild(header);
 
-	var data = JSON.parse(dataStr);
-	var len = data.length;
-	if(len>0){
-		var len2 = data[0].length;
-		for(var i=0; i<len; i++){
+	if(rows>0){
+	    table.appendChild(header);
+		for(var i=1; i<rows; i++){
 			var row = table.insertRow();
-			for(var j=0; j<len2; j++){
+			for(var j=0; j<cols; j++){
 				var cell = row.insertCell();
 				cell.innerHTML = data[i][j];
 			}

@@ -185,28 +185,35 @@ public class StudentController {
        // we will append data with bonus column only if we chose to sort by said column,
        // otherwise only first_name, last_name and index columns are used
        if (order_by != 0) {
-           ret_s = new String[requested_students.size()][4];
+           ret_s = new String[requested_students.size()+1][4];
            switch (order_by) {
                case 3:
-                   for (int i = 0; i < ret_s.length; i++)
-                       ret_s[i][3] = requested_students.get(i).getDateOfBirth().toString();
+                   for (int i = 0; i < ret_s.length-1; i++)
+                       ret_s[i+1][3] = requested_students.get(i).getDateOfBirth().toString();
+                   ret_s[0][3] = "Datum rodjenja";
                    break;
                case 4:
-                   for (int i = 0; i < ret_s.length; i++)
-                       ret_s[i][3] = requested_students.get(i).getCity();
+                   for (int i = 0; i < ret_s.length-1; i++)
+                       ret_s[i+1][3] = requested_students.get(i).getCity();
+                   ret_s[0][3] = "Grad";
                    break;
                case 6:
-                   for (int i = 0; i < ret_s.length; i++)
-                       ret_s[i][3] = requested_students.get(i).getMajorname();
+                   for (int i = 0; i < ret_s.length-1; i++)
+                       ret_s[i+1][3] = requested_students.get(i).getMajorname();
+                   ret_s[0][3] = "Smer";
                    break;
            }
        }
-       else ret_s = new String[requested_students.size()][3];
+       else ret_s = new String[requested_students.size()+1][3];
 
-       for (int i = 0; i < ret_s.length; i++) {
-           ret_s[i][0] = requested_students.get(i).getIndex().toString();
-           ret_s[i][1] = requested_students.get(i).getFirstName();
-           ret_s[i][2] = requested_students.get(i).getLastName();
+       ret_s[0][0] = "Indeks";
+       ret_s[0][1] = "Ime";
+       ret_s[0][2] = "Prezime";
+
+       for (int i = 0; i < ret_s.length-1; i++) {
+           ret_s[i+1][0] = requested_students.get(i).getIndex().toString();
+           ret_s[i+1][1] = requested_students.get(i).getFirstName();
+           ret_s[i+1][2] = requested_students.get(i).getLastName();
        }
 
        return ret_s;

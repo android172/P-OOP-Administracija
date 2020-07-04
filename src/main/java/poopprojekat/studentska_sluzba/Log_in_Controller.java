@@ -18,6 +18,7 @@ public class Log_in_Controller {
     @GetMapping(value = "/login_req")
     public String log_in_request(@RequestParam("username") String username,
             @RequestParam("password") String password) {
+        System.out.println(Database.GetUser(username, password));
         String ri[] = Database.GetUser(username, password);
         if (ri == null || contains_id(ri[1]))
             return "access denied";

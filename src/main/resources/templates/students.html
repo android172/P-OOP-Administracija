@@ -11,13 +11,13 @@
 
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 </head>
-<body onload="loadDataToTable(); initializeMultiSelect(); getToken(); addTokenToLinks();">
+<body onload="initializeMultiSelect(); getToken(); addTokenToForm('search'); addTokenToLinks(); loadDataToTable();">
 	<div id="wrapper">
 		<header>
 			<h1><a href="admin" class="tokenify">Admin</a> / Studenti</h1>
 			<div id="user">
 				<p>Ime Prezime</p>
-				<img src="../images/user-img.bmp" th:href="@{/images/user-img.bmp}" id="user-img">
+				<img src="../images/user-img.bmp" id="user-img">
 			</div>
 		</header>
 		<div id="content">
