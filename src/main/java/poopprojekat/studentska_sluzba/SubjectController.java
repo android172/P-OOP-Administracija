@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 
 //INCLUDES:
-// /get_all_subjects?token=
-// /
+// /get_all_subjects?token= -returns all subjects
+// /get_subjects?token=&name=&year=&lect_name=&major_name=  -returns filtered list of subjects (ArrayList<Subject>)
+// /get_subjects_by_lecturer?token=&lect_id= -returns subjects of lecturer with given id
 //
 // /add_subject?token=&name=&id=&espb=&year=&lect_id=&major_id=
 // /update_subject?token=&name=&id=&new_id=&espb=&year=&lect_id=&major_id=
@@ -19,7 +20,8 @@ import java.util.ArrayList;
 public class SubjectController {
 
     @GetMapping("/get_all_subjects")
-    public ArrayList<Subject> get_all_subjects(@RequestParam("token") long token){
+    public ArrayList<Subject> get_all_subjects(@RequestParam("token") long token
+                                                ){
         try {
             if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
 
@@ -45,24 +47,43 @@ public class SubjectController {
         }
     }
 
-//    @GetMapping("get_subjects")
-//    public ArrayList<Subject> get_subjects(@RequestParam("token") long token,
-//                                           @RequestParam("name") String name,
-//                                           @RequestParam("year") int year,
-//                                           @RequestParam("prof_name") String prof_name,
-//                                           @RequestParam("major_name") String major_name){
-//
-//        try {
-//            if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
-//
-//            return Database.GetSubjects(name, year, prof_name, major_name)
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//        
-//    }
+    @GetMapping("/get_subjects")
+    public ArrayList<Subject> get_subjects(@RequestParam("token") long token,
+                                           @RequestParam("name") String name,
+                                           @RequestParam("year") String year,
+                                           @RequestParam("lect_name") String lect_name,
+                                           @RequestParam("major_name") String major_name){
+
+        try {
+            if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+
+            String[] names = null;
+            if (name != "") {
+                names = name.split("\\+");
+            }
+            int[] years = new int[15];
+            if (year != ""){
+                int i=0;
+                for (String tmp : year.split("\\+")) {
+                    years[i++] = Integer.parseInt(tmp);
+                }
+            }
+            String[] lects = null;
+            if (lect_name != ""){
+                lects = lect_name.split("\\+");
+            }
+            String[] majors = null;
+            if (major_name != ""){
+                majors = major_name.split("\\+");
+            }
+            return Database.GetSubjects(names, years, lects, majors);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
     @GetMapping("/add_subject")
     public String add_subject(@RequestParam("token") long token,
