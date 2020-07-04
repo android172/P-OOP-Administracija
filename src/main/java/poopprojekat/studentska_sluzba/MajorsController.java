@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 //INCLUDES:
 //
-// /get_all_majors -returns list of all majors
-// /get_major?id= -returns major with given id
+// /get_all_majors? -returns list of all majors
+// /get_major?token=&id= -returns major with given id
 //
-// /add_major?name= -adds new major with first empty id
-// /update_major?id=&new_id=&name= -updates major with given id
-// /delete_major?id= -deletes major with given id
+// /add_major?token=&name= -adds new major with first empty id
+// /update_major?token=&id=&new_id=&name= -updates major with given id
+// /delete_major?token=&id= -deletes major with given id
 
 
 @RestController
@@ -21,7 +21,9 @@ public class MajorsController {
 
 
     @GetMapping("/get_all_majors")
-    public ArrayList<Major> get_all_majors(){
+    public ArrayList<Major> get_all_majors(@RequestParam("token") long token){
+
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
 
         ArrayList<Major> lista = Database.GetMajors(null);
 
@@ -29,14 +31,18 @@ public class MajorsController {
     }
 
     @GetMapping("/get_major")
-    public Major get_major(@RequestParam("id") int id){
+    public Major get_major(@RequestParam("token") long token,
+                           @RequestParam("id") int id){
 
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         return Database.GetMajor(id);
     }
 
 
     @GetMapping("/add_major")
-    public String add_major(@RequestParam("name") String name){
+    public String add_major(@RequestParam("token") long token,
+                            @RequestParam("name") String name){
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
 
         try {
             Major new_major = new Major(Database.GetEmptyId("Majors"), name);
@@ -53,14 +59,15 @@ public class MajorsController {
 
 
     @GetMapping("/update_major")
-    public String update_major(@RequestParam("id") int id,
+    public String update_major(@RequestParam("token") long token,
+                               @RequestParam("id") int id,
                                @RequestParam("new_id") int new_id,
                                @RequestParam("name") String new_major_name){
 
-
-        Major updated_major = new Major(new_id, new_major_name);
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
 
         try {
+            Major updated_major = new Major(new_id, new_major_name);
             Database.EditMajor(id, updated_major);
 
         } catch (Exception e) {
@@ -71,7 +78,10 @@ public class MajorsController {
     }
 
     @GetMapping("/delete_major")
-    public String delete_major(@RequestParam("id") int id){
+    public String delete_major(@RequestParam("token") long token,
+                               @RequestParam("id") int id){
+
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
 
         try {
             Database.DeleteMajor(id);
