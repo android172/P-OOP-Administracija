@@ -29,16 +29,16 @@ public class StudentController {
     // per page load we send full list of students including only index numbers,
     // first and last names
     @GetMapping("/get_all_students")
-    public String[][] get_students() {
+    public String[][] get_students(@RequestParam("token") long token) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         return filter_students_from_database(null, null, null, 0, true);
     }
 
     // returns filtered and ordered list of students
     @GetMapping("/get_students")
-    public String[][] get_students(@RequestParam("date_of_birth") String date_of_birth,
-            @RequestParam("city") String city, @RequestParam("major") String major,
-            @RequestParam("order_by") String order_by) {
-
+    public String[][] get_students(@RequestParam("token") long token, @RequestParam("date_of_birth") String date_of_birth,
+            @RequestParam("city") String city, @RequestParam("major") String major, @RequestParam("order_by") String order_by) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         // format picked dates
         Date dates[] = null;
         if (!date_of_birth.equals("all")) {
@@ -79,7 +79,11 @@ public class StudentController {
 
     // return selected student
     @GetMapping("/get_student")
-    public Student get_student(@RequestParam("index") String index) {
+    public Student get_student(@RequestParam("token") long token, @RequestParam("index") String index) {
+        String ri[] = Log_in_Controller.contains_user(token);
+        if (!ri[0].equals("Admin"))
+            if (!ri[0].equals("Student") || !ri[1].equals(index)) return null;
+
         Index i;
         try {
             i = new Index(index);
@@ -91,16 +95,18 @@ public class StudentController {
     }
 
     @GetMapping("/get_student_by_jmbg")
-    public Student get_student_wj(@RequestParam("jmbg") String jmbg) {
+    public Student get_student_wj(@RequestParam("token") long token, @RequestParam("jmbg") String jmbg) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         return Database.GetStudent(jmbg);
     }
 
     // add student
     @GetMapping("/add_student")
-    public String add_student(@RequestParam("first_name") String first_name,
+    public String add_student(@RequestParam("token") long token, @RequestParam("first_name") String first_name,
             @RequestParam("last_name") String last_name, @RequestParam("index_num") String index_num,
             @RequestParam("date_of_birth") String date_of_birth, @RequestParam("city") String city,
             @RequestParam("jmbg") String jmbg, @RequestParam("major_id") int major_id) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         try {
             Student new_student = new Student(first_name, last_name, new Index(index_num), Date.valueOf(date_of_birth),
                     city, jmbg, major_id);
@@ -116,11 +122,12 @@ public class StudentController {
 
     // update student
     @GetMapping("/update_student")
-    public String update_student(@RequestParam("student") String index_of_student_to_update,
+    public String update_student(@RequestParam("token") long token, @RequestParam("student") String index_of_student_to_update,
             @RequestParam("first_name") String first_name, @RequestParam("last_name") String last_name,
             @RequestParam("index_num") String index_num, @RequestParam("date_of_birth") String date_of_birth,
             @RequestParam("city") String city, @RequestParam("jmbg") String jmbg,
             @RequestParam("major_id") String major_id) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         try {
             Index req_index = new Index(index_of_student_to_update);
             Student updated_student = new Student(req_index);
@@ -156,7 +163,8 @@ public class StudentController {
 
     // delete student
     @GetMapping("/delete_student")
-    public String delete_student(@RequestParam("index_num") String index) {
+    public String delete_student(@RequestParam("token") long token, @RequestParam("index_num") String index) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         try {
             Index req_index = new Index(index);
             Database.DeleteStudent(req_index);

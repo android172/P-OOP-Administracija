@@ -29,7 +29,7 @@ import java.util.List;
 // SubjectsOfLecturer(Lecturer p) - prima profesora i vraca sve predmete na kojima predaje. vraca ArrayList<Subjects>
 // GetHighestIndex(int year) - Vraca najveci br indeksa za zadatu godinu
 // GetEmptyId(tableName) - prima tabelu "Lecturers" ili "Majors" i vraca 1. slobodan Id
-// GetUser(String username, String password) - pretrazuje korisnika u bazi, ako postoji vraca String role, u suprotnom vraca null
+// GetUser(String username, String password) - pretrazuje korisnika u bazi, ako postoji vraca korisnika, u suprotnom vraca null
 // GetLecturers(String subjects[], String majors[]) - pretrazuje po imenima predmeta i/ili smera i vraca listu Lecturers
 
 // EditStudent(Index index, Student updated) - prima index studenta kog treba izmeniti i promenjivu Student sa izmenjenim podacima
@@ -1152,7 +1152,7 @@ public class Database
         return pret + 1;
     }
 
-    public static String GetUser(String username, String password)
+    public static String[] GetUser(String username, String password)
     {
         sql = "SELECT * FROM Users " +
                 "WHERE Username = '" + username + "' AND Password = '" + password + "' ";
@@ -1166,7 +1166,8 @@ public class Database
             if(!res.first())
                 return null;
 
-            return res.getString("Role");
+            String ret[] = {res.getString("Role"), res.getString("UniqueId")};
+            return ret;
         }
         catch (SQLException throwables)
         {
