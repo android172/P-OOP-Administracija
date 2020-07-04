@@ -2,20 +2,6 @@
 //var hasHeaders = false;
 var hasData = false;
 
-/*function setHeaders(){
-	var table = document.getElementById("data");
-
-	var header = table.rows[0].cells;
-	var len = header.length;
-	//alert(len);
-
-	for(var i=0; i<len; i++){
-		//alert(header[i].innerHTML);
-		th.push(header[i].innerHTML);
-	}
-	hasHeaders = true;
-}*/
-
 function loadDataToTable(){
 	if(!hasData){
 		document.getElementById("search").submit();
@@ -30,7 +16,7 @@ function fillTable(){
 		return;
 
 	var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
-	//alert(data);
+
 	var table = document.getElementById("data");
 	var header = document.createElement("tr");
 
@@ -44,10 +30,6 @@ function fillTable(){
 		header.appendChild(head);
 	}
 
-	/*var lastColumn = document.createElement("th");
-	lastColumn.innerHTML = document.getElementById("last_col").value;
-	header.appendChild(lastColumn);*/
-
 	table.innerHTML = "";
 
 	if(rows>0){
@@ -58,8 +40,21 @@ function fillTable(){
 				var cell = row.insertCell();
 				cell.innerHTML = data[i][j];
 			}
+			var delButton = row.insertCell();
+			delButton.innerHTML = "Delete";
+			delButton.className = "button-delete";
+		    delButton.id = data[i][0];
+			delButton.onclick = function(){
+			    //console.log("deleting: "+this.id);
+			    deleteRow(this.id);
+			};
 		}
 	}
+}
+
+function deleteRow(id){
+    document.getElementById("sendframe").src = "/delete_student?token="+token+"&index_num="+id;
+    document.getElementById("search").submit();
 }
 
 let expanded = false;
@@ -123,7 +118,7 @@ function updateCheckboxValue(){
 	var selected = document.createElement('option');
 	selected.value = val;
 	if(val=="")
-		val = "none";
+		val = "all";
 	selected.innerHTML = val;
 	element.innerHTML="";
 	element.appendChild(selected);

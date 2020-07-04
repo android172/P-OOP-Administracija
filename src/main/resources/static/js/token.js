@@ -1,8 +1,19 @@
 var token = -1;
+var index = -1;
 
 function getToken(){
 	token = getCookie("token");
-	//alert(token);
+}
+
+function getIndex(){
+    index = getCookie("index");
+}
+
+function setIndex(newIndex){
+    var date = new Date();
+    date.setHours(date.getHours+6);
+    index = newIndex;
+    document.cookie = "index="+newIndex+";expires="+date.toUTCString()+";SameSite=Lax";
 }
 
 function getCookie(cname) {

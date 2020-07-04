@@ -17,10 +17,13 @@ function redirect(){
 			var data = dataStr.split(':');
 			var role = data[0].toLowerCase();
 			var token = data[1];
+			var index = data[2];
 
 			var date = new Date();
-			date.setDate(date.getDate()+7);
+			date.setHours(date.getHours+6);
+
 			document.cookie = "token="+token+";expires="+date.toUTCString()+";SameSite=Lax";
+			document.cookie = "index="+index+";expires="+date.toUTCString()+";SameSite=Lax";
 
 			window.location.replace("/"+role+"?token="+token);	
 		}

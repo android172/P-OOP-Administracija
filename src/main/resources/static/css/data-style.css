@@ -192,3 +192,19 @@ select:hover {
 #checkboxes label:hover {
   background-color: #1e90ff;
 }
+
+#dataframe {
+	position: absolute;
+	width: 400px;
+	height: 400px;
+	right: 0px;
+    bottom: 0px;
+}
+
+#sendframe {
+	position: absolute;
+	width: 400px;
+	height: 400px;
+	left: 0px;
+    bottom: 0px;
+}
