@@ -50,12 +50,6 @@ header > * {
 	position: relative;
 }
 
-#content-header>button{
-	position: absolute;
-	top: 10px;
-	right: 15px;
-}
-
 #search {
 	padding: 10px;
 	align-items: center;
@@ -68,12 +62,6 @@ header > * {
 
 * {
 	color: white;
-}
-
-button, input {
-	height: var(--element-size);
-	width: var(--element-size);
-	background-color: var(--color-dark);
 }
 
 a {
@@ -191,6 +179,77 @@ select:hover {
 
 #checkboxes label:hover {
   background-color: #1e90ff;
+}
+
+input, button {
+    background-color: var(--color-darker);
+    border-radius: 10px;
+}
+
+button {
+    padding: 10px;
+}
+
+input {
+    padding: 3px;
+}
+
+#new-element {
+    background-color: var(--color-dark);
+    width: 400px;
+    height: 600px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    margin-left: -200px;
+    margin-top: -300px;
+    border-radius: 25px;
+    border: 2px solid var(--color-highlight);
+    display: none;
+}
+
+.size-max {
+    width: 100%;
+    height: 100%;
+}
+
+#search>*, #new-button {
+    height: var(--element-size);
+}
+
+.pad-light {
+    padding: 5px;
+}
+
+.pad-medium {
+    padding: 15px;
+}
+
+button {
+    width: 120px;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wide {
+    width: 90%;
+}
+
+.full-width {
+    width: 100%;
 }
 
 #dataframe {

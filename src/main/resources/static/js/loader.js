@@ -52,6 +52,9 @@ function fillTable(){
 	}
 }
 
+/*
+    Salje zahtev
+*/
 function deleteRow(id){
     document.getElementById("sendframe").src = "/delete_student?token="+token+"&index_num="+id;
     document.getElementById("search").submit();

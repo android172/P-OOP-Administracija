@@ -10,8 +10,9 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
 
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 </head>
-<body onload="initializeMultiSelect(); getToken(); addTokenToForm('search'); addTokenToLinks(); loadDataToTable();">
+<body onload="initializeMultiSelect(); getToken(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); loadDataToTable();">
 	<div id="wrapper">
 		<header>
 			<h1><a href="admin" class="tokenify">Admin</a> / Studenti</h1>
@@ -51,7 +52,7 @@
 					    <div id="checkboxes">
 					    	<label class="option-label" for="all">
 					        	All
-					        	<input type="checkbox" id="all" onchange="updateCheckboxValue()"/>
+					        	<input type="checkbox" id="all" onchange="updateCheckboxValue()" checked=true/>
 					    	</label>
 					    	<label class="option-label" for="Prvogradic">
 					        	Prvogradic
@@ -79,10 +80,15 @@
 							<option value="last_name-asc">Prezime rastuce</option>
 						</select>
 					</div>
-					
-					<input type="submit" value="S">
+
+					<div class="form-element">
+						<input type="submit" value="Submit">
+					</div>
+
+					<div class="form-element">
+						<button onclick="toggleElement('new-element');" id="new-button">+</button>
+					</div>
 				</form>
-				<button onclick="loadDataToTable()//showAddStudentForm();">+</button>
 			</div>
 			<table id="data">
 				<tr>
@@ -92,6 +98,44 @@
 					<td>Ime</td><td>Prezime</td><td>Indeks</td>
 				</tr>
 			</table>
+		</div>
+
+		<div id="new-element">
+			<div class="flex-col size-max">
+				<form action="/add_student" id="newform" method="get" target="sendframe" class="pad-medium wide flex-col">
+					<div class="flex-row wide pad-light">
+						<label for="first_name">Ime:</label><input type="text" name="first_name">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="last_name">Prezime:</label><input type="text" name="last_name">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="index_num">Index:</label><input type="text" name="index_num">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="date_of_birth">Datum rodjenja:</label><input type="date" name="date_of_birth">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="city">Grad:</label><input type="text" name="city">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="jmbg">JMBG:</label><input type="text" name="jmbg">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="major_id">Smer:</label><input type="text" name="major_id">
+					</div>
+				</form>
+				<div class="flex-row wide pad-medium">
+					<button type="submit" form="newform">Submit</button>
+					<button type="reset" form="newform">Clear</button>
+				</div>
+			</div>
 		</div>
 
 		<iframe src="" name="sendframe" id="sendframe"></iframe>
