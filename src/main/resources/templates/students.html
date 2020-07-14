@@ -12,7 +12,7 @@
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 </head>
-<body onload="initializeMultiSelect(); getToken(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); loadDataToTable();">
+<body onload="initDropDowns(); getToken(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); loadDataToTable();">
 	<div id="wrapper">
 		<header>
 			<h1><a href="admin" class="tokenify">Admin</a> / Studenti</h1>
@@ -27,10 +27,14 @@
 					<input type="text" id="searchbar" value="" placeholder="Search...">
 
 					<div class="form-element">
-						<label class="select-label" for="date_of_birth">Datum rodjenja:</label>
-						<select name="date_of_birth" onchange="this.form.submit()">
-							<option>all</option>
-						</select>
+						<label class="select-label">Datum rodjenja:</label>
+						<div class="dropdown">
+							<input name="date_of_birth" value="all" readonly>
+							<div class="dd-options">
+								<option value="all" onclick="this.form.submit()">All</option>
+								<input type="date" class="input-none">
+							</div>
+						</div>
 					</div>
 
 					<!--<div class="form-element">
@@ -41,28 +45,25 @@
 							<option>Prvogradic+Drugogradic</option>
 						</select>
 					</div>-->
-					<div class="multiselect form-element">
-	    				<div class="selectBox">
-	    					<label class="select-label" for="multiselect-1">Grad:</label>
-						      	<select id="multiselect-1" name="city">
-						        	<option value="all">all</option>
-						      	</select>
-					    <div class="overSelect" id="multiselect-1-area"></div>
-					    </div>
-					    <div id="checkboxes">
-					    	<label class="option-label" for="all">
-					        	All
-					        	<input type="checkbox" id="all" onchange="updateCheckboxValue()" checked=true/>
-					    	</label>
-					    	<label class="option-label" for="Prvogradic">
-					        	Prvogradic
-					        	<input type="checkbox" id="Prvogradic" onchange="updateCheckboxValue()"/>
-					        </label>
-					      	<label class="option-label" for="Drugogradic">
-					        	Drugogradic
-					        	<input type="checkbox" id="Drugogradic" onchange="updateCheckboxValue()"/>
-					    	</label>
-					    </div>
+					<div class="form-element">
+						<label class="select-label">Grad:</label>
+	    				<div class="dropdown multiselect">
+							<input name="city" value="all" readonly>
+							<div class="dd-options">
+								<div class="flex-row">
+									<label for="cb1">All</label>
+									<input type="checkbox" id="cb1" value="all">
+								</div>
+								<div class="flex-row">
+									<label for="cb2">Prvogradic</label>
+									<input type="checkbox" id="cb2" value="Prvogradic">
+								</div>
+								<div class="flex-row">
+									<label for="cb3">Drugogradic</label>
+									<input type="checkbox" id="cb3" value="Drugogradic">
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div class="form-element">
@@ -86,7 +87,7 @@
 					</div>
 
 					<div class="form-element">
-						<button onclick="toggleElement('new-element');" id="new-button">+</button>
+						<button onclick="toggleElementById('new-element');" id="new-button">+</button>
 					</div>
 				</form>
 			</div>

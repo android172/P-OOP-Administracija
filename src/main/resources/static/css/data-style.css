@@ -142,45 +142,6 @@ select:hover {
 	background-color: var(--color-highlight2);
 }
 
-.option-label>input {
-	position: absolute;
-	right: 2px;
-}
-
-.multiselect {
-  width: 150px;
-}
-
-.selectBox {
-  position: relative;
-}
-
-.selectBox select {
-  width: 100%;
-  font-weight: bold;
-}
-
-.overSelect {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-
-#checkboxes {
-  display: none;
-  border: 1px #dadada solid;
-}
-
-#checkboxes label {
-  display: block;
-}
-
-#checkboxes label:hover {
-  background-color: #1e90ff;
-}
-
 input, button {
     background-color: var(--color-darker);
     border-radius: 10px;
@@ -192,6 +153,47 @@ button {
 
 input {
     padding: 3px;
+}
+
+.input-none {
+    padding: 0;
+    margin: 0;
+    border: none;
+    color: white;
+    border-radius: 0px;
+}
+
+.dropdown>input {
+	background-color: inherit;
+	text-align: center;
+	border: none;
+	border-radius: 5px;
+}
+
+.dropdown:hover>input {
+	background-color: var(--color-highlight2);
+	color: var(--color-highlight);
+}
+
+.dd-options {
+	width: 100%;
+	height: auto;
+	background-color: none;
+	display: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+.dd-options>*{
+	width: 94.5%;
+	height: 15px;
+	background-color: var(--color-highlight2);
+	margin: 0px;
+	padding: 4px;
+}
+
+.dd-options>*:hover{
+	background-color: #3399ff;
 }
 
 #new-element {
@@ -258,6 +260,7 @@ button {
 	height: 400px;
 	right: 0px;
     bottom: 0px;
+    visibility: hidden;
 }
 
 #sendframe {
@@ -266,4 +269,5 @@ button {
 	height: 400px;
 	left: 0px;
     bottom: 0px;
+    visibility: hidden;
 }
