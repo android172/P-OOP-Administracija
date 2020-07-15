@@ -29,16 +29,16 @@ public class StudentController {
     // per page load we send full list of students including only index numbers,
     // first and last names
     @GetMapping("/get_all_students")
-    public String[][] get_students() {
+    public String[][] get_students(@RequestParam("token") long token) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         return filter_students_from_database(null, null, null, 0, true);
     }
 
     // returns filtered and ordered list of students
     @GetMapping("/get_students")
-    public String[][] get_students(@RequestParam("date_of_birth") String date_of_birth,
-            @RequestParam("city") String city, @RequestParam("major") String major,
-            @RequestParam("order_by") String order_by) {
-
+    public String[][] get_students(@RequestParam("token") long token, @RequestParam("date_of_birth") String date_of_birth,
+            @RequestParam("city") String city, @RequestParam("major") String major, @RequestParam("order_by") String order_by) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         // format picked dates
         Date dates[] = null;
         if (!date_of_birth.equals("all")) {
@@ -79,7 +79,11 @@ public class StudentController {
 
     // return selected student
     @GetMapping("/get_student")
-    public Student get_student(@RequestParam("index") String index) {
+    public Student get_student(@RequestParam("token") long token, @RequestParam("index") String index) {
+        String ri[] = Log_in_Controller.contains_user(token);
+        if (!ri[0].equals("Admin"))
+            if (!ri[0].equals("Student") || !ri[1].equals(index)) return null;
+
         Index i;
         try {
             i = new Index(index);
@@ -91,16 +95,18 @@ public class StudentController {
     }
 
     @GetMapping("/get_student_by_jmbg")
-    public Student get_student_wj(@RequestParam("jmbg") String jmbg) {
+    public Student get_student_wj(@RequestParam("token") long token, @RequestParam("jmbg") String jmbg) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         return Database.GetStudent(jmbg);
     }
 
     // add student
     @GetMapping("/add_student")
-    public String add_student(@RequestParam("first_name") String first_name,
+    public String add_student(@RequestParam("token") long token, @RequestParam("first_name") String first_name,
             @RequestParam("last_name") String last_name, @RequestParam("index_num") String index_num,
             @RequestParam("date_of_birth") String date_of_birth, @RequestParam("city") String city,
             @RequestParam("jmbg") String jmbg, @RequestParam("major_id") int major_id) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         try {
             Student new_student = new Student(first_name, last_name, new Index(index_num), Date.valueOf(date_of_birth),
                     city, jmbg, major_id);
@@ -116,11 +122,12 @@ public class StudentController {
 
     // update student
     @GetMapping("/update_student")
-    public String update_student(@RequestParam("student") String index_of_student_to_update,
+    public String update_student(@RequestParam("token") long token, @RequestParam("student") String index_of_student_to_update,
             @RequestParam("first_name") String first_name, @RequestParam("last_name") String last_name,
             @RequestParam("index_num") String index_num, @RequestParam("date_of_birth") String date_of_birth,
             @RequestParam("city") String city, @RequestParam("jmbg") String jmbg,
             @RequestParam("major_id") String major_id) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         try {
             Index req_index = new Index(index_of_student_to_update);
             Student updated_student = new Student(req_index);
@@ -156,7 +163,8 @@ public class StudentController {
 
     // delete student
     @GetMapping("/delete_student")
-    public String delete_student(@RequestParam("index_num") String index) {
+    public String delete_student(@RequestParam("token") long token, @RequestParam("index_num") String index) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         try {
             Index req_index = new Index(index);
             Database.DeleteStudent(req_index);
@@ -177,28 +185,35 @@ public class StudentController {
        // we will append data with bonus column only if we chose to sort by said column,
        // otherwise only first_name, last_name and index columns are used
        if (order_by != 0) {
-           ret_s = new String[requested_students.size()][4];
+           ret_s = new String[requested_students.size()+1][4];
            switch (order_by) {
                case 3:
-                   for (int i = 0; i < ret_s.length; i++)
-                       ret_s[i][3] = requested_students.get(i).getDateOfBirth().toString();
+                   for (int i = 0; i < ret_s.length-1; i++)
+                       ret_s[i+1][3] = requested_students.get(i).getDateOfBirth().toString();
+                   ret_s[0][3] = "Datum rodjenja";
                    break;
                case 4:
-                   for (int i = 0; i < ret_s.length; i++)
-                       ret_s[i][3] = requested_students.get(i).getCity();
+                   for (int i = 0; i < ret_s.length-1; i++)
+                       ret_s[i+1][3] = requested_students.get(i).getCity();
+                   ret_s[0][3] = "Grad";
                    break;
                case 6:
-                   for (int i = 0; i < ret_s.length; i++)
-                       ret_s[i][3] = requested_students.get(i).getMajorname();
+                   for (int i = 0; i < ret_s.length-1; i++)
+                       ret_s[i+1][3] = requested_students.get(i).getMajorname();
+                   ret_s[0][3] = "Smer";
                    break;
            }
        }
-       else ret_s = new String[requested_students.size()][3];
+       else ret_s = new String[requested_students.size()+1][3];
 
-       for (int i = 0; i < ret_s.length; i++) {
-           ret_s[i][0] = requested_students.get(i).getIndex().toString();
-           ret_s[i][1] = requested_students.get(i).getFirstName();
-           ret_s[i][2] = requested_students.get(i).getLastName();
+       ret_s[0][0] = "Indeks";
+       ret_s[0][1] = "Ime";
+       ret_s[0][2] = "Prezime";
+
+       for (int i = 0; i < ret_s.length-1; i++) {
+           ret_s[i+1][0] = requested_students.get(i).getIndex().toString();
+           ret_s[i+1][1] = requested_students.get(i).getFirstName();
+           ret_s[i+1][2] = requested_students.get(i).getLastName();
        }
 
        return ret_s;

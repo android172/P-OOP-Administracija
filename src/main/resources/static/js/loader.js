@@ -1,25 +1,8 @@
-var th = [];
-var hasHeaders = false;
+//var th = [];
+//var hasHeaders = false;
 var hasData = false;
 
-function setHeaders(){
-	var table = document.getElementById("data");
-
-	var header = table.rows[0].cells;
-	var len = header.length;
-	//alert(len);
-
-	for(var i=0; i<len; i++){
-		//alert(header[i].innerHTML);
-		th.push(header[i].innerHTML);
-	}
-	hasHeaders = true;
-}
-
 function loadDataToTable(){
-	if(!hasHeaders)
-		setHeaders();
-
 	if(!hasData){
 		document.getElementById("search").submit();
 		hasData = true;
@@ -33,35 +16,48 @@ function fillTable(){
 		return;
 
 	var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
-	//alert(data);
+
 	var table = document.getElementById("data");
 	var header = document.createElement("tr");
-	var len = th.length;
-	for(var i=0; i<len; i++){
+
+	var data = JSON.parse(dataStr);
+    var rows = data.length;
+    var cols = data[0].length;
+
+	for(var i=0; i<cols; i++){
 		var head = document.createElement("th");
-		head.innerHTML = th[i];
+		head.innerHTML = data[0][i];
 		header.appendChild(head);
 	}
 
-	var lastColumn = document.createElement("th");
-	lastColumn.innerHTML = document.getElementById("last_col").value;
-	header.appendChild(lastColumn);
-
 	table.innerHTML = "";
-	table.appendChild(header);
 
-	var data = JSON.parse(dataStr);
-	var len = data.length;
-	if(len>0){
-		var len2 = data[0].length;
-		for(var i=0; i<len; i++){
+	if(rows>0){
+	    table.appendChild(header);
+		for(var i=1; i<rows; i++){
 			var row = table.insertRow();
-			for(var j=0; j<len2; j++){
+			for(var j=0; j<cols; j++){
 				var cell = row.insertCell();
 				cell.innerHTML = data[i][j];
 			}
+			var delButton = row.insertCell();
+			delButton.innerHTML = "Delete";
+			delButton.className = "button-delete";
+		    delButton.id = data[i][0];
+			delButton.onclick = function(){
+			    //console.log("deleting: "+this.id);
+			    deleteRow(this.id);
+			};
 		}
 	}
+}
+
+/*
+    Salje zahtev
+*/
+function deleteRow(id){
+    document.getElementById("sendframe").src = "/delete_student?token="+token+"&index_num="+id;
+    document.getElementById("search").submit();
 }
 
 let expanded = false;
@@ -125,7 +121,7 @@ function updateCheckboxValue(){
 	var selected = document.createElement('option');
 	selected.value = val;
 	if(val=="")
-		val = "none";
+		val = "all";
 	selected.innerHTML = val;
 	element.innerHTML="";
 	element.appendChild(selected);

@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 //INCLUDES:
 //
-// /get_all_majors -returns list of all majors todo da se proveri u database kako to ide
-// /get_major?major_id= -returns major with given id
+// /get_all_majors? -returns list of all majors
+// /get_major?token=&id= -returns major with given id
 //
-// /add_major?name= -adds new major with first empty id
-// /update_major?id=new_id=name= -updates major with given id
-// /delete_major?id= -deletes major with given id
+// /add_major?token=&name= -adds new major with first empty id
+// /update_major?token=&id=&new_id=&name= -updates major with given id
+// /delete_major?token=&id= -deletes major with given id
 
 
 @RestController
@@ -21,27 +21,33 @@ public class MajorsController {
 
 
     @GetMapping("/get_all_majors")
-    public ArrayList<Major> get_all_majors(){
+    public ArrayList<Major> get_all_majors(@RequestParam("token") long token){
 
-        ArrayList<Major> lista = Database.GetMajors(null);  //jos ne znam da li moze da se salje null, to treba u database da se namesti
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+
+        ArrayList<Major> lista = Database.GetMajors(null);
 
         return lista;
     }
 
     @GetMapping("/get_major")
-    public Major get_major(@RequestParam("major_id") int id){
+    public Major get_major(@RequestParam("token") long token,
+                           @RequestParam("id") int id){
 
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         return Database.GetMajor(id);
     }
 
 
     @GetMapping("/add_major")
-    public String add_major(@RequestParam("name") String name){
+    public String add_major(@RequestParam("token") long token,
+                            @RequestParam("name") String name){
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
 
         try {
             Major new_major = new Major(Database.GetEmptyId("Majors"), name);
             if (Database.AddMajor(new_major))
-                return "Major was added";
+                return "Major successfully added";
             else {
                 return "Database related error occurred; Major could not be added";
             }
@@ -51,25 +57,39 @@ public class MajorsController {
         }
     }
 
-    //TODO da se doda jos neka kontrola gresaka
+
     @GetMapping("/update_major")
-    public String update_major(@RequestParam("id") int id,
+    public String update_major(@RequestParam("token") long token,
+                               @RequestParam("id") int id,
                                @RequestParam("new_id") int new_id,
                                @RequestParam("name") String new_major_name){
 
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
 
-        Major updated_major = new Major(new_id, new_major_name);
+        try {
+            Major updated_major = new Major(new_id, new_major_name);
+            Database.EditMajor(id, updated_major);
 
-        Database.EditMajor(id, updated_major);
-
-        return "Major successfuly updated";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Couldn't update major because of the following error: " + e.getMessage();
+        }
+        return "Major successfully updated";
     }
 
     @GetMapping("/delete_major")
-    public String delete_major(@RequestParam("id") int id){
+    public String delete_major(@RequestParam("token") long token,
+                               @RequestParam("id") int id){
 
-        Database.DeleteMajor(id);
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
 
+        try {
+            Database.DeleteMajor(id);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return "Couldn't delete major because of the following error: " + e.getMessage();
+        }
         return "Major successfully deleted";
     }
 }

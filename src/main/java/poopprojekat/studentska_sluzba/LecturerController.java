@@ -24,13 +24,15 @@ public class LecturerController {
 
     // return all lecturers
     @GetMapping("/get_all_lecturers")
-    public ArrayList<Lecturer> getLecturers() {
+    public ArrayList<Lecturer> getLecturers(@RequestParam("token") long token) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         return Database.GetLecturers(null, null);
     }
     
     // returns filtered and ordered list of lecturers
     @GetMapping("/get_lecturers")
-    public ArrayList<Lecturer> getLecturers(@RequestParam("subject") String subject, @RequestParam("major") String major) {
+    public ArrayList<Lecturer> getLecturers(@RequestParam("token") long token, @RequestParam("subject") String subject, @RequestParam("major") String major) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         // format picked subjects
         String subjects[] = null;
         if (!subject.equals("all"))
@@ -45,15 +47,19 @@ public class LecturerController {
 
     // return requested lecturer
     @GetMapping("/get_lecturer")
-    public Lecturer getLecturers(@RequestParam("lect_id") int lect_id) {
+    public Lecturer getLecturers(@RequestParam("token") long token, @RequestParam("lect_id") int lect_id) {
+        String ri[] = Log_in_Controller.contains_user(token);
+        if (!ri[0].equals("Admin"))
+            if (!ri[0].equals("Lecturer") || !ri[1].equals(String.valueOf(lect_id))) return null;
         return Database.GetLecturer(lect_id);
     }
 
     // add lecturer
     @GetMapping("/add_lecturer")
-    public String add_lecturer(@RequestParam("first_name") String first_name,
+    public String add_lecturer(@RequestParam("token") long token, @RequestParam("first_name") String first_name,
             @RequestParam("last_name") String last_name, @RequestParam("title") String title,
             @RequestParam("lect_id") int lect_id) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         Lecturer new_lecturer = new Lecturer(first_name, last_name, title, lect_id);
         try {
             if (Database.AddLecturer(new_lecturer) && Database.AddUser(new User("username", String.valueOf(lect_id), "Lecturer"), String.valueOf(lect_id)))
@@ -66,8 +72,9 @@ public class LecturerController {
     }
     // update lecturer
     @GetMapping("/update_lecturer")
-    public String update_lecturer(@RequestParam("lecturer") int id_of_lec_to_up, @RequestParam("first_name") String first_name,
+    public String update_lecturer(@RequestParam("token") long token, @RequestParam("lecturer") int id_of_lec_to_up, @RequestParam("first_name") String first_name,
             @RequestParam("last_name") String last_name, @RequestParam("title") String title, @RequestParam("lect_id") String lect_id) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         try {
             int id = Integer.parseInt(lect_id);
             Lecturer updated_lecturer = new Lecturer(id_of_lec_to_up);
@@ -94,7 +101,8 @@ public class LecturerController {
 
     // delete lecturer
     @GetMapping("/delete_lecturer")
-    public String delete_lecturer(@RequestParam("lecturer") int lect_id) {
+    public String delete_lecturer(@RequestParam("token") long token, @RequestParam("lecturer") int lect_id) {
+        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         try {
             Database.DeleteLecturer(lect_id);
             Database.DeleteUser(String.valueOf(lect_id));

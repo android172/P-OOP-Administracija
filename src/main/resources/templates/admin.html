@@ -7,17 +7,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 </head>
-<body>
+<body onload="getToken(); addTokenToLinks();">
 	<div id="wrapper">
 		<div id="admin-options-wrapper">
 			<div id="admin-options">
 				<h3>Manage:</h3>
 				<ul>
-					<li><a href="students">Students</a></li>
-					<li><a href="staff">Staff</a></li>
-					<li><a href="courses">Courses</a></li>
-					<li><a href="majors">Majors</a></li>
+					<li><a href="students" class="tokenify">Students</a></li>
+					<li><a href="staff" class="tokenify">Staff</a></li>
+					<li><a href="courses" class="tokenify">Courses</a></li>
+					<li><a href="majors" class="tokenify">Majors</a></li>
 				</ul>
 			</div>
 		</div>

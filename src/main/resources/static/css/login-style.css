@@ -28,7 +28,7 @@ input:focus {
 #username, #password {
 	height: 35px;
 	width: 90%;
-	color: var(--color-header);
+	color: white;
 
 	border: none;
 	background-color: transparent;
@@ -105,6 +105,37 @@ form {
 	height: 340px;
 
 	letter-spacing: 2px;
+}
+
+#loginframe {
+	visibility: hidden;
+	display: none;
+}
+
+@keyframes shake {
+	25%{
+		margin-left: -2px;
+	}
+
+	75%{
+		margin-left: 2px;
+	}
+
+	100% {
+		margin-left: 0px;
+	}
+}
+
+.shake {
+	animation-name: shake;
+	animation-duration: 0.15s;
+	animation-iteration-count: 2;
+}
+
+#badlogin {
+	color: red;
+	text-align: center;
+	display: none;
 }
 
 /*#register {

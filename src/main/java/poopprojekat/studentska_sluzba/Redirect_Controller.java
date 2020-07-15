@@ -21,9 +21,20 @@ public class Redirect_Controller {
 
     @GetMapping("/admin")
     public String index(HttpServletResponse response, @RequestParam("token") long token){
-        String role = Log_in_Controller.contains_user(token);
-        if (role == "Admin") return "admin";
+        if ((Log_in_Controller.contains_user(token)[0]).equals("Admin")) return "admin";
 
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @GetMapping("/student")
+    public String student(HttpServletResponse response, @RequestParam("token") long token){
+        if ((Log_in_Controller.contains_user(token)[0]).equals("Student")) return "student";
+        
         try {
             response.sendRedirect("/login");
         } catch (IOException e) {
@@ -34,8 +45,7 @@ public class Redirect_Controller {
 
     @GetMapping("/students")
     public String students(HttpServletResponse response, @RequestParam("token") long token){
-        String role = Log_in_Controller.contains_user(token);
-        if (role == "Admin") return "students";
+        if ((Log_in_Controller.contains_user(token)[0]).equals("Admin")) return "students";
         
         try {
             response.sendRedirect("/login");
@@ -47,8 +57,7 @@ public class Redirect_Controller {
 
     @GetMapping("/staff")
     public String staff(HttpServletResponse response, @RequestParam("token") long token){
-        String role = Log_in_Controller.contains_user(token);
-        if (role == "Admin") return "staff";
+        if ((Log_in_Controller.contains_user(token)[0]).equals("Admin")) return "staff";
         
         try {
             response.sendRedirect("/login");
@@ -60,8 +69,7 @@ public class Redirect_Controller {
 
     @GetMapping("/courses")
     public String courses(HttpServletResponse response, @RequestParam("token") long token){
-        String role = Log_in_Controller.contains_user(token);
-        if (role == "Admin") return "courses";
+        if ((Log_in_Controller.contains_user(token)[0]).equals("Admin")) return "courses";
         
         try {
             response.sendRedirect("/login");
@@ -73,8 +81,7 @@ public class Redirect_Controller {
 
     @GetMapping("/majors")
     public String majors(HttpServletResponse response, @RequestParam("token") long token){
-        String role = Log_in_Controller.contains_user(token);
-        if (role == "Admin") return "majors";
+        if ((Log_in_Controller.contains_user(token)[0]).equals("Admin")) return "majors";
         
         try {
             response.sendRedirect("/login");

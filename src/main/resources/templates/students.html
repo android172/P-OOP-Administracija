@@ -8,14 +8,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 </head>
-<body onload="loadDataToTable(); initializeMultiSelect();">
+<body onload="initDropDowns(); getToken(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); loadDataToTable();">
 	<div id="wrapper">
 		<header>
-			<h1><a href="admin">Admin</a> / Studenti</h1>
+			<h1><a href="admin" class="tokenify">Admin</a> / Studenti</h1>
 			<div id="user">
 				<p>Ime Prezime</p>
-				<img src="../images/user-img.bmp" th:href="@{/images/user-img.bmp}" id="user-img">
+				<img src="../images/user-img.bmp" id="user-img">
 			</div>
 		</header>
 		<div id="content">
@@ -24,10 +27,14 @@
 					<input type="text" id="searchbar" value="" placeholder="Search...">
 
 					<div class="form-element">
-						<label class="select-label" for="date_of_birth">Datum rodjenja:</label>
-						<select name="date_of_birth" onchange="this.form.submit()">
-							<option>all</option>
-						</select>
+						<label class="select-label">Datum rodjenja:</label>
+						<div class="dropdown">
+							<input name="date_of_birth" value="all" readonly>
+							<div class="dd-options">
+								<option value="all" onclick="this.form.submit()">All</option>
+								<input type="date" class="input-none">
+							</div>
+						</div>
 					</div>
 
 					<!--<div class="form-element">
@@ -38,28 +45,25 @@
 							<option>Prvogradic+Drugogradic</option>
 						</select>
 					</div>-->
-					<div class="multiselect form-element">
-	    				<div class="selectBox">
-	    					<label class="select-label" for="multiselect-1">Grad:</label>
-						      	<select id="multiselect-1" name="city">
-						        	<option value="all">all</option>
-						      	</select>
-					    <div class="overSelect" id="multiselect-1-area"></div>
-					    </div>
-					    <div id="checkboxes">
-					    	<label class="option-label" for="all">
-					        	All
-					        	<input type="checkbox" id="all" onchange="updateCheckboxValue()"/>
-					    	</label>
-					    	<label class="option-label" for="Prvogradic">
-					        	Prvogradic
-					        	<input type="checkbox" id="Prvogradic" onchange="updateCheckboxValue()"/>
-					        </label>
-					      	<label class="option-label" for="Drugogradic">
-					        	Drugogradic
-					        	<input type="checkbox" id="Drugogradic" onchange="updateCheckboxValue()"/>
-					    	</label>
-					    </div>
+					<div class="form-element">
+						<label class="select-label">Grad:</label>
+	    				<div class="dropdown multiselect">
+							<input name="city" value="all" readonly>
+							<div class="dd-options">
+								<div class="flex-row">
+									<label for="cb1">All</label>
+									<input type="checkbox" id="cb1" value="all">
+								</div>
+								<div class="flex-row">
+									<label for="cb2">Prvogradic</label>
+									<input type="checkbox" id="cb2" value="Prvogradic">
+								</div>
+								<div class="flex-row">
+									<label for="cb3">Drugogradic</label>
+									<input type="checkbox" id="cb3" value="Drugogradic">
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div class="form-element">
@@ -77,10 +81,15 @@
 							<option value="last_name-asc">Prezime rastuce</option>
 						</select>
 					</div>
-					
-					<input type="submit" value="S">
+
+					<div class="form-element">
+						<input type="submit" value="Submit">
+					</div>
+
+					<div class="form-element">
+						<button onclick="toggleElementById('new-element');" id="new-button">+</button>
+					</div>
 				</form>
-				<button onclick="loadDataToTable()//showAddStudentForm();">+</button>
 			</div>
 			<table id="data">
 				<tr>
@@ -92,7 +101,46 @@
 			</table>
 		</div>
 
-		 <iframe src="" name="dataframe" id="dataframe" onload="fillTable()"></iframe> 
+		<div id="new-element">
+			<div class="flex-col size-max">
+				<form action="/add_student" id="newform" method="get" target="sendframe" class="pad-medium wide flex-col">
+					<div class="flex-row wide pad-light">
+						<label for="first_name">Ime:</label><input type="text" name="first_name">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="last_name">Prezime:</label><input type="text" name="last_name">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="index_num">Index:</label><input type="text" name="index_num">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="date_of_birth">Datum rodjenja:</label><input type="date" name="date_of_birth">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="city">Grad:</label><input type="text" name="city">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="jmbg">JMBG:</label><input type="text" name="jmbg">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="major_id">Smer:</label><input type="text" name="major_id">
+					</div>
+				</form>
+				<div class="flex-row wide pad-medium">
+					<button type="submit" form="newform">Submit</button>
+					<button type="reset" form="newform">Clear</button>
+				</div>
+			</div>
+		</div>
+
+		<iframe src="" name="sendframe" id="sendframe"></iframe>
+		<iframe src="" name="dataframe" id="dataframe" onload="fillTable()"></iframe>
 	</div>
 </body>
 </html>
