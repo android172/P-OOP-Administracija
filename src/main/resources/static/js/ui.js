@@ -27,7 +27,7 @@ function initDropDowns(){
 		let input = dds[i].children[0];
 
 		var j=0;
-		var len2 = opts.children.length;
+		let len2 = opts.children.length;
 		if(dds[i].classList.contains("multiselect")){
 			while(j<len2){
 				let clicked = j;
@@ -41,7 +41,7 @@ function initDropDowns(){
 							str="all+";
 						else 
 							str="none+";
-						for(l=0; l<len2; l++)
+						for(l=1; l<len2; l++)
 							opts.children[l].children[1].checked = all;
 					}
 
@@ -66,10 +66,12 @@ function initDropDowns(){
 				opts.children[j].addEventListener('change', function(){
 					input.value = this.value;
 					input.form.submit();
+					toggleElement(opts);
 				}, true)
 				opts.children[j].addEventListener('click', function(){
 					input.value = this.value;
 					input.form.submit();
+					toggleElement(opts);
 				}, true)
 				j++;
 			}
@@ -95,5 +97,38 @@ function toggleElement(element){
 	}
 }
 
+function addOptionsToFilter(filterID, newOptions, multiselect){
+	var filterElem = document.getElementById(filterID);
+	var i=0;
+	var len = newOptions.length;
 
+	while(i<len){
+		var optionName = newOptions[i];
+		var id = filterID+"-"+(i+1);
 
+		var newOpt;
+
+		if(multiselect){
+			newOpt = document.createElement('div')
+			newOpt.className = "flex-row";
+			var label = document.createElement('label');
+
+			label.htmlFor = id;
+			label.innerHTML = optionName;
+			newOpt.appendChild(label);
+			var input = document.createElement('input');
+			input.type = "checkbox";
+			input.id = id;
+			input.value = optionName;
+			newOpt.appendChild(input);
+		}else {
+			newOpt = document.createElement('option');
+			option.value = optionName;
+			option.innerHTML = optionName;
+		}
+
+		filterElem.appendChild(newOpt);
+
+		i++;
+	}
+}

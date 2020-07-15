@@ -46,3 +46,9 @@ function addTokenToLinks(){
 		links[i].href+="?token="+token;
 	}
 }
+
+function makeRequest(requestStr, frameID){
+  var element = document.getElementById(frameID);
+  element.src = requestStr;
+  element.src += "?token="+token;
+}

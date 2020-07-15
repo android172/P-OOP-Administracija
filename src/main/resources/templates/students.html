@@ -11,8 +11,15 @@
 
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
+	<script>
+		function populateFilters(){
+			addOptionsToFilter('city-options', filters[0], true);
+			addOptionsToFilter('major-options', filters[1], true);
+			initDropDowns();
+		}
+	</script>
 </head>
-<body onload="initDropDowns(); getToken(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); loadDataToTable();">
+<body onload="getToken(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); loadDataToTable(); makeRequest('/get_student_filters','sendframe'); initGetFilters('sendframe');">
 	<div id="wrapper">
 		<header>
 			<h1><a href="admin" class="tokenify">Admin</a> / Studenti</h1>
@@ -31,62 +38,54 @@
 						<div class="dropdown">
 							<input name="date_of_birth" value="all" readonly>
 							<div class="dd-options">
-								<option value="all" onclick="this.form.submit()">All</option>
+								<option value="all">All</option>
 								<input type="date" class="input-none">
 							</div>
 						</div>
 					</div>
 
-					<!--<div class="form-element">
-						<label for="city">Grad:</label>
-						<select type="text" name="city" onchange="this.form.submit()" multiple>
-							<option>all</option>
-							<option>Prvogradic</option>
-							<option>Prvogradic+Drugogradic</option>
-						</select>
-					</div>-->
 					<div class="form-element">
 						<label class="select-label">Grad:</label>
 	    				<div class="dropdown multiselect">
 							<input name="city" value="all" readonly>
-							<div class="dd-options">
+							<div class="dd-options" id="city-options">
 								<div class="flex-row">
-									<label for="cb1">All</label>
-									<input type="checkbox" id="cb1" value="all">
-								</div>
-								<div class="flex-row">
-									<label for="cb2">Prvogradic</label>
-									<input type="checkbox" id="cb2" value="Prvogradic">
-								</div>
-								<div class="flex-row">
-									<label for="cb3">Drugogradic</label>
-									<input type="checkbox" id="cb3" value="Drugogradic">
+									<label for="city-options-0">All</label>
+									<input type="checkbox" id="city-options-0" value="all" checked>
 								</div>
 							</div>
 						</div>
 					</div>
 
 					<div class="form-element">
-						<label class="select-label" for="major">Smer:</label>
-						<select type="text" name="major" onchange="this.form.submit()">
-							<option>all</option>
-						</select>
+						<label class="select-label">Smer:</label>
+	    				<div class="dropdown multiselect">
+							<input name="major" value="all" readonly>
+							<div class="dd-options" id="major-options">
+								<div class="flex-row">
+									<label for="major-options-0">All</label>
+									<input type="checkbox" id="major-options-0" value="all" checked>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div class="form-element">
 						<label class="select-label" for="order_by">Redosled:</label>
-						<select type="text" name="order_by" id="last_col" onchange="this.form.submit()">
-							<option value="birthyear-asc">birthyear-asc</option>
-							<option value="first_name-asc">Ime rastuce</option>
-							<option value="last_name-asc">Prezime rastuce</option>
-						</select>
+						<div class="dropdown">
+							<input name="order_by" value="last_name-asc" readonly>
+							<div class="dd-options">
+								<option value="birthyear-asc">Datum rodjenja rastuci</option>
+								<option value="birthyear-des">Datum rodjenja opadajuci</option>
+								<option value="first_name-asc">Ime rastuce</option>
+								<option value="first_name-des">Ime opadajuce</option>
+								<option value="last_name-asc">Prezime rastuce</option>
+								<option value="last_name-des">Prezime opadajuce</option>
+							</div>
+						</div>
 					</div>
 
-					<div class="form-element">
-						<input type="submit" value="Submit">
-					</div>
-
-					<div class="form-element">
+					<div class="form-element end">
 						<button onclick="toggleElementById('new-element');" id="new-button">+</button>
 					</div>
 				</form>
@@ -103,6 +102,8 @@
 
 		<div id="new-element">
 			<div class="flex-col size-max">
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7</div>
+				<br>
 				<form action="/add_student" id="newform" method="get" target="sendframe" class="pad-medium wide flex-col">
 					<div class="flex-row wide pad-light">
 						<label for="first_name">Ime:</label><input type="text" name="first_name">
@@ -140,7 +141,7 @@
 		</div>
 
 		<iframe src="" name="sendframe" id="sendframe"></iframe>
-		<iframe src="" name="dataframe" id="dataframe" onload="fillTable()"></iframe>
+		<iframe src="" name="dataframe" id="dataframe" onload="fillTable();"></iframe>
 	</div>
 </body>
 </html>

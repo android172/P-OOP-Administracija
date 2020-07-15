@@ -1,6 +1,7 @@
 //var th = [];
 //var hasHeaders = false;
 var hasData = false;
+var initFill = false;
 
 function loadDataToTable(){
 	if(!hasData){
@@ -12,8 +13,10 @@ function loadDataToTable(){
 }
 
 function fillTable(){
-	if(!hasData)
+	if(!hasData || !initFill){
+		initFill = true;
 		return;
+	}
 
 	var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
 
@@ -53,84 +56,27 @@ function fillTable(){
 }
 
 /*
-    Salje zahtev
+    Salje zahtev za brisanje reda
 */
 function deleteRow(id){
     document.getElementById("sendframe").src = "/delete_student?token="+token+"&index_num="+id;
     document.getElementById("search").submit();
 }
 
-function deleteRow(id){
-    document.getElementById("sendframe").src = "/delete_student?token="+token+"&index_num="+id;
-    document.getElementById("search").submit();
+var filters = [];
+
+var filtersEventListener;
+
+function initGetFilters(frameID){
+	var frame = document.getElementById(frameID);
+	filtersEventListener = frame.addEventListener("load", function(){
+		getFilters(this);
+	});
 }
 
-let expanded = false;
-
-function initializeMultiSelect(){
-	var multiSelect = document.getElementById("multiselect-1-area");
-	multiSelect.addEventListener('click', function(e) {
-		const checkboxes = document.getElementById("checkboxes");
-		if (!expanded) {
-			checkboxes.style.display = "block";
-			expanded = true;
-		} else {
-			checkboxes.style.display = "none";
-			expanded = false;
-		}
-		e.stopPropagation();
-	}, true)
-
-	var checkboxes = document.getElementById("checkboxes");
-	checkboxes.addEventListener('click', function(e){
-		e.stopPropagation();
-	}, true)
-}
-
-document.addEventListener('click', function(e){
-	if (expanded) {
-		checkboxes.style.display = "none";
-		expanded = false;
-	}
-}, false)
-
-function showCheckboxes() {
-  var checkboxes = document.getElementById("checkboxes");
-  if (!expanded) {
-    checkboxes.style.display = "block";
-    expanded = true;
-  } else {
-    checkboxes.style.display = "none";
-    expanded = false;
-  }
-}
-
-function updateCheckboxValue(){
-	var element=document.getElementById("multiselect-1");
-	//alert(element.innerHTML)
-	var checkboxes = document.getElementById("checkboxes");
-	var options = checkboxes.children;
-  	var len = options.length;
-  	var val = "";
-  	for(var i=0; i<len; i++){
-  		if(options[i].children[0].checked){
-  			val+=options[i].children[0].id;
-  			if(i<len-1)
-  				val+="+";
-  		}
-	}
-	if(val[val.length-1]=="+")
-		val=val.substr(0,val.length-1);
-
-	//element.value = val;
-	var selected = document.createElement('option');
-	selected.value = val;
-	if(val=="")
-		val = "all";
-	selected.innerHTML = val;
-	element.innerHTML="";
-	element.appendChild(selected);
-	element.form.submit();
-	fillTable();
-	//alert(val);
+function getFilters(frame){
+	var filtersStr = frame.contentWindow.document.body.children[0].innerHTML;
+	frame.removeEventListener("load", filtersEventListener);
+	filters = JSON.parse(filtersStr);
+	populateFilters();
 }

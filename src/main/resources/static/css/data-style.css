@@ -175,21 +175,47 @@ input {
 	color: var(--color-highlight);
 }
 
+.dropdown {
+	position: relative;
+}
+
 .dd-options {
-	width: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+
+	min-width: 100%;
+	width: auto;
 	height: auto;
 	background-color: none;
 	display: none;
 	padding: 0px;
 	margin: 0px;
+
+	outline: 1px solid grey;
+
+	font-family: Century Gothic, Arial, sans-serif;
+	font-weight: 500;
+	font-size: 80%;
+}
+
+.dd-options:hover, .dd-options>*:hover, .dd-options>*>*:hover  {
+	cursor: pointer;
 }
 
 .dd-options>*{
 	width: 94.5%;
 	height: 15px;
 	background-color: var(--color-highlight2);
+	color: var(--color-darker);
 	margin: 0px;
 	padding: 4px;
+	flex-grow: 1;
+}
+
+.dd-options>*>*:first-child {
+	width: 100%;
+	color: var(--color-darker);
 }
 
 .dd-options>*:hover{
@@ -212,6 +238,15 @@ input {
     display: none;
 }
 
+#new-button {
+	height: var(--element-size);
+	width: var(--element-size);
+	border-radius: 50%;
+	padding: 0px;
+	margin: 0px;
+	font-weight: 900;
+}
+
 .size-max {
     width: 100%;
     height: 100%;
@@ -229,6 +264,35 @@ input {
     padding: 15px;
 }
 
+.quit {
+	width: 42px;
+	height: 42px;
+
+	background-color: var(--color-highlight);
+	color: var(--color-darker);
+
+	border-radius: 50%;
+	font-weight: 900;
+	font-size: 25px;
+
+	padding: 0px;
+	margin: 0px;
+
+	position: absolute;
+	top: 20px;
+	right: 20px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.quit:hover {
+	background-color: var(--color-highlight2);
+	color: var(--color-dark);
+	cursor: pointer;
+}
+
 button {
     width: 120px;
 }
@@ -244,6 +308,11 @@ button {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+}
+
+.end {
+	position: absolute;
+	right: 0;
 }
 
 .wide {
