@@ -25,12 +25,9 @@ public class LecturerController {
     // public methods
     // get all lecturer filters
     @GetMapping("/get_lecturer_filters")
-    public Object get_lecturer_filters(@RequestParam("token") long token) {
+    public String[] get_lecturer_filters(@RequestParam("token") long token) {
         if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
-        return new Object() {
-            ArrayList<String> subjects = Database.GetAllSubjects();
-            ArrayList<String> majors = Database.GetAllMajors();
-        };
+        return new String[] {Database.GetAllSubjects().toString(), Database.GetAllMajors().toString()};
     }
 
     // return all lecturers

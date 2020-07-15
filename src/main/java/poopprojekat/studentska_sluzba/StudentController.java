@@ -28,12 +28,9 @@ public class StudentController {
     // // public methods
     // get all student filters
     @GetMapping("/get_student_filters")
-    public Object get_student_filters(@RequestParam("token") long token) {
+    public String[] get_student_filters(@RequestParam("token") long token) {
         if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
-        return new Object() {
-            ArrayList<String> cities = Database.GetAllCities();
-            ArrayList<String> majors = Database.GetAllMajors();
-        };
+        return new String[] {Database.GetAllCities().toString(), Database.GetAllMajors().toString()};
     }
 
     // per page load we send full list of students including only index numbers,
