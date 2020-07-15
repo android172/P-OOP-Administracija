@@ -34,6 +34,18 @@ public class Redirect_Controller {
     @GetMapping("/student")
     public String student(HttpServletResponse response, @RequestParam("token") long token){
         if ((Log_in_Controller.contains_user(token)[0]).equals("Student")) return "student";
+
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @GetMapping("/student")
+    public String student(HttpServletResponse response, @RequestParam("token") long token){
+        if ((Log_in_Controller.contains_user(token)[0]).equals("Student")) return "student";
         
         try {
             response.sendRedirect("/login");

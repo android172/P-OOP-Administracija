@@ -81,6 +81,24 @@ public class StudentskaSluzbaApplication
 
 //        Database.DropDatabase("testing");
 
+//        ArrayList<String> temp = Database.GetAllCities();
+//        for (String s:temp)
+//        {
+//            System.out.println(s);
+//        }
+//        System.out.println("--------------");
+//        ArrayList<String> temp1 = Database.GetAllMajors();
+//        for (String s:temp1)
+//        {
+//            System.out.println(s);
+//        }
+//        System.out.println("--------------");
+//        ArrayList<String> temp2 = Database.GetAllSubjects();
+//        for (String s:temp2)
+//        {
+//            System.out.println(s);
+//        }
+
         //db.Close();
     }
 

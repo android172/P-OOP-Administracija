@@ -32,7 +32,7 @@ import java.util.List;
 // SubjectsOfLecturer(Lecturer p) - prima profesora i vraca sve predmete na kojima predaje. vraca ArrayList<Subjects>
 // GetHighestIndex(int year) - Vraca najveci br indeksa za zadatu godinu
 // GetEmptyId(tableName) - prima tabelu "Lecturers" ili "Majors" i vraca 1. slobodan Id
-// GetUser(String username, String password) - pretrazuje korisnika u bazi, ako postoji vraca String role, u suprotnom vraca null
+// GetUser(String username, String password) - pretrazuje korisnika u bazi, ako postoji vraca korisnika, u suprotnom vraca null
 // GetLecturers(String subjects[], String majors[]) - pretrazuje po imenima predmeta i/ili smera i vraca listu Lecturers
 
 // EditStudent(Index index, Student updated) - prima index studenta kog treba izmeniti i promenjivu Student sa izmenjenim podacima
@@ -999,8 +999,12 @@ public class Database
     public static ArrayList<Major> GetMajors(String majorName)
     {
         ArrayList<Major> lista = new ArrayList<>();
-        sql = "SELECT * FROM Majors " +
-                "WHERE MajorName = '" + majorName + "' ";
+
+        sql = "SELECT * FROM Majors ";
+        if (majorName != null) {
+            sql +=
+                    "WHERE MajorName = '" + majorName + "' ";
+        }
 
         ResultSet res = null;
 
@@ -1151,7 +1155,7 @@ public class Database
         return pret + 1;
     }
 
-    public static String GetUser(String username, String password)
+    public static String[] GetUser(String username, String password)
     {
         sql = "SELECT * FROM Users " +
                 "WHERE Username = '" + username + "' AND Password = '" + password + "' ";
@@ -1165,7 +1169,8 @@ public class Database
             if(!res.first())
                 return null;
 
-            return res.getString("Role");
+            String ret[] = {res.getString("Role"), res.getString("UniqueId")};
+            return ret;
         }
         catch (SQLException throwables)
         {
@@ -1514,5 +1519,85 @@ public class Database
         {
             throwables.printStackTrace();
         }
+    }
+
+    // GetFilters f-je
+
+    public static ArrayList<String> GetAllCities()
+    {
+        sql = "SELECT DISTINCT City FROM Students ";
+        ResultSet res = null;
+        ArrayList<String> cities = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                cities.add(res.getString("City"));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return cities;
+    }
+
+    public static ArrayList<String> GetAllSubjects()
+    {
+        sql = "SELECT DISTINCT SubjectName FROM Subjects ";
+        ResultSet res = null;
+        ArrayList<String> subs = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                subs.add(res.getString("SubjectName"));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return subs;
+    }
+
+    public static ArrayList<String> GetAllMajors()
+    {
+        sql = "SELECT DISTINCT MajorName FROM Majors ";
+        ResultSet res = null;
+        ArrayList<String> majors = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                majors.add(res.getString("MajorName"));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return majors;
     }
 }

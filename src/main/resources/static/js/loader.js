@@ -60,6 +60,11 @@ function deleteRow(id){
     document.getElementById("search").submit();
 }
 
+function deleteRow(id){
+    document.getElementById("sendframe").src = "/delete_student?token="+token+"&index_num="+id;
+    document.getElementById("search").submit();
+}
+
 let expanded = false;
 
 function initializeMultiSelect(){
