@@ -22,6 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LecturerController {
 
+    // public methods
+    // get all lecturer filters
+    @GetMapping("/get_lecturer_filter")
+    public Object get_lecturer_filters() {
+        return new Object() {
+            ArrayList<String> subjects = Database.GetAllSubjects();
+            ArrayList<String> majors = Database.GetAllMajors();
+        };
+    }
+
     // return all lecturers
     @GetMapping("/get_all_lecturers")
     public ArrayList<Lecturer> getLecturers(@RequestParam("token") long token) {

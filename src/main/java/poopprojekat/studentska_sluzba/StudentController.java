@@ -26,6 +26,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class StudentController {
 
     // // public methods
+    // get all student filters
+    @GetMapping("/get_student_filter")
+    public Object get_student_filters() {
+        return new Object() {
+            ArrayList<String> cities = Database.GetAllCities();
+            ArrayList<String> majors = Database.GetAllMajors();
+        };
+    }
+
     // per page load we send full list of students including only index numbers,
     // first and last names
     @GetMapping("/get_all_students")
