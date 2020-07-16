@@ -1551,7 +1551,7 @@ public class Database
 
     public static ArrayList<String> GetAllSubjects()
     {
-        sql = "SELECT DISTINCT SubjectName FROM Subjects ";
+        sql = "SELECT SubjectName, SubjectId FROM Subjects ";
         ResultSet res = null;
         ArrayList<String> subs = new ArrayList<>();
 
@@ -1564,7 +1564,7 @@ public class Database
 
             do
             {
-                subs.add(res.getString("SubjectName"));
+                subs.add(res.getString("SubjectName") + "-" + res.getString("SubjectId"));
             }while(res.next());
         }
         catch (SQLException throwables)
@@ -1577,7 +1577,7 @@ public class Database
 
     public static ArrayList<String> GetAllMajors()
     {
-        sql = "SELECT DISTINCT MajorName FROM Majors ";
+        sql = "SELECT MajorName, MajorId FROM Majors ";
         ResultSet res = null;
         ArrayList<String> majors = new ArrayList<>();
 
@@ -1590,7 +1590,7 @@ public class Database
 
             do
             {
-                majors.add(res.getString("MajorName"));
+                majors.add(res.getString("MajorName") + "-" + res.getString("MajorId"));
             }while(res.next());
         }
         catch (SQLException throwables)
