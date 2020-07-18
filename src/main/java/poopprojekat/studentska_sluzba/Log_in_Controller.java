@@ -36,6 +36,16 @@ public class Log_in_Controller {
         return null;
     }
 
+    public static boolean has_role_of(long token, String roles[][]) {
+        String role[] = contains_user(token);
+        if (role != null)
+            for (String r[] : roles) if (r[0].equals(role[0])) {
+                if (r[1].equals("any")) return true;
+                if (r[1].equals(role[1])) return true;
+            }
+        return false;
+    }
+
     private boolean contains_id(String id) {
         for (Cashed_user cs : cashed_users)
             if (cs.id.equals(id)) return true;

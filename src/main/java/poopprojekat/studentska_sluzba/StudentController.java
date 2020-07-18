@@ -10,27 +10,33 @@ import org.springframework.web.bind.annotation.RestController;
 // Controller for student list related requests
 // INCLUDES:
 // 
+// Control:
+// /get_student_filters             - return all cities and majors found in database
+// 
 // Student filtering methods:
-// /get_all_students            - returns list of students (index, first_name, last_name)
-// /get_students?date_of_birth=&city=&mayor=&order_by=  - returns filtered list of students (index, first_name,
-//                                                        last_name, ?(column by which we order data))
-// /get_student?index=          - returns student with given index
-// /get_student_by_jmbg?jmbg=   - returns student with given jmbg
+// /get_all_students?token=         - returns list of students (index, first_name, last_name)
+// /get_students?token=date_of_birth=&city=&mayor=&order_by=    - returns filtered list of students (index, first_name,
+//                                                                last_name, ?(column by which we order data))
+// /get_student?token=index=        - returns student with given index
+// /get_student_by_jmbg?token=jmbg= - returns student with given jmbg
 // 
 // Student manipulation methods:
 // // all of the following return conformation message or printed error
-// /add_student?first_name=&last_name=&br_ind=&date_of_birth=&city=&jmbg=&major_id=                 - add new student to database
-// /update_student?student=&first_name=&last_name=&br_ind=&date_of_birth=&city=&jmbg=&major_id=     - update existing student
-// /delete_student?index_num=   - delete requested student from database
+// /add_student?token=first_name=&last_name=&br_ind=&date_of_birth=&city=&jmbg=&major_id=               - add new student to database
+// /update_student?token=student=&first_name=&last_name=&br_ind=&date_of_birth=&city=&jmbg=&major_id=   - update existing student
+// /delete_student?token=index_num= - delete requested student from database
 @RestController
 public class StudentController {
 
     // // public methods
     // get all student filters
     @GetMapping("/get_student_filters")
-    public ArrayList[] get_student_filters(@RequestParam("token") long token) {
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
-        return new ArrayList[] {Database.GetAllCities(), Database.GetAllMajors()};
+    public ArrayList<ArrayList<String>> get_student_filters(@RequestParam("token") long token) {
+        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
+        ArrayList<ArrayList<String>> ret = new ArrayList<>();
+        ret.add(Database.GetAllCities());
+        ret.add(Database.GetAllMajors());
+        return ret;
     }
 
     // per page load we send full list of students including only index numbers,
@@ -45,7 +51,7 @@ public class StudentController {
     @GetMapping("/get_students")
     public String[][] get_students(@RequestParam("token") long token, @RequestParam("date_of_birth") String date_of_birth,
             @RequestParam("city") String city, @RequestParam("major") String major, @RequestParam("order_by") String order_by) {
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
         // format picked dates
         Date dates[] = null;
         if (!date_of_birth.equals("all")) {
@@ -87,10 +93,7 @@ public class StudentController {
     // return selected student
     @GetMapping("/get_student")
     public Student get_student(@RequestParam("token") long token, @RequestParam("index") String index) {
-        String ri[] = Log_in_Controller.contains_user(token);
-        if (!ri[0].equals("Admin"))
-            if (!ri[0].equals("Student") || !ri[1].equals(index)) return null;
-
+        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}, {"Student", index}})) return null;
         Index i;
         try {
             i = new Index(index);
@@ -103,7 +106,7 @@ public class StudentController {
 
     @GetMapping("/get_student_by_jmbg")
     public Student get_student_wj(@RequestParam("token") long token, @RequestParam("jmbg") String jmbg) {
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
         return Database.GetStudent(jmbg);
     }
 
@@ -112,8 +115,8 @@ public class StudentController {
     public String add_student(@RequestParam("token") long token, @RequestParam("first_name") String first_name,
             @RequestParam("last_name") String last_name, @RequestParam("index_num") String index_num,
             @RequestParam("date_of_birth") String date_of_birth, @RequestParam("city") String city,
-            @RequestParam("jmbg") String jmbg, @RequestParam("major_id") int major_id) {
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+            @RequestParam("jmbg") String jmbg, @RequestParam("major_id") String major_id) {
+        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
         try {
             Student new_student = new Student(first_name, last_name, new Index(index_num), Date.valueOf(date_of_birth),
                     city, jmbg, major_id);
@@ -134,7 +137,7 @@ public class StudentController {
             @RequestParam("index_num") String index_num, @RequestParam("date_of_birth") String date_of_birth,
             @RequestParam("city") String city, @RequestParam("jmbg") String jmbg,
             @RequestParam("major_id") String major_id) {
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
         try {
             Index req_index = new Index(index_of_student_to_update);
             Student updated_student = new Student(req_index);
@@ -157,8 +160,8 @@ public class StudentController {
                 updated_student.setJmbg(null);
             else updated_student.setJmbg(jmbg);
             if (major_id == "")
-                updated_student.setMajorId(0);
-            else updated_student.setMajorId(Integer.parseInt(major_id));
+                updated_student.setMajorId(null);
+            else updated_student.setMajorId(major_id);
 
             Database.EditStudent(req_index, updated_student);
             return "Student was updated";
@@ -171,7 +174,7 @@ public class StudentController {
     // delete student
     @GetMapping("/delete_student")
     public String delete_student(@RequestParam("token") long token, @RequestParam("index_num") String index) {
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
         try {
             Index req_index = new Index(index);
             Database.DeleteStudent(req_index);

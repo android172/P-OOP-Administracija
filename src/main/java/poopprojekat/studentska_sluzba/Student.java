@@ -43,11 +43,11 @@ public class Student
         dateOfBirth = dob;
     }
 
-//    public Student(String fname, String lname, Index brind, String city)
-//    {
-//        this(fname, lname, brind);
-//        this.city = city;
-//    }
+   public Student(String fname, String lname, String city, Index brind)
+   {
+       this(fname, lname, brind);
+       this.city = city;
+   }
 
     public Student(String fname, String lname, Index brind, String id)
     {

@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
+
 // Database class Includes:
 // ConnectToDatabase(String name) - Connects to database if exists otherwise creates new database
 // Close() - Closes connection to database
@@ -76,43 +78,10 @@ public class Database
     {
         CreateDatabase("Testing");
 
-        Major m = new Major("S001", "Smer1");
-        AddMajor(m);
-        m = new Major("S002", "Smer2");
-        AddMajor(m);
-        m = new Major("S003", "Smer2");
-        AddMajor(m);
-
-        Student s = new Student("Student1", "Jedanovic", new Index("1/2020"), Date.valueOf("2000-1-1"), "Prvogradic", "0123456789123", "S001");
-        AddStudent(s);
-        s = new Student("Student2", "Drugovanovic", new Index("2/2020"), Date.valueOf("2000-2-1"), "Drugogradic", "1234567890123", "S001");
-        AddStudent(s);
-        s = new Student("Student3", "Trecanovic", new Index("3/2020"), Date.valueOf("2000-3-1"), "Prvogradic", "2223334448882", "S002");
-        AddStudent(s);
-        s = new Student("Student3", "Cetvrtanovic", new Index("4/2020"), Date.valueOf("2000-4-1"), "Prvogradic", "2223434498882", "S001");
-        AddStudent(s);
-        s = new Student("Student3", "Petic", new Index("5/2020"), Date.valueOf("2000-5-1"), "Trecegradic", "2223374446882", "S002");
-        AddStudent(s);
-        s = new Student("Student3", "Sestic", new Index("6/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "2223934448822", "S002");
-        AddStudent(s);
-        s = new Student("Student3", "Sestic", new Index("7/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "3223934448822", "S002");
-        AddStudent(s);
-
-        AddUser(new User("Student1", "0123456789123", "Student"), "1/2020");
-
-        Lecturer p = new Lecturer("Lecturer1", "Profesanovic1", "assistant", "P001");
-        AddLecturer(p);
-        p = new Lecturer("Lecturer2", "Profesanovic2", "part-time professor", "P002");
-        AddLecturer(p);
-        p = new Lecturer("Lecturer3", "Profesanovic3", "full-time professor", "P003");
-        AddLecturer(p);
-
-        Subject sub = new Subject("Predmet1", "M001", 7, 1, "P002", "S001");
-        AddSubject(sub);
-        sub = new Subject("Predmet2", "M002", 6, 3, "P001", "S002");
-        AddSubject(sub);
-        sub = new Subject("Predmet3", "M003", 4, 1, "P003", "S001");
-        AddSubject(sub);
+        Fill_db_randomly.with_majors(1);
+        Fill_db_randomly.with_students(20);
+        Fill_db_randomly.with_lecturers(5);
+        Fill_db_randomly.with_Subjects(6);
     }
 
     public void ConnectToDatabase(String name)
@@ -648,7 +617,7 @@ public class Database
                 case 4:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getString("City"));
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getString("City"), new Index(res.getNString("IndexNum")));
                         lista.add(s);
                     }while (res.next());
                     break;

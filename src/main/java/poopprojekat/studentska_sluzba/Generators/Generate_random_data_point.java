@@ -10,6 +10,7 @@ import poopprojekat.studentska_sluzba.Index;
 import poopprojekat.studentska_sluzba.Lecturer;
 import poopprojekat.studentska_sluzba.Major;
 import poopprojekat.studentska_sluzba.Student;
+import poopprojekat.studentska_sluzba.Subject;
 
 // Class for generating random data to be pushed to database
 // INCLUDES:
@@ -48,7 +49,20 @@ public class Generate_random_data_point {
         return new Lecturer(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(), title, Database.GetEmptyId("Lecturers"));
     }
 
-    private static int random_major_id() {
+    public static Major get_random_major() {
+        return new Major(Database.GetEmptyId("Majors"), Major_gen.get_random_major());
+    }
+
+    public static Subject get_random_subject() {
+        return new Subject(Subject_gen.get_random_subject(), Database.GetEmptyId("Subject"), new Random().nextInt(3) + 4, new Random().nextInt(4) + 1, random_lect_id(), random_major_id());
+    }
+
+    private static String random_lect_id() {
+        ArrayList<Lecturer> lecturers = Database.GetLecturers(null, null);
+        return lecturers.get(new Random().nextInt(lecturers.size())).getLectId();
+    }
+
+    private static String random_major_id() {
         ArrayList<Major> majors = Database.GetMajors(null);
         return majors.get(new Random().nextInt(majors.size())).id;
     }
