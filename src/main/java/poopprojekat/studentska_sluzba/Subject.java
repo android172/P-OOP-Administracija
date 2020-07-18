@@ -7,8 +7,8 @@ public class Subject
     public String subjectId;        // npr: M333
     public int espb;
     public int year;
-    public int lectid;
-    public int majorid;
+    public String lectid;
+    public String majorid;
     //
     public String lectName;
     public String majorName;
@@ -18,7 +18,7 @@ public class Subject
         subjectId = id;
     }
 
-    public Subject(String subjectName, String id, int espb, int year, int profId, int majorId)
+    public Subject(String subjectName, String id, int espb, int year, String profId, String majorId)
     {
         this.subjectName = subjectName;
         subjectId = id;

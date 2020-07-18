@@ -8,16 +8,16 @@ public class Lecturer
     private String firstName;
     private String lastName;
     private String title;
-    private int lectId;
+    private String lectId;
     //
     ArrayList<Subject> teach = new ArrayList<>();
 
-    public Lecturer(int id) // za pretragu baze
+    public Lecturer(String id) // za pretragu baze
     {
         lectId = id;
     }
 
-    public Lecturer(String fname, String lname, String title, int id)        // za unos u bazu
+    public Lecturer(String fname, String lname, String title, String id)        // za unos u bazu
     {
         firstName = fname;
         lastName = lname;
@@ -32,7 +32,7 @@ public class Lecturer
     public String getLastName() {
         return lastName;
     }
-    public int getLectId() {
+    public String getLectId() {
         return lectId;
     }
     public String getTitle() {
@@ -52,7 +52,7 @@ public class Lecturer
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    public void setLectId(int lectId) {
+    public void setLectId(String lectId) {
         this.lectId = lectId;
     }
     public void setTitle(String title) {

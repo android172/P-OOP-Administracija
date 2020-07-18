@@ -76,42 +76,42 @@ public class Database
     {
         CreateDatabase("Testing");
 
-        Major m = new Major(1, "Smer1");
+        Major m = new Major("S001", "Smer1");
         AddMajor(m);
-        m = new Major(2, "Smer2");
+        m = new Major("S002", "Smer2");
         AddMajor(m);
-        m = new Major(3, "Smer2");
+        m = new Major("S003", "Smer2");
         AddMajor(m);
 
-        Student s = new Student("Student1", "Jedanovic", new Index("1/2020"), Date.valueOf("2000-1-1"), "Prvogradic", "0123456789123", 1);
+        Student s = new Student("Student1", "Jedanovic", new Index("1/2020"), Date.valueOf("2000-1-1"), "Prvogradic", "0123456789123", "S001");
         AddStudent(s);
-        s = new Student("Student2", "Drugovanovic", new Index("2/2020"), Date.valueOf("2000-2-1"), "Drugogradic", "1234567890123", 1);
+        s = new Student("Student2", "Drugovanovic", new Index("2/2020"), Date.valueOf("2000-2-1"), "Drugogradic", "1234567890123", "S001");
         AddStudent(s);
-        s = new Student("Student3", "Trecanovic", new Index("3/2020"), Date.valueOf("2000-3-1"), "Prvogradic", "2223334448882", 2);
+        s = new Student("Student3", "Trecanovic", new Index("3/2020"), Date.valueOf("2000-3-1"), "Prvogradic", "2223334448882", "S002");
         AddStudent(s);
-        s = new Student("Student3", "Cetvrtanovic", new Index("4/2020"), Date.valueOf("2000-4-1"), "Prvogradic", "2223434498882", 1);
+        s = new Student("Student3", "Cetvrtanovic", new Index("4/2020"), Date.valueOf("2000-4-1"), "Prvogradic", "2223434498882", "S001");
         AddStudent(s);
-        s = new Student("Student3", "Petic", new Index("5/2020"), Date.valueOf("2000-5-1"), "Trecegradic", "2223374446882", 2);
+        s = new Student("Student3", "Petic", new Index("5/2020"), Date.valueOf("2000-5-1"), "Trecegradic", "2223374446882", "S002");
         AddStudent(s);
-        s = new Student("Student3", "Sestic", new Index("6/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "2223934448822", 2);
+        s = new Student("Student3", "Sestic", new Index("6/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "2223934448822", "S002");
         AddStudent(s);
-        s = new Student("Student3", "Sestic", new Index("7/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "3223934448822", 2);
+        s = new Student("Student3", "Sestic", new Index("7/2020"), Date.valueOf("2000-6-1"), "Drugogradic", "3223934448822", "S002");
         AddStudent(s);
 
         AddUser(new User("Student1", "0123456789123", "Student"), "1/2020");
 
-        Lecturer p = new Lecturer("Lecturer1", "Profesanovic1", "assistant", 1);
+        Lecturer p = new Lecturer("Lecturer1", "Profesanovic1", "assistant", "P001");
         AddLecturer(p);
-        p = new Lecturer("Lecturer2", "Profesanovic2", "part-time professor", 2);
+        p = new Lecturer("Lecturer2", "Profesanovic2", "part-time professor", "P002");
         AddLecturer(p);
-        p = new Lecturer("Lecturer3", "Profesanovic3", "full-time professor", 3);
+        p = new Lecturer("Lecturer3", "Profesanovic3", "full-time professor", "P003");
         AddLecturer(p);
 
-        Subject sub = new Subject("Predmet1", "M001", 7, 1, 2, 1);
+        Subject sub = new Subject("Predmet1", "M001", 7, 1, "P002", "S001");
         AddSubject(sub);
-        sub = new Subject("Predmet2", "M002", 6, 3, 1, 2);
+        sub = new Subject("Predmet2", "M002", 6, 3, "P001", "S002");
         AddSubject(sub);
-        sub = new Subject("Predmet3", "M003", 4, 1, 3, 1);
+        sub = new Subject("Predmet3", "M003", 4, 1, "P003", "S001");
         AddSubject(sub);
     }
 
@@ -219,8 +219,8 @@ public class Database
                 "SubjectId VARCHAR(10) not NULL UNIQUE , " +
                 "Year INTEGER not NULL, " +
                 "ESPB INTEGER not NULL, " +
-                "MajorId INTEGER not NULL, " +
-                "LectId INTEGER not NULL, " +
+                "MajorId VARCHAR(10) not NULL, " +
+                "LectId VARCHAR(10) not NULL, " +
                 "PRIMARY KEY (id, SubjectId), " +
                 "FOREIGN KEY (MajorId) REFERENCES Majors (MajorId) ON DELETE CASCADE ON UPDATE CASCADE, " +
                 "FOREIGN KEY (LectId) REFERENCES Lecturers (LectId) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB ";
@@ -249,7 +249,7 @@ public class Database
                 "JMBG VARCHAR(15) not NULL UNIQUE," +
                 "DateOfBirth DATE not NULL," +
                 "City VARCHAR(15) not NULL," +
-                "MajorId INTEGER not NULL, " +
+                "MajorId VARCHAR(10) not NULL, " +
                 "PRIMARY KEY (id, JMBG, IndexNum), " +
                 "FOREIGN KEY (MajorId) REFERENCES Majors(MajorId) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB ";
 
@@ -296,7 +296,7 @@ public class Database
                 "( id INTEGER not NULL AUTO_INCREMENT," +
                 "ExamDate DATE not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
-                "LecturerId INTEGER not NULL," +
+                "LecturerId VARCHAR(10) not NULL," +
                 "PRIMARY KEY (id, ExamDate, SubjectId) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'Exams'");
@@ -365,7 +365,7 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Lecturers " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "LectId INTEGER not NULL UNIQUE ," +
+                "LectId VARCHAR(10) not NULL UNIQUE ," +
                 "FirstName VARCHAR(15) not NULL," +
                 "LastName VARCHAR(15) not NULL, " +
                 "Title VARCHAR(30) not NULL, " +
@@ -389,7 +389,7 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Majors " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "MajorId INTEGER not NULL UNIQUE ," +
+                "MajorId VARCHAR(10) not NULL UNIQUE ," +
                 "MajorName VARCHAR(30) not NULL," +
                 "PRIMARY KEY(id, MajorId) ) ENGINE=InnoDB";
 
@@ -588,13 +588,13 @@ public class Database
                         sqlt += "( ";
                         for (Major m: majors)
                         {
-                            sqlt += "MajorId = " + m.id + " OR ";
+                            sqlt += "MajorId = '" + m.id + "' OR ";
                         }
                         sqlt += "0 ) OR ";
                     }
                     else
                     {
-                        sqlt += "MajorId = " + majors.get(0).id + " OR ";
+                        sqlt += "MajorId = '" + majors.get(0).id + "' OR ";
                     }
                 }
             }
@@ -655,7 +655,7 @@ public class Database
                 case 6:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getInt("MajorId"));
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getString("MajorId"));
                         lista.add(s);
                     }while (res.next());
                     break;
@@ -698,7 +698,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")), res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getInt("MajorId"));
+            s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")), res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getString("MajorId"));
 
         }
         catch (SQLException throwables)
@@ -728,7 +728,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")) , res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getInt("MajorId"));
+            s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")) , res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getString("MajorId"));
 
         }
         catch (SQLException throwables)
@@ -785,13 +785,13 @@ public class Database
             {
                 String temp[] = profName[i].split(" ");
 
-                ArrayList<Integer> LectIds = GetLecturers(temp[0], temp[1]);
+                ArrayList<String> LectIds = GetLecturers(temp[0], temp[1]);
 
                 if(LectIds != null)
                 {
-                    for (int id : LectIds)
+                    for (String id : LectIds)
                     {
-                        sqlt += "LectId = " + id + " OR ";
+                        sqlt += "LectId = '" + id + "' OR ";
                     }
                 }
             }
@@ -812,7 +812,7 @@ public class Database
                 {
                     for(Major m : majorIds)
                     {
-                        sqlt += "MajorId = " + m.id + " OR ";
+                        sqlt += "MajorId = '" + m.id + "' OR ";
                     }
                 }
             }
@@ -831,7 +831,7 @@ public class Database
 
             do
             {
-                tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getInt("LectId"), res.getInt("MajorId"));
+                tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"));
                 subjects.add(tempsubject);
             }while(res.next());
 
@@ -859,7 +859,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            s = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getInt("LectId"), res.getInt("MajorId"));
+            s = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"));
 
         }
         catch (SQLException throwables)
@@ -870,10 +870,10 @@ public class Database
         return s;
     }
 
-    public static Lecturer GetLecturer(int LectId)
+    public static Lecturer GetLecturer(String LectId)
     {
         sql = "SELECT * FROM Lecturers " +
-                "WHERE LectId = " + LectId;
+                "WHERE LectId = '" + LectId + "' ";
 
         ResultSet res = null;
         Lecturer p = null;
@@ -885,7 +885,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            p = new Lecturer(res.getString("FirstName"), res.getString("LastName"), res.getString("Title"), res.getInt("LectId"));
+            p = new Lecturer(res.getString("FirstName"), res.getString("LastName"), res.getString("Title"), res.getString("LectId"));
 
         }
         catch (SQLException throwables)
@@ -896,9 +896,9 @@ public class Database
         return p;
     }
 
-    private static ArrayList<Integer> GetLecturers(String fname, String lname)
+    private static ArrayList<String> GetLecturers(String fname, String lname)
     {
-        ArrayList<Integer> LectIds = new ArrayList<>();
+        ArrayList<String> LectIds = new ArrayList<>();
         sql = "SELECT * FROM Lecturers " +
                 "WHERE FirstName = '" + fname + "' AND LastName = '" + lname + "' ";
 
@@ -911,10 +911,10 @@ public class Database
             if(!res.first())
                 return null;
 
-            LectIds.add(res.getInt("LectId"));
+            LectIds.add(res.getString("LectId"));
 
             while(res.next())
-                LectIds.add(res.getInt("LectId"));
+                LectIds.add(res.getString("LectId"));
         }
         catch (SQLException throwables)
         {
@@ -978,7 +978,7 @@ public class Database
 
             do
             {
-                l = new Lecturer(res.getString("FirstName"), res.getString("LastName"), res.getString("Title"), res.getInt("LectId"));
+                l = new Lecturer(res.getString("FirstName"), res.getString("LastName"), res.getString("Title"), res.getString("LectId"));
                 lista.add(l);
             }while(res.next());
 
@@ -1017,12 +1017,12 @@ public class Database
 
             Major temp;
 
-            temp = new Major(res.getInt("MajorId"), res.getString("MajorName"));
+            temp = new Major(res.getString("MajorId"), res.getString("MajorName"));
             lista.add(temp);
 
             while(res.next())
             {
-                temp = new Major(res.getInt("MajorId"), res.getString("MajorName"));
+                temp = new Major(res.getString("MajorId"), res.getString("MajorName"));
                 lista.add(temp);
             }
 
@@ -1035,13 +1035,13 @@ public class Database
         return lista;
     }
 
-    public static Major GetMajor(int majorId)
+    public static Major GetMajor(String majorId)
     {
         Major m = null;
         ResultSet res;
 
         sql = "SELECT * FROM Majors " +
-                "WHERE MajorId = " + majorId + " ";
+                "WHERE MajorId = '" + majorId + "' ";
 
         try
         {
@@ -1050,7 +1050,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            m = new Major(res.getInt("MajorId"), res.getString("MajorName"));
+            m = new Major(res.getString("MajorId"), res.getString("MajorName"));
         }
         catch (SQLException throwables)
         {
@@ -1063,7 +1063,7 @@ public class Database
     public static ArrayList<Subject> SubjectsOfLecturer(Lecturer p)
     {
         sql = "SELECT * FROM Subjects " +
-                "WHERE LectId = " + p.getLectId() + " ";
+                "WHERE LectId = '" + p.getLectId() + "' ";
 
         ResultSet res = null;
         Subject temp = null;
@@ -1201,7 +1201,7 @@ public class Database
     public static void DeleteLecturer(int lectId) throws Exception
     {
         sql = "DELETE FROM Lecturers " +
-                "WHERE LectId = " + lectId + " ";
+                "WHERE LectId = '" + lectId + "' ";
 
         try
         {
@@ -1217,7 +1217,7 @@ public class Database
     public static void DeleteMajor(int majorId) throws Exception
     {
         sql = "DELETE FROM Majors " +
-                "WHERE MajorId = " + majorId + " ";
+                "WHERE MajorId = '" + majorId + "' ";
 
         try
         {
@@ -1233,7 +1233,7 @@ public class Database
     public static void DeleteSubject(int subjectId) throws Exception
     {
         sql = "DELETE FROM Subjects " +
-                "WHERE SubjectId = " + subjectId + " ";
+                "WHERE SubjectId = '" + subjectId + "' ";
 
         try
         {
@@ -1314,12 +1314,12 @@ public class Database
             sql += "City = '" + updated.getCity() + "' ";
             uslov = true;
         }
-        if(updated.getMajorId() != 0)
+        if(updated.getMajorId() != null)
         {
             if(uslov)
                 sql += ", ";
 
-            sql += "MajorId = " + updated.getMajorId() + " ";
+            sql += "MajorId = '" + updated.getMajorId() + "' ";
             uslov = true;
         }
 
@@ -1355,12 +1355,12 @@ public class Database
             sql += "LastName = '" + updated.getLastName() + "' ";
             uslov = true;
         }
-        if(updated.getLectId() != 0)
+        if(updated.getLectId() != null)
         {
             if(uslov)
                 sql += ", ";
 
-            sql += "LectId = " + updated.getLectId() + " ";
+            sql += "LectId = '" + updated.getLectId() + "' ";
             uslov = true;
         }
         if(updated.getTitle() != null)
@@ -1372,7 +1372,7 @@ public class Database
             uslov = true;
         }
 
-        sql += "WHERE LectId = " + lectId + " ";
+        sql += "WHERE LectId = '" + lectId + "' ";
 
         try
         {
@@ -1419,20 +1419,20 @@ public class Database
             sql += "Year = " + updated.year + " ";
             uslov = true;
         }
-        if(updated.lectid != 0)
+        if(updated.lectid != null)
         {
             if(uslov)
                 sql += ", ";
 
-            sql += "LectId = " + updated.lectid + " ";
+            sql += "LectId = '" + updated.lectid + "' ";
             uslov = true;
         }
-        if(updated.majorid != 0)
+        if(updated.majorid != null)
         {
             if(uslov)
                 sql += ", ";
 
-            sql += "MajorId = " + updated.majorid + " ";
+            sql += "MajorId = '" + updated.majorid + "' ";
             uslov = true;
         }
 
@@ -1459,16 +1459,16 @@ public class Database
             sql += "MajorName = '" + updated.name + "' ";
             uslov = true;
         }
-        if(updated.id != 0)
+        if(updated.id != null)
         {
             if(uslov)
                 sql += ", ";
 
-            sql += "MajorId = " + updated.id + " ";
+            sql += "MajorId = '" + updated.id + "' ";
             uslov = true;
         }
 
-        sql += "WHERE MajorId = " + majorId + " ";
+        sql += "WHERE MajorId = '" + majorId + "' ";
 
         try
         {

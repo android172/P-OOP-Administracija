@@ -79,8 +79,6 @@ public class StudentskaSluzbaApplication
 //            System.out.println(l);
 //        }
 
-//        Database.DropDatabase("testing");
-
 //        ArrayList<String> temp = Database.GetAllCities();
 //        for (String s:temp)
 //        {
@@ -98,6 +96,8 @@ public class StudentskaSluzbaApplication
 //        {
 //            System.out.println(s);
 //        }
+
+         Database.DropDatabase("testing");
 
         //db.Close();
     }

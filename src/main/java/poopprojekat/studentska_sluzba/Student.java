@@ -14,7 +14,7 @@ public class Student
     private String jmbg;
     private String majorname;
     //
-    public int majorId;
+    public String majorId;
     public ArrayList<Subject> listen = new ArrayList<>();
 
     // constructors
@@ -27,7 +27,7 @@ public class Student
         lastName = lname;
         index = brind;
     }
-    public Student(String fname, String lname, Index brind, Date dob, String city, String jmbg, int majorId)       // Za dodavanje studenta u bazu
+    public Student(String fname, String lname, Index brind, Date dob, String city, String jmbg, String majorId)       // Za dodavanje studenta u bazu
     {
         this(fname, lname, brind);
         dateOfBirth = dob;
@@ -43,13 +43,13 @@ public class Student
         dateOfBirth = dob;
     }
 
-    public Student(String fname, String lname, Index brind, String city)
-    {
-        this(fname, lname, brind);
-        this.city = city;
-    }
+//    public Student(String fname, String lname, Index brind, String city)
+//    {
+//        this(fname, lname, brind);
+//        this.city = city;
+//    }
 
-    public Student(String fname, String lname, Index brind, int id)
+    public Student(String fname, String lname, Index brind, String id)
     {
         this(fname, lname, brind);
         this.majorId = id;
@@ -81,7 +81,7 @@ public class Student
     public String getJmbg() {
         return jmbg;
     }
-    public int getMajorId() {
+    public String getMajorId() {
         return majorId;
     }
     public String getMajorname() {
@@ -106,7 +106,7 @@ public class Student
     public void setJmbg(String jmbg) {
         this.jmbg = jmbg;
     }
-    public void setMajorId(int majorId) {
+    public void setMajorId(String majorId) {
         this.majorId = majorId;
         setMajorName();
     }
