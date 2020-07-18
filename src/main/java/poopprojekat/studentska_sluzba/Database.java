@@ -1121,13 +1121,25 @@ public class Database
         return 0;
     }
 
-    public static int GetEmptyId(String tableName)
+    public static String GetEmptyId(String tableName)
     {
-        if(tableName == "Lecturers")
-            sql = "SELECT LectId FROM Lecturers ";
+        String prefix = null;
 
+        if(tableName == "Lecturers")
+        {
+            sql = "SELECT LectId FROM Lecturers ";
+            prefix = "P";
+        }
         else if(tableName == "Majors")
+        {
             sql = "SELECT MajorId FROM Majors";
+            prefix = "M";
+        }
+        else if(tableName == "Subjects")
+        {
+            sql = "SELECT SubjectId FROM Subjects";
+            prefix = "S";
+        }
 
         ResultSet res = null;
         int pret = 0;
@@ -1138,15 +1150,15 @@ public class Database
             res = stat.executeQuery(sql);
 
             if(!res.first())
-                return 0;
+                return null;
 
             do
             {
                 tren = Integer.parseInt(res.getString(1).substring(1));
                 if(tren != pret + 1)
-                    return pret + 1;
+                    return prefix + Integer.toString(pret+1);
 
-                pret = res.getInt(1);
+                pret = tren;
             }while(res.next());
         }
         catch (SQLException throwables)
@@ -1154,7 +1166,7 @@ public class Database
             throwables.printStackTrace();
         }
 
-        return pret + 1;
+        return prefix + Integer.toString(pret+1);
     }
 
     public static String[] GetUser(String username, String password)
