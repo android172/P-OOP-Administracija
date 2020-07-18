@@ -34,7 +34,7 @@ public class SubjectController {
 
     @GetMapping("/get_subjects_by_lecturer")
     public ArrayList<Subject> get_subjects_by_lecturer(@RequestParam("token") long token,
-                                           @RequestParam("lect_id") int id){
+                                           @RequestParam("lect_id") String id){
 
         try {
             if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
@@ -91,8 +91,8 @@ public class SubjectController {
                               @RequestParam("id") String id,
                               @RequestParam("espb") int espb,
                               @RequestParam("year") int year,
-                              @RequestParam("lect_id") int lect_id,
-                              @RequestParam("major_id") int major_id){
+                              @RequestParam("lect_id") String lect_id,
+                              @RequestParam("major_id") String major_id){
 
         try {
             if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
@@ -113,8 +113,8 @@ public class SubjectController {
                                  @RequestParam("new_id") String id,
                                  @RequestParam("espb") int espb,
                                  @RequestParam("year") int year,
-                                 @RequestParam("lect_id") int lect_id,
-                                 @RequestParam("major_id") int major_id){
+                                 @RequestParam("lect_id") String lect_id,
+                                 @RequestParam("major_id") String major_id){
 
         try {
             if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
@@ -130,7 +130,7 @@ public class SubjectController {
 
     @GetMapping("/delete_subject")
     public String delete_subject(@RequestParam("token") long token,
-                                 @RequestParam("id") int id){
+                                 @RequestParam("id") String id){
 
         try {
             if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;

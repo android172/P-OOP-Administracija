@@ -32,7 +32,7 @@ public class MajorsController {
 
     @GetMapping("/get_major")
     public Major get_major(@RequestParam("token") long token,
-                           @RequestParam("id") int id){
+                           @RequestParam("id") String id){
 
         if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
         return Database.GetMajor(id);
@@ -60,8 +60,8 @@ public class MajorsController {
 
     @GetMapping("/update_major")
     public String update_major(@RequestParam("token") long token,
-                               @RequestParam("id") int id,
-                               @RequestParam("new_id") int new_id,
+                               @RequestParam("id") String id,
+                               @RequestParam("new_id") String new_id,
                                @RequestParam("name") String new_major_name){
 
         if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
@@ -79,7 +79,7 @@ public class MajorsController {
 
     @GetMapping("/delete_major")
     public String delete_major(@RequestParam("token") long token,
-                               @RequestParam("id") int id){
+                               @RequestParam("id") String id){
 
         if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
 
