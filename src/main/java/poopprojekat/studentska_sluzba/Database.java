@@ -1200,7 +1200,7 @@ public class Database
         }
     }
 
-    public static void DeleteLecturer(int lectId) throws Exception
+    public static void DeleteLecturer(String lectId) throws Exception
     {
         sql = "DELETE FROM Lecturers " +
                 "WHERE LectId = '" + lectId + "' ";
@@ -1216,7 +1216,7 @@ public class Database
         }
     }
 
-    public static void DeleteMajor(int majorId) throws Exception
+    public static void DeleteMajor(String majorId) throws Exception
     {
         sql = "DELETE FROM Majors " +
                 "WHERE MajorId = '" + majorId + "' ";
@@ -1232,7 +1232,7 @@ public class Database
         }
     }
 
-    public static void DeleteSubject(int subjectId) throws Exception
+    public static void DeleteSubject(String subjectId) throws Exception
     {
         sql = "DELETE FROM Subjects " +
                 "WHERE SubjectId = '" + subjectId + "' ";
@@ -1339,7 +1339,7 @@ public class Database
 
     }
 
-    public static void EditLecturer(int lectId, Lecturer updated) throws Exception
+    public static void EditLecturer(String lectId, Lecturer updated) throws Exception
     {
         sql = "UPDATE Lecturers SET ";
         boolean uslov = false;
@@ -1451,7 +1451,7 @@ public class Database
         }
     }
 
-    public static void EditMajor(int majorId, Major updated) throws Exception
+    public static void EditMajor(String majorId, Major updated) throws Exception
     {
         sql = "UPDATE Majors SET ";
         boolean uslov = false;
