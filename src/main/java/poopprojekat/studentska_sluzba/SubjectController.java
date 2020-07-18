@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 
 //INCLUDES:
+// /dropdown_lecturers?token= -returns list of all lecturers !!!!Za razliku od Dejanove funkcije ova ti vraca Lecturer umesto String!!!!
+                                                                //pa ti iz json-a mozes da uzmes ime i id
 // /get_all_subjects?token= -returns all subjects
 // /get_subjects?token=&name=&year=&lect_name=&major_name=  -returns filtered list of subjects (ArrayList<Subject>)
 // /get_subjects_by_lecturer?token=&lect_id= -returns subjects of lecturer with given id
@@ -19,9 +21,14 @@ import java.util.ArrayList;
 @RestController
 public class SubjectController {
 
+    @GetMapping("/dropdown_lecturers")
+    public ArrayList<Lecturer> get_subject_filters(@RequestParam("token") long token){
+
+        return Database.GetLecturers(null, null);
+    }
+
     @GetMapping("/get_all_subjects")
-    public ArrayList<Subject> get_all_subjects(@RequestParam("token") long token
-                                                ){
+    public ArrayList<Subject> get_all_subjects(@RequestParam("token") long token){
         try {
             if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
 
