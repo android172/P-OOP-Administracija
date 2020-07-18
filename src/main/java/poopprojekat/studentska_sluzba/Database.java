@@ -728,7 +728,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")) , res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getString("MajorId"));
+            s = new Student(res.getString(  "FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")) , res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getString("MajorId"));
 
         }
         catch (SQLException throwables)
@@ -1131,6 +1131,7 @@ public class Database
 
         ResultSet res = null;
         int pret = 0;
+        int tren;
 
         try
         {
@@ -1141,7 +1142,8 @@ public class Database
 
             do
             {
-                if(res.getInt(1) != pret + 1)
+                tren = Integer.parseInt(res.getString(1).substring(1));
+                if(tren != pret + 1)
                     return pret + 1;
 
                 pret = res.getInt(1);
