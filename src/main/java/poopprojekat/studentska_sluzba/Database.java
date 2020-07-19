@@ -313,8 +313,6 @@ public class Database
                 "ExamDate DATE not NULL, " +
                 "SubjectId VARCHAR(10) not NULL, " +
                 "Mark INTEGER not NULL, " +
-                "Show VARCHAR(5) not NULL, " +       // Pojavio se ili ne
-                "Status VARCHAR(8) not NULL, " +     // Passed/Failed
                 "PRIMARY KEY (id, IndexNum, ExamDate, SubjectId) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'ExamsArchive'");
