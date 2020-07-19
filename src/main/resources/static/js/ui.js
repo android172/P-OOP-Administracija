@@ -53,8 +53,6 @@ function initDropDowns(){
 					if(clicked!=0)
 						opts.children[0].children[1].checked = false;
 
-
-
 					str=str.substr(0,str.length-1);
 					input.value = str;
 					input.form.submit();
@@ -62,18 +60,32 @@ function initDropDowns(){
 				j++;
 			}
 		}else {
-			while(j<len2){
-				opts.children[j].addEventListener('change', function(){
-					input.value = this.value;
-					input.form.submit();
-					toggleElement(opts);
-				}, true)
-				opts.children[j].addEventListener('click', function(){
-					input.value = this.value;
-					input.form.submit();
-					toggleElement(opts);
-				}, true)
-				j++;
+			if(!dds[i].classList.contains("no-auto-submit")){
+				while(j<len2){
+					opts.children[j].addEventListener('change', function(){
+						input.value = this.value;
+						input.form.submit();
+						toggleElement(opts);
+					}, true)
+					opts.children[j].addEventListener('click', function(){
+						input.value = this.value;
+						input.form.submit();
+						toggleElement(opts);
+					}, true)
+					j++;
+				}
+			}else{
+				while(j<len2){
+					opts.children[j].addEventListener('change', function(){
+						input.value = this.value;
+						toggleElement(opts);
+					}, true)
+					opts.children[j].addEventListener('click', function(){
+						input.value = this.value;
+						toggleElement(opts);
+					}, true)
+					j++;
+				}
 			}
 		}
 		i++;
@@ -97,14 +109,21 @@ function toggleElement(element){
 	}
 }
 
-function addOptionsToFilter(filterID, newOptions, multiselect){
+function addOptionsToFilter(filterID, newOptions, multiselect, numExistingOptions, separate){
 	var filterElem = document.getElementById(filterID);
 	var i=0;
 	var len = newOptions.length;
 
 	while(i<len){
-		var optionName = newOptions[i];
-		var id = filterID+"-"+(i+1);
+		var optionName, optionValue;
+		var id = filterID+"-"+(i+numExistingOptions);
+		if(separate){
+			optData = newOptions[i].split("-");
+			optionName = optData[0];
+			optionValue = optData[1];
+		}else{
+			optionValue = optionName = newOptions[i];
+		}
 
 		var newOpt;
 
@@ -119,12 +138,12 @@ function addOptionsToFilter(filterID, newOptions, multiselect){
 			var input = document.createElement('input');
 			input.type = "checkbox";
 			input.id = id;
-			input.value = optionName;
+			input.value = optionValue;
 			newOpt.appendChild(input);
 		}else {
 			newOpt = document.createElement('option');
-			option.value = optionName;
-			option.innerHTML = optionName;
+			newOpt.value = optionValue;
+			newOpt.innerHTML = optionName;
 		}
 
 		filterElem.appendChild(newOpt);

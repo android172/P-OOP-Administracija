@@ -84,7 +84,7 @@ public class StudentController {
                 order_ctg = 0;
         }
         boolean asc = true;
-        if (order_by.split("-")[1] == "des")
+        if (order_by.split("-")[1].equals("des"))
             asc = false;
 
         return filter_students_from_database(dates, cities, majors, order_ctg, asc);

@@ -43,14 +43,15 @@ function fillTable(){
 				var cell = row.insertCell();
 				cell.innerHTML = data[i][j];
 			}
-			var delButton = row.insertCell();
-			delButton.innerHTML = "Delete";
+			var delButton = document.createElement("div");
+			delButton.innerHTML = "delete";
 			delButton.className = "button-delete";
 		    delButton.id = data[i][0];
 			delButton.onclick = function(){
 			    //console.log("deleting: "+this.id);
 			    deleteRow(this.id);
 			};
+			row.appendChild(delButton);
 		}
 	}
 }
