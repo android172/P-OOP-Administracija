@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 // 
 // Student filtering methods:
 // /get_all_students?token=         - returns list of students (index, first_name, last_name)
-// /get_students?token=date_of_birth=&city=&mayor=&order_by=    - returns filtered list of students (index, first_name,
+// /get_students?token=date_of_birth=&city=&major=&order_by=    - returns filtered list of students (index, first_name,
 //                                                                last_name, ?(column by which we order data))
 // /get_student?token=index=        - returns student with given index
 // /get_student_by_jmbg?token=jmbg= - returns student with given jmbg
@@ -77,7 +77,7 @@ public class StudentController {
             case "city":
                 order_ctg = 4;
                 break;
-            case "mayor":
+            case "major":
                 order_ctg = 6;
                 break;
             default:

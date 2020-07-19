@@ -19,14 +19,16 @@ import poopprojekat.studentska_sluzba.Subject;
 public class Generate_random_data_point {
 
     // Class cannot be initialized
-    private Generate_random_data_point() {}
+    private Generate_random_data_point() {
+    }
 
     public static Student get_random_student() {
         LocalDate rng_d = Birthday_gen.get_random_birth_date();
         String jmbg = Birthday_gen.get_random_jmbg(rng_d);
         try {
             return new Student(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(),
-                    new Index(rng_d.getYear() + 19), Date.valueOf(rng_d), Name_gen.get_random_city(), jmbg, random_major_id());
+                    new Index(rng_d.getYear() + 19), Date.valueOf(rng_d), Name_gen.get_random_city(), jmbg,
+                    random_major_id());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,15 +48,31 @@ public class Generate_random_data_point {
             default:
                 title = "assistant";
         }
-        return new Lecturer(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(), title, Database.GetEmptyId("Lecturers"));
+        try {
+            return new Lecturer(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(), title, Database.GetEmptyId("Lecturers"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static Major get_random_major() {
-        return new Major(Database.GetEmptyId("Majors"), Major_gen.get_random_major());
+        try {
+            return new Major(Database.GetEmptyId("Majors"), Major_gen.get_random_major());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static Subject get_random_subject() {
-        return new Subject(Subject_gen.get_random_subject(), Database.GetEmptyId("Subjects"), new Random().nextInt(3) + 4, new Random().nextInt(4) + 1, random_lect_id(), random_major_id());
+        try {
+            return new Subject(Subject_gen.get_random_subject(), Database.GetEmptyId("Subjects"),
+                    new Random().nextInt(3) + 4, new Random().nextInt(4) + 1, random_lect_id(), random_major_id());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private static String random_lect_id() {
