@@ -54,7 +54,7 @@ public class Generate_random_data_point {
     }
 
     public static Subject get_random_subject() {
-        return new Subject(Subject_gen.get_random_subject(), Database.GetEmptyId("Subject"), new Random().nextInt(3) + 4, new Random().nextInt(4) + 1, random_lect_id(), random_major_id());
+        return new Subject(Subject_gen.get_random_subject(), Database.GetEmptyId("Subjects"), new Random().nextInt(3) + 4, new Random().nextInt(4) + 1, random_lect_id(), random_major_id());
     }
 
     private static String random_lect_id() {

@@ -33,7 +33,7 @@ import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 // GetMajor(int majorId) - prima id smera, vraca Major
 // SubjectsOfLecturer(Lecturer p) - prima profesora i vraca sve predmete na kojima predaje. vraca ArrayList<Subjects>
 // GetHighestIndex(int year) - Vraca najveci br indeksa za zadatu godinu
-// GetEmptyId(tableName) - prima tabelu "Lecturers" ili "Majors" i vraca 1. slobodan Id
+// GetEmptyId(tableName) - prima tabelu "Lecturers"/"Majors"/"Subjects" i vraca 1. slobodan Id. Izbacuje gresku ako prosledjena tabela nije jedna od navedenih
 // GetUser(String username, String password) - pretrazuje korisnika u bazi, ako postoji vraca korisnika, u suprotnom vraca null
 // GetLecturers(String subjects[], String majors[]) - pretrazuje po imenima predmeta i/ili smera i vraca listu Lecturers
 
@@ -160,8 +160,8 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Users " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "Username VARCHAR(10) not NULL Unique, " +      // ind/god ili ind-god
-                "Password VARCHAR(20) not NULL, " +
+                "Username NVARCHAR(20) not NULL Unique, " +      // ind/god ili ind-god
+                "Password NVARCHAR(20) not NULL, " +
                 "Role VARCHAR(10) not NULL, " +          // Student, Profesor, Admin
                 "UniqueId VARCHAR(10) not NULL UNIQUE , " +
                 "PRIMARY KEY (id, Username) ) ENGINE=InnoDB";
@@ -184,7 +184,7 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Subjects " +
                 "( id INTEGER not NULL AUTO_INCREMENT, " +
-                "SubjectName VARCHAR(30) not NULL, " +
+                "SubjectName NVARCHAR(30) not NULL, " +
                 "SubjectId VARCHAR(10) not NULL UNIQUE , " +
                 "Year INTEGER not NULL, " +
                 "ESPB INTEGER not NULL, " +
@@ -213,11 +213,11 @@ public class Database
         sql = "CREATE TABLE IF NOT EXISTS Students " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
                 "IndexNum VARCHAR(10) not NULL UNIQUE," +
-                "FirstName VARCHAR(30) not NULL," +
-                "LastName VARCHAR(30) not NULL," +
+                "FirstName NVARCHAR(30) not NULL," +
+                "LastName NVARCHAR(30) not NULL," +
                 "JMBG VARCHAR(15) not NULL UNIQUE," +
                 "DateOfBirth DATE not NULL," +
-                "City VARCHAR(15) not NULL," +
+                "City NVARCHAR(30) not NULL," +
                 "MajorId VARCHAR(10) not NULL, " +
                 "PRIMARY KEY (id, JMBG, IndexNum), " +
                 "FOREIGN KEY (MajorId) REFERENCES Majors(MajorId) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB ";
@@ -333,8 +333,8 @@ public class Database
         sql = "CREATE TABLE IF NOT EXISTS Lecturers " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
                 "LectId VARCHAR(10) not NULL UNIQUE ," +
-                "FirstName VARCHAR(15) not NULL," +
-                "LastName VARCHAR(15) not NULL, " +
+                "FirstName NVARCHAR(15) not NULL," +
+                "LastName NVARCHAR(15) not NULL, " +
                 "Title VARCHAR(30) not NULL, " +
                 "PRIMARY KEY (id, LectId) ) ENGINE=InnoDB ";
 
@@ -357,7 +357,7 @@ public class Database
         sql = "CREATE TABLE IF NOT EXISTS Majors " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
                 "MajorId VARCHAR(10) not NULL UNIQUE ," +
-                "MajorName VARCHAR(30) not NULL," +
+                "MajorName NVARCHAR(30) not NULL," +
                 "PRIMARY KEY(id, MajorId) ) ENGINE=InnoDB";
 
         System.out.println("Creating table 'Majors'");
@@ -1088,7 +1088,7 @@ public class Database
         return 0;
     }
 
-    public static String GetEmptyId(String tableName)
+    public static String GetEmptyId(String tableName) throws Exception
     {
         String prefix = null;
 
@@ -1107,23 +1107,33 @@ public class Database
             sql = "SELECT SubjectId FROM Subjects";
             prefix = "S";
         }
+        else
+            throw new Exception("Function 'GetEmptyId' doesn't work on this table");
 
         ResultSet res = null;
         int pret = 0;
-        int tren;
+        int tren = 1;
+        String temp = "";
 
         try
         {
             res = stat.executeQuery(sql);
 
             if(!res.first())
-                return null;
+                return prefix + "001";
 
             do
             {
                 tren = Integer.parseInt(res.getString(1).substring(1));
                 if(tren != pret + 1)
-                    return prefix + Integer.toString(pret+1);
+                {
+                    if(pret + 1 < 10)
+                        temp = "00";
+                    else if(pret + 1 < 100)
+                        temp = "0";
+
+                    return prefix + temp + Integer.toString(pret + 1);
+                }
 
                 pret = tren;
             }while(res.next());
@@ -1133,7 +1143,13 @@ public class Database
             throwables.printStackTrace();
         }
 
-        return prefix + Integer.toString(pret+1);
+        tren++;
+        if(tren < 10)
+            temp = "00";
+        else if(tren < 100)
+            temp = "0";
+
+        return prefix + temp + Integer.toString(tren);
     }
 
     public static String[] GetUser(String username, String password)

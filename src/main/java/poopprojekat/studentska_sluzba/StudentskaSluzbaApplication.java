@@ -97,7 +97,7 @@ public class StudentskaSluzbaApplication
 //            System.out.println(s);
 //        }
 
-//         Database.DropDatabase("testing");
+         //Database.DropDatabase("testing");
 
         //db.Close();
     }
