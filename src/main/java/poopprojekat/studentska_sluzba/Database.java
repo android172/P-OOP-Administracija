@@ -30,7 +30,7 @@ import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 // GetSubject(String SubjectId) - prima id predmeta, vraca Subject
 // GetLecturer(int LectId) - prima id profesora, vraca Lecturer
 // GetMajors(String majorName) - prima ime smera, vraca ArrayList<Major>
-// GetMajor(int majorId) - prima id smera, vraca Major
+// GetMajor(String majorId) - prima id smera, vraca Major
 // SubjectsOfLecturer(Lecturer p) - prima profesora i vraca sve predmete na kojima predaje. vraca ArrayList<Subjects>
 // GetHighestIndex(int year) - Vraca najveci br indeksa za zadatu godinu
 // GetEmptyId(tableName) - prima tabelu "Lecturers"/"Majors"/"Subjects" i vraca 1. slobodan Id. Izbacuje gresku ako prosledjena tabela nije jedna od navedenih
@@ -506,72 +506,50 @@ public class Database
 
     // GET f-je --------------------------------------
 
-    public static ArrayList<Student> GetStudents(Date dateOfBirth[], String city[], String majorName[], int orderBy, boolean ascending)
-    {
+    public static ArrayList<Student> GetStudents(Date dateOfBirth[], String city[], String majorId[], int orderBy, boolean ascending) {
         ArrayList<Student> lista = new ArrayList<>();
         boolean uslov = false;
         ResultSet res;
         String sqlt = "SELECT * FROM Students " +
                 "WHERE ";
 
-        if(dateOfBirth != null)
-        {
+        if (dateOfBirth != null) {
             sqlt += "( ";
-            for(int i = 0; i < dateOfBirth.length; i++)
-            {
+            for (int i = 0; i < dateOfBirth.length; i++) {
                 sqlt += "DateofBirth = '" + dateOfBirth[i] + "' OR ";
             }
             sqlt += "0 ) ";
             uslov = true;
         }
-        if(city != null)
-        {
-            if(uslov)
+        if (city != null) {
+            if (uslov)
                 sqlt += "AND ";
 
             sqlt += "( ";
-            for(int i = 0; i < city.length; i++)
-            {
+            for (int i = 0; i < city.length; i++) {
                 sqlt += "city = '" + city[i] + "' OR ";
             }
             sqlt += "0 ) ";
 
             uslov = true;
         }
-        if(majorName != null)
+        if (majorId != null)
         {
-            if(uslov)
+            if (uslov)
                 sqlt += "AND ";
 
             sqlt += "( ";
-            for(int i=0; i<majorName.length; i++)
+            for (int i = 0; i < majorId.length; i++)
             {
-                List<Major> majors = GetMajors(majorName[i]);
-
-                if(majors != null)
-                {
-                    if(majors.size() > 1)
-                    {
-                        sqlt += "( ";
-                        for (Major m: majors)
-                        {
-                            sqlt += "MajorId = '" + m.id + "' OR ";
-                        }
-                        sqlt += "0 ) OR ";
-                    }
-                    else
-                    {
-                        sqlt += "MajorId = '" + majors.get(0).id + "' OR ";
-                    }
-                }
+                sqlt += "MajorId = '" + majorId[i] + "' OR ";
             }
-            sqlt += "0 ) ";
 
-            uslov = true;
+        sqlt += "0 ) ";
+
+        uslov = true;
         }
         if(!uslov)
             sqlt += "1 ";
-
         if(orderBy > 2 && orderBy < 7)
         {
             switch(orderBy)
@@ -710,7 +688,7 @@ public class Database
         return s;
     }
 
-    public static ArrayList<Subject> GetSubjects(String subjectName[], int year[], String profName[], String majorName[])
+    public static ArrayList<Subject> GetSubjects(String subjectName[], int year[], String profName[], String majorId[])
     {
         String sqlt = "SELECT * FROM Subjects " +
                 "WHERE ";
@@ -766,22 +744,14 @@ public class Database
             sqlt += "0 ) ";
             uslov = true;
         }
-        if(majorName != null)
+        if(majorId != null)
         {
             if(uslov)
                 sqlt += "AND ";
             sqlt += "( ";
-            for(int i = 0;i<majorName.length;i++)
+            for(int i = 0;i<majorId.length;i++)
             {
-                ArrayList<Major> majorIds = GetMajors(majorName[i]);
-
-                if(majorIds != null)
-                {
-                    for(Major m : majorIds)
-                    {
-                        sqlt += "MajorId = '" + m.id + "' OR ";
-                    }
-                }
+                sqlt += "MajorId = '" + majorId[i] + "' OR ";
             }
             sqlt += "0 ) ";
             uslov = true;
@@ -891,12 +861,12 @@ public class Database
         return LectIds;
     }
 
-    public static ArrayList<Lecturer> GetLecturers(String subjects[], String majors[])
+    public static ArrayList<Lecturer> GetLecturers(String subjects[], String majorId[])
     {
         ArrayList<Lecturer> lista = new ArrayList<>();
         boolean uslov = false;
         ResultSet res;
-        String sqlt = "SELECT * FROM Lecturers as l join Subjects as s on l.LectId = s.LectId join Majors as m on s.MajorId = m.MajorId " +
+        String sqlt = "SELECT * FROM Lecturers as l join Subjects as s on l.LectId = s.LectId " +
                 "WHERE ";
 
         if(subjects != null)
@@ -912,16 +882,16 @@ public class Database
 
             uslov = true;
         }
-        if(majors != null)
+        if(majorId != null)
         {
             if(uslov)
                 sqlt += "AND ";
 
             sqlt += "( ";
 
-            for(int i=0; i<majors.length; i++)
+            for(int i=0; i<majorId.length; i++)
             {
-                sqlt += " m.MajorName = '" + majors[i] + "' OR ";
+                sqlt += " s.MajorId = '" + majorId[i] + "' OR ";
             }
 
             sqlt += " 0) ";
@@ -968,9 +938,9 @@ public class Database
         ArrayList<Major> lista = new ArrayList<>();
 
         sql = "SELECT * FROM Majors ";
-        if (majorName != null) {
-            sql +=
-                    "WHERE MajorName = '" + majorName + "' ";
+        if (majorName != null)
+        {
+            sql += "WHERE MajorName = '" + majorName + "' ";
         }
 
         ResultSet res = null;
