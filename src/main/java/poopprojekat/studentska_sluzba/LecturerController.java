@@ -29,7 +29,7 @@ public class LecturerController {
     // get all lecturer filters
     @GetMapping("/get_lecturer_filters")
     public ArrayList<ArrayList<String>> get_lecturer_filters(@RequestParam("token") long token) {
-        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         ArrayList<ArrayList<String>> ret = new ArrayList<>();
         ret.add(Database.GetAllSubjects());
         ret.add(Database.GetAllMajors());
@@ -39,14 +39,14 @@ public class LecturerController {
     // return all lecturers
     @GetMapping("/get_all_lecturers")
     public ArrayList<Lecturer> getLecturers(@RequestParam("token") long token) {
-        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         return Database.GetLecturers(null, null);
     }
     
     // returns filtered and ordered list of lecturers
     @GetMapping("/get_lecturers")
     public ArrayList<Lecturer> getLecturers(@RequestParam("token") long token, @RequestParam("subject") String subject, @RequestParam("major") String major) {
-        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         // format picked subjects
         String subjects[] = null;
         if (!subject.equals("all"))
@@ -62,7 +62,7 @@ public class LecturerController {
     // return requested lecturer
     @GetMapping("/get_lecturer")
     public Lecturer getLecturers(@RequestParam("token") long token, @RequestParam("lect_id") String lect_id) {
-        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}, {"Lecturer", lect_id}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}, {"Lecturer", lect_id}})) return null;
         return Database.GetLecturer(lect_id);
     }
 
@@ -71,7 +71,7 @@ public class LecturerController {
     public String add_lecturer(@RequestParam("token") long token, @RequestParam("first_name") String first_name,
             @RequestParam("last_name") String last_name, @RequestParam("title") String title,
             @RequestParam("lect_id") String lect_id) {
-        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         Lecturer new_lecturer = new Lecturer(first_name, last_name, title, lect_id);
         try {
             if (Database.AddLecturer(new_lecturer) && Database.AddUser(new User(last_name + lect_id, lect_id, "Lecturer"), lect_id))
@@ -86,7 +86,7 @@ public class LecturerController {
     @GetMapping("/update_lecturer")
     public String update_lecturer(@RequestParam("token") long token, @RequestParam("lecturer") String id_of_lec_to_up, @RequestParam("first_name") String first_name,
             @RequestParam("last_name") String last_name, @RequestParam("title") String title, @RequestParam("lect_id") String lect_id) {
-        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         try {
             Lecturer updated_lecturer = new Lecturer(id_of_lec_to_up);
 
@@ -113,7 +113,7 @@ public class LecturerController {
     // delete lecturer
     @GetMapping("/delete_lecturer")
     public String delete_lecturer(@RequestParam("token") long token, @RequestParam("lecturer") String lect_id) {
-        if (!Log_in_Controller.has_role_of(token, new String[][] {{"Admin", "any"}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         try {
             Database.DeleteLecturer(lect_id);
             Database.DeleteUser(String.valueOf(lect_id));
