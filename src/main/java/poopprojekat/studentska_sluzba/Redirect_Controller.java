@@ -21,7 +21,7 @@ public class Redirect_Controller {
 
     @GetMapping("/admin")
     public String index(HttpServletResponse response, @RequestParam("token") long token){
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "admin";
+        if (Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "admin";
 
         try {
             response.sendRedirect("/login");
@@ -33,7 +33,7 @@ public class Redirect_Controller {
 
     @GetMapping("/students")
     public String students(HttpServletResponse response, @RequestParam("token") long token){
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "students";
+        if (Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "students";
         
         try {
             response.sendRedirect("/login");
@@ -45,7 +45,7 @@ public class Redirect_Controller {
 
     @GetMapping("/staff")
     public String staff(HttpServletResponse response, @RequestParam("token") long token){
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "staff";
+        if (Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "staff";
         
         try {
             response.sendRedirect("/login");
@@ -57,7 +57,7 @@ public class Redirect_Controller {
 
     @GetMapping("/courses")
     public String courses(HttpServletResponse response, @RequestParam("token") long token){
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "courses";
+        if (Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "courses";
         
         try {
             response.sendRedirect("/login");
@@ -69,7 +69,7 @@ public class Redirect_Controller {
 
     @GetMapping("/majors")
     public String majors(HttpServletResponse response, @RequestParam("token") long token){
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "majors";
+        if (Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "majors";
         
         try {
             response.sendRedirect("/login");
