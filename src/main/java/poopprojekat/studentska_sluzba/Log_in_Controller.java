@@ -19,35 +19,39 @@ public class Log_in_Controller {
     public String log_in_request(@RequestParam("username") String username,
             @RequestParam("password") String password) {
         String ri[] = Database.GetUser(username, password);
-        if (ri == null || contains_id(ri[1]))
+        if (ri == null)
             return "access denied";
+
+        for (Cashed_user cu : cashed_users)
+            if (cu.id.equals(ri[1]))
+            log_out_request(cu.token);
+            
         Cashed_user cu = new Cashed_user(new Random().nextLong(), ri[0], ri[1]);
         cashed_users.add(cu);
         return (cu.role + ":" + cu.token + ":" + cu.id);
     }
-    
-    public static String[] contains_user(long token) {
-        for (Cashed_user cs : cashed_users)
-            if (cs.equals(token)) {
-                String ret[] = {cs.role, cs.id};
-                return ret;
+
+    @GetMapping("/logout_req")
+    public static String log_out_request(@RequestParam("token") long token) {
+        int i = 0;
+        for (Cashed_user cu : cashed_users) {
+            if (cu.equals(token)) {
+                cashed_users.remove(i);
+                return "log-out was successful";
             }
-        return null;
+            i++;
+        }
+        return "user doesn't exist";
     }
 
-    public static boolean has_role_of(long token, String roles[][]) {
-        String role[] = contains_user(token);
-        if (role != null)
-            for (String r[] : roles) if (r[0].equals(role[0])) {
-                if (r[1].equals("any")) return true;
-                if (r[1].equals(role[1])) return true;
+    public static boolean access_allowed(long token, String roles[][]) {
+        for (Cashed_user cu : cashed_users)
+            if (cu.equals(token)) {
+                for (String r[] : roles) 
+                    if (r[0].equals(cu.role) && (r[1].equals("any") || r[1].equals(cu.id)))
+                        return true;
+                return false;
             }
-        return false;
-    }
-
-    private boolean contains_id(String id) {
-        for (Cashed_user cs : cashed_users)
-            if (cs.id.equals(id)) return true;
         return false;
     }
 
