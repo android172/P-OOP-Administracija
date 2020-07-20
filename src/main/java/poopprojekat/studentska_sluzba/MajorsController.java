@@ -23,7 +23,7 @@ public class MajorsController {
     @GetMapping("/get_all_majors")
     public ArrayList<Major> get_all_majors(@RequestParam("token") long token){
 
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
         ArrayList<Major> lista = Database.GetMajors(null);
 
@@ -34,7 +34,7 @@ public class MajorsController {
     public Major get_major(@RequestParam("token") long token,
                            @RequestParam("id") String id){
 
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         return Database.GetMajor(id);
     }
 
@@ -42,7 +42,7 @@ public class MajorsController {
     @GetMapping("/add_major")
     public String add_major(@RequestParam("token") long token,
                             @RequestParam("name") String name){
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
         try {
             Major new_major = new Major(Database.GetEmptyId("Majors"), name);
@@ -64,7 +64,7 @@ public class MajorsController {
                                @RequestParam("new_id") String new_id,
                                @RequestParam("name") String new_major_name){
 
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
         try {
             Major updated_major = new Major(new_id, new_major_name);
@@ -81,7 +81,7 @@ public class MajorsController {
     public String delete_major(@RequestParam("token") long token,
                                @RequestParam("id") String id){
 
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
         try {
             Database.DeleteMajor(id);

@@ -30,7 +30,7 @@ public class SubjectController {
     @GetMapping("/get_all_subjects")
     public ArrayList<Subject> get_all_subjects(@RequestParam("token") long token){
         try {
-            if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
             return Database.GetSubjects(null, null, null, null);
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class SubjectController {
                                            @RequestParam("lect_id") String id){
 
         try {
-            if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
             return Database.SubjectsOfLecturer(Database.GetLecturer(id));
 
@@ -62,7 +62,7 @@ public class SubjectController {
                                            @RequestParam("major_name") String major_name){
 
         try {
-            if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
             String[] names = null;
             if (name != "") {
@@ -102,7 +102,7 @@ public class SubjectController {
                               @RequestParam("major_id") String major_id){
 
         try {
-            if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
             Subject subject = new Subject(name, id, espb, year, lect_id, major_id);
             Database.AddSubject(subject);
@@ -124,7 +124,7 @@ public class SubjectController {
                                  @RequestParam("major_id") String major_id){
 
         try {
-            if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
             Subject subject = new Subject(name, id, espb, year, lect_id, major_id);
             Database.EditSubject(old_id, subject);
@@ -140,7 +140,7 @@ public class SubjectController {
                                  @RequestParam("id") String id){
 
         try {
-            if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
             Database.DeleteSubject(id);
             return "Subject successfully deleted";

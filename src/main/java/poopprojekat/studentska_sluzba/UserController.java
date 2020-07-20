@@ -18,7 +18,7 @@ public class UserController {
                              @RequestParam("username") String username,
                              @RequestParam("password") String password){
 
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
         String[] tmp = Database.GetUser(username, password);
 
@@ -33,7 +33,7 @@ public class UserController {
                            @RequestParam("role") String role,
                            @RequestParam("year") int year){
 
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
         User user = new User(username, password, role);
 
@@ -54,7 +54,7 @@ public class UserController {
                               @RequestParam("new_password") String new_password,
                               @RequestParam("new_role") String new_role){
 
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
         User updated_user = new User(new_username, new_password, new_role);
         try{
@@ -70,7 +70,7 @@ public class UserController {
     public String delete_user(@RequestParam("token") long token,
                               @RequestParam("unique_id") String id){
 
-        if (!(Log_in_Controller.contains_user(token)[0]).equals("Admin")) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
         try{
             Database.DeleteUser(id);
