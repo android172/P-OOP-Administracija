@@ -1,3 +1,4 @@
+/*
 package poopprojekat.studentska_sluzba;
 
 import java.sql.Date;
@@ -229,3 +230,5 @@ public class StudentController {
        return ret_s;
    }
 }
+
+ */

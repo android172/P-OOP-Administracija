@@ -506,17 +506,23 @@ public class Database
 
     // GET f-je --------------------------------------
 
-    public static ArrayList<Student> GetStudents(Date dateOfBirth[], String city[], String majorId[], int orderBy, boolean ascending) {
+    public static ArrayList<Student> GetStudents(Date dateOfBirth[], String city[], String majorId[], int orderBy) {
         ArrayList<Student> lista = new ArrayList<>();
         boolean uslov = false;
         ResultSet res;
-        String sqlt = "SELECT * FROM Students " +
-                "WHERE ";
+        String sqlt;
+
+        if(orderBy == 6)
+            sqlt = "SELECT * FROM Students as s join Majors as m on s.majorId = m.majorId " +
+                    "WHERE ";
+        else
+            sqlt = "SELECT * FROM Students as s" +
+                    "WHERE ";
 
         if (dateOfBirth != null) {
             sqlt += "( ";
             for (int i = 0; i < dateOfBirth.length; i++) {
-                sqlt += "DateofBirth = '" + dateOfBirth[i] + "' OR ";
+                sqlt += "s.DateofBirth = '" + dateOfBirth[i] + "' OR ";
             }
             sqlt += "0 ) ";
             uslov = true;
@@ -527,7 +533,7 @@ public class Database
 
             sqlt += "( ";
             for (int i = 0; i < city.length; i++) {
-                sqlt += "city = '" + city[i] + "' OR ";
+                sqlt += "s.City = '" + city[i] + "' OR ";
             }
             sqlt += "0 ) ";
 
@@ -541,7 +547,7 @@ public class Database
             sqlt += "( ";
             for (int i = 0; i < majorId.length; i++)
             {
-                sqlt += "MajorId = '" + majorId[i] + "' OR ";
+                sqlt += "s.MajorId = '" + majorId[i] + "' OR ";
             }
 
         sqlt += "0 ) ";
@@ -550,25 +556,27 @@ public class Database
         }
         if(!uslov)
             sqlt += "1 ";
-        if(orderBy > 2 && orderBy < 7)
-        {
-            switch(orderBy)
-            {
-                case 3:
-                    sqlt += "ORDER BY DateofBirth ";
-                    break;
-                case 4:
-                    sqlt += "ORDER BY City ";
-                    break;
-                case 6:
-                    sqlt += "ORDER BY MajorId ";
-                    break;
-            }
 
-            if(ascending)
-                sqlt += "ASC ";
-            else
-                sqlt += "DESC ";
+        switch(orderBy)
+        {
+            case 1:
+                sqlt += "ORDER BY s.IndexNum ASC ";
+                break;
+            case 2:
+                sqlt += "ORDER BY s.Firstname ASC ";
+                break;
+            case 3:
+                sqlt += "ORDER BY s.Lastname ASC ";
+                break;
+            case 4:
+                sqlt += "ORDER BY s.DateOfBirth ASC ";
+                break;
+            case 5:
+                sqlt += "ORDER BY s.City ASC ";
+                break;
+            case 6:
+                sqlt += "ORDER BY m.MajorName ASC ";
+                break;
         }
 
         try
@@ -578,19 +586,18 @@ public class Database
             if(!res.first())
                 return lista;
 
-
             Student s;
 
             switch(orderBy)
             {
-                case 3:
+                case 4:
                     do
                     {
                         s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getDate("DateOfBirth"));
                         lista.add(s);
                     }while (res.next());
                     break;
-                case 4:
+                case 5:
                     do
                     {
                         s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getString("City"), new Index(res.getNString("IndexNum")));
@@ -600,7 +607,7 @@ public class Database
                 case 6:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getString("MajorId"));
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getString("s.MajorId"));
                         lista.add(s);
                     }while (res.next());
                     break;
@@ -688,10 +695,16 @@ public class Database
         return s;
     }
 
-    public static ArrayList<Subject> GetSubjects(String subjectName[], int year[], String profName[], String majorId[])
+    public static ArrayList<Subject> GetSubjects(String subjectName[], int year[], String profName[], String majorId[], int orderBy)
     {
-        String sqlt = "SELECT * FROM Subjects " +
-                "WHERE ";
+        String sqlt;
+
+        if(orderBy == 5)
+            sqlt = "SELECT * FROM Subjects as s join Majors as m on s.MajorId = m.MajorId " +
+                    "WHERE ";
+        else
+            sqlt = "SELECT * FROM Subjects as s " +
+                    "WHERE ";
 
         ResultSet res = null;
         ArrayList<Subject> subjects = new ArrayList<>();
@@ -703,7 +716,7 @@ public class Database
             sqlt += "( ";
             for(int i = 0;i<subjectName.length; i++)
             {
-                sqlt += "SubjectName = '" + subjectName[i] + "' OR ";
+                sqlt += "s.SubjectName = '" + subjectName[i] + "' OR ";
             }
             sqlt += "0 ) ";
             uslov = true;
@@ -716,7 +729,7 @@ public class Database
             sqlt += "( ";
             for(int i = 0;i<year.length;i++)
             {
-                sqlt += "Year = " + year[i] + " OR ";
+                sqlt += "s.Year = " + year[i] + " OR ";
             }
             sqlt += "0 ) ";
             uslov = true;
@@ -736,7 +749,7 @@ public class Database
                 {
                     for (String id : LectIds)
                     {
-                        sqlt += "LectId = '" + id + "' OR ";
+                        sqlt += "s.LectId = '" + id + "' OR ";
                     }
                 }
             }
@@ -751,13 +764,35 @@ public class Database
             sqlt += "( ";
             for(int i = 0;i<majorId.length;i++)
             {
-                sqlt += "MajorId = '" + majorId[i] + "' OR ";
+                sqlt += "s.MajorId = '" + majorId[i] + "' OR ";
             }
             sqlt += "0 ) ";
             uslov = true;
         }
         if(!uslov)
             sqlt += "1 ";
+
+        switch(orderBy)
+        {
+            case 1:
+                sqlt += "ORDER BY s.SubjectName ASC ";
+                break;
+            case 2:
+                sqlt += "ORDER BY s.SubjectId ASC ";
+                break;
+            case 3:
+                sqlt += "ORDER BY s.Year ASC ";
+                break;
+            case 4:
+                sqlt += "ORDER BY s.ESPB ASC ";
+                break;
+            case 5:
+                sqlt += "ORDER BY m.MajorName ASC ";
+                break;
+            case 6:
+                sqlt += "ORDER BY s.LectId ASC ";
+                break;
+        }
 
         try
         {
@@ -861,11 +896,12 @@ public class Database
         return LectIds;
     }
 
-    public static ArrayList<Lecturer> GetLecturers(String subjects[], String majorId[])
+    public static ArrayList<Lecturer> GetLecturers(String subjects[], String majorId[], int orderBy)
     {
         ArrayList<Lecturer> lista = new ArrayList<>();
         boolean uslov = false;
         ResultSet res;
+
         String sqlt = "SELECT * FROM Lecturers as l join Subjects as s on l.LectId = s.LectId " +
                 "WHERE ";
 
@@ -1138,6 +1174,30 @@ public class Database
 
             String ret[] = {res.getString("Role"), res.getString("UniqueId")};
             return ret;
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static String GetUser(String id)
+    {
+        sql = "SELECT * FROM Users " +
+                "WHERE UniqueId = '" + id + "' ";
+
+        ResultSet res = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            return res.getString("Username");
         }
         catch (SQLException throwables)
         {

@@ -36,7 +36,7 @@ public class StudentskaSluzbaApplication
 //        System.out.println(stud);
 
 //        ArrayList<Student> lista;
-//        lista = Database.GetStudents(null, new String[]{"Prvogradic", "Drugogradic"}, null, 4, false);
+//        lista = Database.GetStudents(null, null, new String[]{"M001", "M002"}, 6);
 //
 //        for (Student st:lista)
 //        {

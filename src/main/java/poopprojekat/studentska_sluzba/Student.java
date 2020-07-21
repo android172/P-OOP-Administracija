@@ -52,7 +52,7 @@ public class Student
     public Student(String fname, String lname, Index brind, String id)
     {
         this(fname, lname, brind);
-        this.majorId = id;
+        setMajorId(id);
     }
 
     public void ApplyToListen(Subject s) {
