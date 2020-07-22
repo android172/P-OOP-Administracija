@@ -954,6 +954,22 @@ public class Database
 
         sqlt += "1 ";
 
+        switch(orderBy)
+        {
+            case 1:
+                sqlt += "ORDER BY l.LectId ASC ";
+                break;
+            case 2:
+                sqlt += "ORDER BY l.FirstName ASC ";
+                break;
+            case 3:
+                sqlt += "ORDER BY l.LastName ASC ";
+                break;
+            case 4:
+                sqlt += "ORDER BY l.Title ASC ";
+                break;
+        }
+
         try
         {
             res = stat.executeQuery(sqlt);
@@ -965,7 +981,7 @@ public class Database
 
             do
             {
-                l = new Lecturer(res.getString("FirstName"), res.getString("LastName"), res.getString("Title"), res.getString("LectId"));
+                l = new Lecturer(res.getString("l.FirstName"), res.getString("l.LastName"), res.getString("l.Title"), res.getString("l.LectId"));
                 lista.add(l);
             }while(res.next());
 
