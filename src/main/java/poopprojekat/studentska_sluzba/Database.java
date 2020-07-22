@@ -136,7 +136,7 @@ public class Database
             CreateTableExams();
             CreateTableExamApplications();
             CreateTableAppliedToListen();
-            CreateTableArchive();
+            CreateTableStudentStatus();
         }
         catch (SQLException throwables)
         {
@@ -242,8 +242,16 @@ public class Database
                 "( id INTEGER not NULL AUTO_INCREMENT," +
                 "IndexNum VARCHAR(10) not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
-                "Year INTEGER not NULL," +      // Na kojoj godini je predmet
-                "PRIMARY KEY (id, IndexNum, SubjectId) ) ENGINE=InnoDB ";
+                "Year INTEGER not NULL," +
+                "DatePassed Date, " +
+                "Attempts INTEGER, " +
+                "Mark INTEGER, " +
+                "Points INTEGER, " +
+                "LectId VARCHAR(10), " +
+                "PRIMARY KEY (id, IndexNum, SubjectId)," +
+                "FOREIGN KEY (IndexNum) REFERENCES Students(IndexNum) ON UPDATE CASCADE, " +
+                "FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId) ON UPDATE CASCADE, " +
+                "FOREIGN KEY (LectId) references Lecturers(LectId) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'AppliedToListen'");
 
@@ -263,10 +271,13 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Exams " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
+                "ExamId VARCHAR(10) not NULL UNIQUE , " +
                 "ExamDate DATE not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
-                "LecturerId VARCHAR(10) not NULL," +
-                "PRIMARY KEY (id, ExamDate, SubjectId) ) ENGINE=InnoDB ";
+                "LectId VARCHAR(10) not NULL," +
+                "PRIMARY KEY (id, ExamId)," +
+                "FOREIGN KEY (SubjectId) references Subjects(SubjectId)," +
+                "FOREIGN KEY (LectId) references Lecturers(LectId) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'Exams'");
 
@@ -287,9 +298,11 @@ public class Database
         sql = "CREATE TABLE IF NOT EXISTS ExamApplication " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
                 "IndexNum VARCHAR(10) not NULL," +
-                "ExamDate DATE not NULL," +
-                "SubjectId VARCHAR(10) not NULL," +
-                "PRIMARY KEY (id, IndexNum, ExamDate, SubjectId) ) ENGINE=InnoDB ";
+                "ExamId VARCHAR(10) not NULL," +
+                "Price INTEGER not NULL," +
+                "PRIMARY KEY (id, IndexNum, ExamId), " +
+                "FOREIGN KEY (IndexNum) references Students(IndexNum), " +
+                "FOREIGN KEY (ExamId) references Exams(ExamId) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'ExamApplication'");
 
@@ -305,25 +318,26 @@ public class Database
         }
     }
 
-    private void CreateTableArchive()
+    private void CreateTableStudentStatus()
     {
-        sql = "CREATE TABLE IF NOT EXISTS ExamsArchive " +
+        sql = "CREATE TABLE IF NOT EXISTS StudentStatus " +
                 "( id INTEGER not NULL AUTO_INCREMENT, " +
                 "IndexNum VARCHAR(10) not NULL, " +
-                "ExamDate DATE not NULL, " +
-                "SubjectId VARCHAR(10) not NULL, " +
-                "Mark INTEGER not NULL, " +
-                "PRIMARY KEY (id, IndexNum, ExamDate, SubjectId) ) ENGINE=InnoDB ";
+                "Year INTEGER not NULL, " +
+                "CurrentYear INTEGER not NULL, " +
+                "Status VARCHAR(15) not NULL, " +
+                "PRIMARY KEY (id, IndexNum), " +
+                "FOREIGN KEY (IndexNum) references Students(IndexNum) ) ENGINE=InnoDB ";
 
-        System.out.println("Creating table 'ExamsArchive'");
+        System.out.println("Creating table 'StudentStatus'");
         try
         {
             stat.executeQuery(sql);
-            System.out.println("Table 'ExamsArchive' has been created");
+            System.out.println("Table 'StudentStatus' has been created");
         }
         catch (SQLException throwables)
         {
-            System.out.println("Creating table 'ExamsArchive' failed");
+            System.out.println("Creating table 'StudentStatus' failed");
             throwables.printStackTrace();
         }
     }
