@@ -2,7 +2,6 @@ package poopprojekat.studentska_sluzba;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 

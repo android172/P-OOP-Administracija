@@ -44,7 +44,7 @@ public class StudentController {
     @GetMapping("/get_all_students")
     public String[][] get_students(@RequestParam("token") long token) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
-        return filter_students_from_database(null, null, null, 0, true);
+        return filter_students_from_database(null, null, null, 1);
     }
 
     // returns filtered and ordered list of students
@@ -70,12 +70,21 @@ public class StudentController {
             majors = major.split("\\+");
         // format order by
         int order_ctg;
-        switch (order_by.split("-")[0]) {
-            case "birthyear":
+        switch (order_by) {
+            case "index":
+                order_ctg = 1;
+                break;
+            case "first_name":
+                order_ctg = 2;
+                break;
+            case "last_name":
                 order_ctg = 3;
                 break;
-            case "city":
+            case "birthyear":
                 order_ctg = 4;
+                break;
+            case "city":
+                order_ctg = 5;
                 break;
             case "major":
                 order_ctg = 6;
@@ -83,11 +92,8 @@ public class StudentController {
             default:
                 order_ctg = 0;
         }
-        boolean asc = true;
-        if (order_by.split("-")[1].equals("des"))
-            asc = false;
 
-        return filter_students_from_database(dates, cities, majors, order_ctg, asc);
+        return filter_students_from_database(dates, cities, majors, order_ctg);
     }
 
     // return selected student
@@ -187,9 +193,9 @@ public class StudentController {
     }
 
    //  // private methods
-   private String[][] filter_students_from_database(Date date_of_birth[], String city[], String major[], int order_by, boolean ascending) {
+   private String[][] filter_students_from_database(Date date_of_birth[], String city[], String major[], int order_by) {
        // get required data from database
-       ArrayList<Student> requested_students = Database.GetStudents(date_of_birth, city, major, order_by , ascending);
+       ArrayList<Student> requested_students = Database.GetStudents(date_of_birth, city, major, order_by);
        String[][] ret_s;
 
        // we will append data with bonus column only if we chose to sort by said column,

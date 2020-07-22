@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 // 
 // Lecturer filtering methods:
 // /get_all_lecturers?token=            - returns list of all lecturers (first_name, last_name, title)
-// /get_lecturers?token=subject=&major= - returns filtered list of lecturers (first_name, last_name, title)
+// /get_lecturers?token=subject=&major=&order_by=   - returns filtered and sorted list of lecturers (first_name, last_name, title)
 // /get_lecturer?token=index=           - returns lecturer with a given id
 // 
 // Lecturer manipulation methods:
@@ -41,12 +41,12 @@ public class LecturerController {
     @GetMapping("/get_all_lecturers")
     public ArrayList<Lecturer> getLecturers(@RequestParam("token") long token) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
-        return Database.GetLecturers(null, null);
+        return Database.GetLecturers(null, null, 1);
     }
     
     // returns filtered and ordered list of lecturers
     @GetMapping("/get_lecturers")
-    public ArrayList<Lecturer> getLecturers(@RequestParam("token") long token, @RequestParam("subject") String subject, @RequestParam("major") String major) {
+    public ArrayList<Lecturer> getLecturers(@RequestParam("token") long token, @RequestParam("subject") String subject, @RequestParam("major") String major, @RequestParam("order_by") String order_by) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         // format picked subjects
         String subjects[] = null;
@@ -56,8 +56,25 @@ public class LecturerController {
         String majors[] = null;
         if (!major.equals("all"))
             majors = major.split("\\+");
+        int order_ctg;
+        switch (order_by) {
+            case "lect_id":
+                order_ctg = 1;
+                break;
+            case "first_name":
+                order_ctg = 2;
+                break;
+            case "last_name":
+                order_ctg = 3;
+                break;
+            case "title":
+                order_ctg = 4;
+                break;
+            default:
+                order_ctg = 0;
+        }
 
-        return Database.GetLecturers(subjects, majors);
+        return Database.GetLecturers(subjects, majors, order_ctg);
     }
 
     // return requested lecturer
