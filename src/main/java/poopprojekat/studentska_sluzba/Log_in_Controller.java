@@ -23,7 +23,10 @@ public class Log_in_Controller {
             return "access denied";
 
         for (Cashed_user cu : cashed_users)
-            if (cu.id.equals(ri[1])) log_out_request(cu.token);
+            if (cu.id.equals(ri[1])) {
+                log_out_request(cu.token);
+                break;
+            }
             
         Cashed_user cu = new Cashed_user(new Random().nextLong(), ri[0], ri[1]);
         cashed_users.add(cu);
@@ -54,7 +57,7 @@ public class Log_in_Controller {
         return false;
     }
 
-    private class Cashed_user {
+    private static class Cashed_user {
 
         private long token;
         private String role;
