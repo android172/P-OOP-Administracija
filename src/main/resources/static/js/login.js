@@ -25,6 +25,9 @@ function redirect(){
 			document.cookie = "token="+token+";expires="+date.toUTCString()+";SameSite=Lax";
 			document.cookie = "index="+index+";expires="+date.toUTCString()+";SameSite=Lax";
 
+			username = document.getElementById("username").value;
+			document.cookie = "username="+username+";expires="+date.toUTCString()+";SameSite=Lax";
+
 			window.location.replace("/"+role+"?token="+token);	
 		}
 	}

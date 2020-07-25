@@ -9,6 +9,11 @@ function getIndex(){
     index = getCookie("index");
 }
 
+function displayUsername(){
+  username = getCookie("username");
+  document.getElementById("user-name").innerHTML = username;
+}
+
 function setIndex(newIndex){
     var date = new Date();
     date.setHours(date.getHours+6);
@@ -47,8 +52,14 @@ function addTokenToLinks(){
 	}
 }
 
-function makeRequest(requestStr, frameID){
-  var element = document.getElementById(frameID);
-  element.src = requestStr;
-  element.src += "?token="+token;
+
+function makeRequest(requestStr, frameID, params=[]){
+  var frame = document.getElementById(frameID);
+  var str = requestStr;
+  str += "?token="+token;
+  var len = params.length;
+  for(var i=0; i<len; i++){
+    str+=params[i][0]+"="+params[i][1];
+  }
+  frame.src = str;
 }

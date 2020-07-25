@@ -529,7 +529,7 @@ public class Database
             sqlt = "SELECT * FROM Students as s join Majors as m on s.majorId = m.majorId " +
                     "WHERE ";
         else
-            sqlt = "SELECT * FROM Students as s" +
+            sqlt = "SELECT * FROM Students as s " +
                     "WHERE ";
 
         if (dateOfBirth != null) {
