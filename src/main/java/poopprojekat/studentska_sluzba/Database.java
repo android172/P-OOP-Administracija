@@ -1,6 +1,7 @@
 package poopprojekat.studentska_sluzba;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
@@ -542,7 +543,7 @@ public class Database
         return false;
     }
 
-    public static boolean AddExamDeadline(String name, Date startdate, Date enddate, Date startapp, Date endapp) throws Exception
+    public static boolean AddExamDeadline(String name, LocalDate startdate, LocalDate enddate, LocalDate startapp, LocalDate endapp) throws Exception
     {
         sql = "INSERT INTO ExamDeadline (ExamName, StartDate, EndDate, StartApplicationDate, EndApplicationDate) " +
                 "VALUES ( '" + name + "', '" + startdate + "', '" + enddate + "', '" + startapp + "' " + endapp +" ) ";
@@ -565,7 +566,7 @@ public class Database
 
     // GET f-je --------------------------------------
 
-    public static ArrayList<Student> GetStudents(Date dateOfBirth[], String city[], String majorId[], int orderBy) {
+    public static ArrayList<Student> GetStudents(LocalDate dateOfBirth[], String city[], String majorId[], int orderBy) {
         ArrayList<Student> lista = new ArrayList<>();
         boolean uslov = false;
         ResultSet res;
@@ -1282,7 +1283,7 @@ public class Database
         return null;
     }
 
-    public static ArrayList<String> GetExamDeadlines(Date targetdate)
+    public static ArrayList<String> GetExamDeadlines(LocalDate targetdate)
     {
         if(targetdate == null)
             sql = "SELECT * FROM ExamDeadline ";
@@ -1292,7 +1293,7 @@ public class Database
                     "WHERE StartDate <= '" + targetdate + "' AND EndDate >= '" + targetdate + "' ";
 
         ResultSet res = null;
-        ArrayList<String> names = null;
+        ArrayList<String> names = new ArrayList<>();
 
         try
         {
