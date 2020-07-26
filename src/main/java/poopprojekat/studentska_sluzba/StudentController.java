@@ -1,6 +1,6 @@
 package poopprojekat.studentska_sluzba;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,12 +53,12 @@ public class StudentController {
             @RequestParam("city") String city, @RequestParam("major") String major, @RequestParam("order_by") String order_by) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         // format picked dates
-        Date dates[] = null;
+        LocalDate dates[] = null;
         if (!date_of_birth.equals("all")) {
             String sd[] = date_of_birth.split("\\+");
-            dates = new Date[sd.length];
+            dates = new LocalDate[sd.length];
             for (int i = 0; i < sd.length; i++)
-                dates[i] = Date.valueOf(sd[i]);
+                dates[i] = LocalDate.parse(sd[i]);
         }
         // format picked cities
         String cities[] = null;
@@ -124,7 +124,7 @@ public class StudentController {
             @RequestParam("jmbg") String jmbg, @RequestParam("major_id") String major_id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         try {
-            Student new_student = new Student(first_name, last_name, new Index(index_num), Date.valueOf(date_of_birth),
+            Student new_student = new Student(first_name, last_name, new Index(index_num), LocalDate.parse(date_of_birth),
                     city, jmbg, major_id);
             if (Database.AddStudent(new_student) && Database.AddUser(new User(index_num, jmbg, "Student"), index_num)) {
                 return "Student was added";
@@ -158,7 +158,7 @@ public class StudentController {
                 updated_student.setIndex(new Index(index_num));
             if (date_of_birth == "")
                 updated_student.setDateOfBirth(null);
-            else updated_student.setDateOfBirth(Date.valueOf(date_of_birth));
+            else updated_student.setDateOfBirth(LocalDate.parse(date_of_birth));
             if (city == "")
                 updated_student.setCity(null);
             else updated_student.setCity(city);
@@ -193,7 +193,7 @@ public class StudentController {
     }
 
    //  // private methods
-   private String[][] filter_students_from_database(Date date_of_birth[], String city[], String major[], int order_by) {
+   private String[][] filter_students_from_database(LocalDate date_of_birth[], String city[], String major[], int order_by) {
        // get required data from database
        ArrayList<Student> requested_students = Database.GetStudents(date_of_birth, city, major, order_by);
        String[][] ret_s;

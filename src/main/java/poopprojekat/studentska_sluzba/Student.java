@@ -1,6 +1,6 @@
 package poopprojekat.studentska_sluzba;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Student
@@ -9,7 +9,7 @@ public class Student
     private String firstName;
     private String lastName;
     private Index index;
-    private Date dateOfBirth;        // Godina rodjenja - 1900 (zbog tabele)
+    private LocalDate dateOfBirth;        // Godina rodjenja - 1900 (zbog tabele)
     private String city;
     private String jmbg;
     private String majorname;
@@ -27,7 +27,7 @@ public class Student
         lastName = lname;
         index = brind;
     }
-    public Student(String fname, String lname, Index brind, Date dob, String city, String jmbg, String majorId)       // Za dodavanje studenta u bazu
+    public Student(String fname, String lname, Index brind, LocalDate dob, String city, String jmbg, String majorId)       // Za dodavanje studenta u bazu
     {
         this(fname, lname, brind);
         dateOfBirth = dob;
@@ -37,7 +37,7 @@ public class Student
         setMajorName();
     }
 
-    public Student(String fname, String lname, Index brind, Date dob)
+    public Student(String fname, String lname, Index brind, LocalDate dob)
     {
         this(fname, lname, brind);
         dateOfBirth = dob;
@@ -72,7 +72,7 @@ public class Student
     public Index getIndex() {
         return index;
     }
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
     public String getCity() {
@@ -97,7 +97,7 @@ public class Student
     public void setCity(String city) {
         this.city = city;
     }
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
     public void setIndex(Index index) {

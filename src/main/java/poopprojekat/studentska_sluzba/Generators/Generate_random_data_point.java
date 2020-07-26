@@ -1,6 +1,5 @@
 package poopprojekat.studentska_sluzba.Generators;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
@@ -27,7 +26,7 @@ public class Generate_random_data_point {
         String jmbg = Birthday_gen.get_random_jmbg(rng_d);
         try {
             return new Student(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(),
-                    new Index(rng_d.getYear() + 19), Date.valueOf(rng_d), Name_gen.get_random_city(), jmbg,
+                    new Index(rng_d.getYear() + 19), rng_d, Name_gen.get_random_city(), jmbg,
                     random_major_id());
         } catch (Exception e) {
             e.printStackTrace();
