@@ -3,6 +3,7 @@ package poopprojekat.studentska_sluzba;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 
@@ -439,7 +440,7 @@ public class Database
 
     // ADD f-je -----------------------------------------------------
 
-    public static boolean AddStudent(Student s) throws Exception       // JMBG and indexNum is unique
+    public static void AddStudent(Student s) throws Exception       // JMBG and indexNum is unique
     {
         sql = "INSERT INTO Students (FirstName, LastName, IndexNum, JMBG, DateOfBirth, City, MajorId) " +
                 "VALUES ( '" + s.getFirstName() + "', '" + s.getLastName() + "', '" + s.getIndex() + "', '" + s.getJmbg() + "', '" + s.getDateOfBirth() + "', '" + s.getCity() + "', '" + s.getMajorId() + "' )";
@@ -447,7 +448,6 @@ public class Database
         {
             stat.executeUpdate(sql);
             System.out.println("Student added");
-            return true;
         }
         catch (SQLException throwables)
         {
@@ -455,11 +455,9 @@ public class Database
                 throw new Exception("Index number or JMBG is already in table Students");
             throwables.printStackTrace();
         }
-
-        return false;
     }
 
-    public static boolean AddSubject(Subject s) throws Exception       // SubjectId is unique
+    public static void AddSubject(Subject s) throws Exception       // SubjectId is unique
     {
         sql = "INSERT INTO Subjects (SubjectName, SubjectId, Year, ESPB, MajorId, LectId) " +
                 "VALUES ( '" + s.subjectName + "', '" + s.subjectId + "', '" + s.year + "', '" + s.espb +"', '" + s.majorid +"', '" + s.lectid +"' ) ";
@@ -468,7 +466,6 @@ public class Database
         {
             stat.executeUpdate(sql);
             System.out.println("Subject added");
-            return true;
         }
         catch (SQLException throwables)
         {
@@ -476,11 +473,9 @@ public class Database
                 throw new Exception("SubjectId is already in table Subjects");
             throwables.printStackTrace();
         }
-
-        return false;
     }
 
-    public static boolean AddLecturer(Lecturer p) throws Exception       // LectId is unique
+    public static void AddLecturer(Lecturer p) throws Exception       // LectId is unique
     {
         sql = "INSERT INTO Lecturers (LectId, FirstName, LastName, Title) " +
                 "VALUES ( '" + p.getLectId() + "', '" + p.getFirstName() +"', '" + p.getLastName() +"', '" + p.getTitle() + "' )";
@@ -489,7 +484,6 @@ public class Database
         {
             stat.executeUpdate(sql);
             System.out.println("Lecturer added");
-            return true;
         }
         catch (SQLException throwables)
         {
@@ -497,11 +491,9 @@ public class Database
                 throw new Exception("LectId is already in table Lecturers");
             throwables.printStackTrace();
         }
-
-        return false;
     }
 
-    public static boolean AddMajor(Major m) throws Exception        // MajorId is unique
+    public static void AddMajor(Major m) throws Exception        // MajorId is unique
     {
         sql = "INSERT INTO Majors (MajorId, MajorName) " +
                 "VALUES ( '" + m.id + "', '" + m.name +"' ) ";
@@ -510,7 +502,6 @@ public class Database
         {
             stat.executeUpdate(sql);
             System.out.println("Major added");
-            return true;
         }
         catch (SQLException throwables)
         {
@@ -518,11 +509,9 @@ public class Database
                 throw new Exception("MajorId is already in table Majors");
             throwables.printStackTrace();
         }
-
-        return false;
     }
 
-    public static boolean AddUser(User user, String id) throws Exception
+    public static void AddUser(User user, String id) throws Exception
     {
         sql = "INSERT INTO Users (Username, Password, Role, UniqueId) " +
                 "VALUES ( '" + user.username + "', '" + user.password + "', '" + user.role + "', '" + id + "' ) ";
@@ -531,7 +520,6 @@ public class Database
         {
             stat.executeUpdate(sql);
             System.out.println("User added");
-            return true;
         }
         catch (SQLException throwables)
         {
@@ -539,11 +527,9 @@ public class Database
                 throw new Exception("Username is already in table Users");
             throwables.printStackTrace();
         }
-
-        return false;
     }
 
-    public static boolean AddExamDeadline(String name, LocalDate startdate, LocalDate enddate, LocalDate startapp, LocalDate endapp) throws Exception
+    public static void AddExamDeadline(String name, LocalDate startdate, LocalDate enddate, LocalDate startapp, LocalDate endapp) throws Exception
     {
         sql = "INSERT INTO ExamDeadline (ExamName, StartDate, EndDate, StartApplicationDate, EndApplicationDate) " +
                 "VALUES ( '" + name + "', '" + startdate + "', '" + enddate + "', '" + startapp + "' " + endapp +" ) ";
@@ -552,7 +538,6 @@ public class Database
         {
             stat.executeUpdate(sql);
             System.out.println("ExamDeadline added");
-            return true;
         }
         catch (SQLException throwables)
         {
@@ -560,8 +545,24 @@ public class Database
                 throw new Exception("ExamName is already in table ExamDeadline");
             throwables.printStackTrace();
         }
+    }
 
-        return false;
+    public static void ApplyForExam(Index index, String ExamId, int price) throws Exception
+    {
+        sql = "INSERT INTO ExamApplication (IndexNum, ExamId, Price) " +
+                "VALUES ( '" + index + "', ' " + ExamId + "', '" + price + "' ) ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+            System.out.println("Exam applied");
+        }
+        catch (SQLException throwables)
+        {
+            if(throwables.getErrorCode() == 1062)
+                throw new Exception("Exam is already applied for");
+            throwables.printStackTrace();
+        }
     }
 
     // GET f-je --------------------------------------
@@ -653,7 +654,7 @@ public class Database
                 case 4:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getDate("DateOfBirth"));
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getDate("DateOfBirth").toLocalDate());
                         lista.add(s);
                     }while (res.next());
                     break;
@@ -710,7 +711,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")), res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getString("MajorId"));
+            s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")), res.getDate("DateOfBirth").toLocalDate(), res.getString("City"), res.getString("JMBG"), res.getString("MajorId"));
 
         }
         catch (SQLException throwables)
@@ -740,7 +741,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            s = new Student(res.getString(  "FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")) , res.getDate("DateOfBirth"), res.getString("City"), res.getString("JMBG"), res.getString("MajorId"));
+            s = new Student(res.getString(  "FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")) , res.getDate("DateOfBirth").toLocalDate(), res.getString("City"), res.getString("JMBG"), res.getString("MajorId"));
 
         }
         catch (SQLException throwables)
@@ -1315,6 +1316,38 @@ public class Database
         return names;
     }
 
+    public static ArrayList<Exam> GetAvailableExams(Index index, String examName) throws Exception
+    {
+        if(index != null && examName != null)
+            sql = "SELECT * FROM Exams as e join ExamDeadline as ed on (ed.ExamName = '" + examName + "' AND ed.StartDate <= e.ExamDate AND ed.EndDate >= e.ExamDate) " +
+                "join AppliedToListen as al on e.SubjectId = al.SubjectId " +
+                "WHERE al.IndexNum = '" + index + "' AND al.DatePassed is null ";
+        else
+            throw new Exception("Index or ExamName is null");
+
+        ResultSet res = null;
+        ArrayList<Exam> available = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                available.add(new Exam(res.getString("e.ExamId"), res.getString("e.SubjectId"), res.getString("e.LectId"), res.getDate("e.ExamDate").toLocalDate()));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return available;
+    }
+
     // Remove f-je
 
     public static void DeleteStudent(Index index) throws Exception
@@ -1752,5 +1785,30 @@ public class Database
         return majors;
     }
 
+    public static ArrayList<Exam> GetAllExams()
+    {
+        sql = "SELECT * FROM Exams ";
+        ResultSet res = null;
+        ArrayList<Exam> exams = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                exams.add(new Exam(res.getString("e.ExamId"), res.getString("e.SubjectId"), res.getString("e.LectId"), res.getDate("e.ExamDate").toLocalDate()));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return exams;
+    }
 
 }
