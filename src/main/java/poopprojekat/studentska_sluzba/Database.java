@@ -136,6 +136,7 @@ public class Database
             CreateTableExamApplications();
             CreateTableAppliedToListen();
             CreateTableStudentStatus();
+            CreateExamDeadline();
         }
         catch (SQLException throwables)
         {
@@ -341,6 +342,30 @@ public class Database
         }
     }
 
+    private void CreateExamDeadline()
+    {
+        sql = "CREATE TABLE IF NOT EXISTS ExamDeadline " +
+                "( id INTEGER not NULL AUTO_INCREMENT, " +
+                "ExamName VARCHAR(20) not NULL, " +
+                "StartDate DATE not NULL, " +
+                "EndDate DATE not NULL," +
+                "StartApplicationDate DATE not NULL," +
+                "EndApplicationDate DATE not NULL," +
+                "PRIMARY KEY (id, ExamName) ) ENGINE=InnoDB ";
+
+        System.out.println("Creating table 'StudentStatus'");
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("Table 'StudentStatus' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating table 'StudentStatus' failed");
+            throwables.printStackTrace();
+        }
+    }
+
     private void CreateTableLecturers()
     {
         sql = "CREATE TABLE IF NOT EXISTS Lecturers " +
@@ -511,6 +536,27 @@ public class Database
         {
             if(throwables.getErrorCode() == 1062)
                 throw new Exception("Username is already in table Users");
+            throwables.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static boolean AddExamDeadline(String name, Date startdate, Date enddate, Date startapp, Date endapp) throws Exception
+    {
+        sql = "INSERT INTO ExamDeadline (ExamName, StartDate, EndDate, StartApplicationDate, EndApplicationDate) " +
+                "VALUES ( '" + name + "', '" + startdate + "', '" + enddate + "', '" + startapp + "' " + endapp +" ) ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+            System.out.println("ExamDeadline added");
+            return true;
+        }
+        catch (SQLException throwables)
+        {
+            if(throwables.getErrorCode() == 1062)
+                throw new Exception("ExamName is already in table ExamDeadline");
             throwables.printStackTrace();
         }
 
@@ -1236,6 +1282,38 @@ public class Database
         return null;
     }
 
+    public static ArrayList<String> GetExamDeadlines(Date targetdate)
+    {
+        if(targetdate == null)
+            sql = "SELECT * FROM ExamDeadline ";
+
+        else
+            sql = "SELECT * FROM ExamDeadline " +
+                    "WHERE StartDate <= '" + targetdate + "' AND EndDate >= '" + targetdate + "' ";
+
+        ResultSet res = null;
+        ArrayList<String> names = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                names.add(res.getString("ExamName"));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return names;
+    }
+
     // Remove f-je
 
     public static void DeleteStudent(Index index) throws Exception
@@ -1311,6 +1389,22 @@ public class Database
         {
             if(stat.executeUpdate(sql) == 0)
                 throw new Exception("User doesn't exist");
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void DeleteExamDeadline(String name) throws Exception
+    {
+        sql = "DELETE FROM ExamDeadline " +
+                "WHERE ExamName = '" + name + "' ";
+
+        try
+        {
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("ExamName doesn't exist");
         }
         catch (SQLException throwables)
         {
@@ -1656,4 +1750,6 @@ public class Database
 
         return majors;
     }
+
+
 }
