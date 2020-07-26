@@ -1348,6 +1348,60 @@ public class Database
         return available;
     }
 
+    public static int GetAttempts(Index index, String subjectId) throws Exception
+    {
+        if(index != null && subjectId != null)
+            sql = "SELECT * FROM AppliedToListen " +
+                    "WHERE IndexNum = '" + index + "' AND SubjectId = '" + subjectId + "' ";
+        else
+            throw new Exception("Index or SubjectId is null");
+
+        ResultSet res = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                throw new Exception("No results");
+
+            return res.getInt("Attempts");
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    public static String IfBudget(Index index, int currectYear) throws Exception
+    {
+        if(index != null && currectYear != 0)
+            sql = "SELECT * FROM StudentStatus " +
+                    "WHERE IndexNum = '" + index + "' AND CurrentYear = " + currectYear + " ";
+        else
+            throw new Exception("Index or currentYear is null");
+
+        ResultSet res = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                throw new Exception("No results");
+
+            return res.getString("Status");
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return null;
+    }
+
     // Remove f-je
 
     public static void DeleteStudent(Index index) throws Exception
