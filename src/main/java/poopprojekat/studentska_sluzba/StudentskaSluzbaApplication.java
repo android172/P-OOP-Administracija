@@ -14,6 +14,7 @@ public class StudentskaSluzbaApplication
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
         Database db = new Database("testing");
 
+<<<<<<< HEAD
         try
         {
             db.TestDummy();
@@ -22,6 +23,17 @@ public class StudentskaSluzbaApplication
         {
             e.printStackTrace();
         }
+=======
+
+//        try
+//        {
+//            db.TestDummy();
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+>>>>>>> f6e7f22fcbc5ce9f6c90c065d2ec6e32c61f4737
 
 //        Subject s = new Subject("M002");
 //        s = Database.GetSubject(s);
