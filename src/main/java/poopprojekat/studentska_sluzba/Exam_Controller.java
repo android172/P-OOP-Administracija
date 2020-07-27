@@ -48,14 +48,16 @@ public class Exam_Controller {
 
     @GetMapping("/get_all_exams")
     public ArrayList<Exam> get_all_exams(@RequestParam("token") long token) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } })) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
         return Database.GetAllExams();
     }
-    
+
     @GetMapping("/get_exams")
     public ArrayList<Exam> get_exams(@RequestParam("token") long token, @RequestParam("student") String index,
             @RequestParam("exam_deadline") String exam_deadline) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Student", index } })) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Student", index } }))
+            return null;
         try {
             return Database.GetAvailableExams(new Index(index), exam_deadline);
         } catch (Exception e) {
@@ -66,14 +68,25 @@ public class Exam_Controller {
 
     // TO DO: Prijavi dati ispit
     @GetMapping("/apply_for_exam")
-    public String apply_for_exam(@RequestParam("token") long token, @RequestParam("student") String index, @RequestParam("exam") String exam_id, @RequestParam("payed") int payed) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } })) return null;
-        if (Database.IfBudget(new Index(index), LocalDate.now().getYear()) != "2" || Database.GetAttempts(new Index(index), exam_id) > 1) {
-
+    public String apply_for_exam(@RequestParam("token") long token, @RequestParam("student") String index,
+            @RequestParam("exam") String exam_id, @RequestParam("payed") int payed) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
+            return null;
+        try {
+            if (Database.IfBudget(new Index(index), LocalDate.now().getYear()) == false
+                    || Database.GetAttempts(new Index(index), exam_id) > 1) {
+                if (payed == 2000)
+                    return "The application has been completed successfully";
+                return "Payed amount is incorrect";
+            } else {
+                if (payed == 0)
+                    return "The application has been completed successfully";
+                return "Payed amount is incorrect";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Application was not completed because of the following exception: " + e.getMessage();
         }
-        
-
-        Database.ApplyForExam(index, exam_id, price);
     }
 
     // Student Controller

@@ -3,7 +3,6 @@ package poopprojekat.studentska_sluzba;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 
