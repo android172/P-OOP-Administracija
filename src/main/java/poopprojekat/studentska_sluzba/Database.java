@@ -139,6 +139,7 @@ public class Database
             CreateTableAppliedToListen();
             CreateTableStudentStatus();
             CreateExamDeadline();
+            CreateApplyForExamTrigger();
         }
         catch (SQLException throwables)
         {
@@ -414,6 +415,28 @@ public class Database
         }
     }
 
+    private void CreateApplyForExamTrigger()
+    {
+        sql = "CREATE TRIGGER UpdateAttempts AFTER INSERT ON ExamApplication " +
+                "FOR EACH ROW " +
+                "UPDATE AppliedToListen as al SET Attempts = Attempts + 1 " +
+                "WHERE (SELECT IndexNum FROM inserted as i" +
+                        "WHERE al.IndexNum = i.IndexNum)";
+
+        System.out.println("Creating trigger 'ApplyForExamTrigger'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ApplyForExamTrigger' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ApplyForExamTrigger' failed");
+            throwables.printStackTrace();
+        }
+    }
+
     // End of Create -----------------------------------------------
 
     public static void DropDatabase(String name)
@@ -624,7 +647,7 @@ public class Database
                 sqlt += "ORDER BY s.IndexNum ASC ";
                 break;
             case 2:
-                sqlt += "ORDER BY s.Firstname ASC ";
+                sqlt += "ORDER BY s.Firstname ASC ";//
                 break;
             case 3:
                 sqlt += "ORDER BY s.Lastname ASC ";
@@ -654,28 +677,28 @@ public class Database
                 case 4:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getDate("DateOfBirth").toLocalDate());
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")), res.getDate("DateOfBirth").toLocalDate());
                         lista.add(s);
                     }while (res.next());
                     break;
                 case 5:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getString("City"), new Index(res.getNString("IndexNum")));
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getString("City"), new Index(res.getString("IndexNum")));
                         lista.add(s);
                     }while (res.next());
                     break;
                 case 6:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getString("s.MajorId"));
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")), res.getString("s.MajorId"));
                         lista.add(s);
                     }while (res.next());
                     break;
                 default:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")));
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")));
                         lista.add(s);
                     }while (res.next());
                     break;
@@ -1348,13 +1371,13 @@ public class Database
         return available;
     }
 
-    public static int GetAttempts(Index index, String subjectId) throws Exception
+    public static int GetAttempts(Index index, String examId) throws Exception
     {
-        if(index != null && subjectId != null)
-            sql = "SELECT * FROM AppliedToListen " +
-                    "WHERE IndexNum = '" + index + "' AND SubjectId = '" + subjectId + "' ";
+        if(index != null && examId != null)
+            sql = "SELECT * FROM AppliedToListen as al join Exams as e on al.SubjectId = e.ExamId " +
+                    "WHERE al.IndexNum = '" + index + "' AND e.ExamId = '" + examId + "' ";
         else
-            throw new Exception("Index or SubjectId is null");
+            throw new Exception("Index or ExamId is null");
 
         ResultSet res = null;
 
@@ -1365,7 +1388,7 @@ public class Database
             if(!res.first())
                 throw new Exception("No results");
 
-            return res.getInt("Attempts");
+            return res.getInt("al.Attempts");
         }
         catch (SQLException throwables)
         {
@@ -1375,7 +1398,7 @@ public class Database
         return -1;
     }
 
-    public static String IfBudget(Index index, int currectYear) throws Exception
+    public static boolean IfBudget(Index index, int currectYear) throws Exception
     {
         if(index != null && currectYear != 0)
             sql = "SELECT * FROM StudentStatus " +
@@ -1392,14 +1415,17 @@ public class Database
             if(!res.first())
                 throw new Exception("No results");
 
-            return res.getString("Status");
+            if(res.getString("Status") == "Budzet")
+                return true;
+            else if(res.getString("Status") == "Samofinansirajuci")
+                return false;
         }
         catch (SQLException throwables)
         {
             throwables.printStackTrace();
         }
 
-        return null;
+        return false;
     }
 
     // Remove f-je
