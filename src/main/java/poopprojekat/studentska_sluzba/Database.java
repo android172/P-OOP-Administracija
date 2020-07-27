@@ -654,28 +654,28 @@ public class Database
                 case 4:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getDate("DateOfBirth").toLocalDate());
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")), res.getDate("DateOfBirth").toLocalDate());
                         lista.add(s);
                     }while (res.next());
                     break;
                 case 5:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getString("City"), new Index(res.getNString("IndexNum")));
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), res.getString("City"), new Index(res.getString("IndexNum")));
                         lista.add(s);
                     }while (res.next());
                     break;
                 case 6:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")), res.getString("s.MajorId"));
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")), res.getString("s.MajorId"));
                         lista.add(s);
                     }while (res.next());
                     break;
                 default:
                     do
                     {
-                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getNString("IndexNum")));
+                        s = new Student(res.getString("FirstName"), res.getString("LastName"), new Index(res.getString("IndexNum")));
                         lista.add(s);
                     }while (res.next());
                     break;

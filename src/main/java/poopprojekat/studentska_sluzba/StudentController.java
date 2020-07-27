@@ -126,10 +126,11 @@ public class StudentController {
         try {
             Student new_student = new Student(first_name, last_name, new Index(index_num), LocalDate.parse(date_of_birth),
                     city, jmbg, major_id);
-            if (Database.AddStudent(new_student) && Database.AddUser(new User(index_num, jmbg, "Student"), index_num)) {
+            return "aaaaaaaaa";
+            /*if (Database.AddStudent(new_student) && Database.AddUser(new User(index_num, jmbg, "Student"), index_num)) {
                 return "Student was added";
             } else
-                return "Database related error occurred; Student could not be added";
+                return "Database related error occurred; Student could not be added";*/
         } catch (Exception e) {
             e.printStackTrace();
             return "Student could not be added because of the following error: " + e.getMessage();

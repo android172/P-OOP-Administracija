@@ -1,35 +1,38 @@
-//var th = [];
-//var hasHeaders = false;
 var hasData = false;
-var initFill = false;
 
 function loadDataToTable(){
 	if(!hasData){
 		document.getElementById("search").submit();
 		hasData = true;
 	}else {
-		fillTable();
+		parseData();
 	}
 }
 
-function fillTable(){
-	if(!hasData || !initFill){
-		initFill = true;
-		return;
-	}
+var oData = [];
 
+function parseData(){
 	var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
+	oData = JSON.parse(dataStr);
+	fillTable();
+}
+
+function fillTable(asc=true){
+	var data = [];
+	if(asc)
+		data = oData.slice(1);
+	else
+		data = oData.slice(1).reverse();
 
 	var table = document.getElementById("data");
 	var header = document.createElement("tr");
 
-	var data = JSON.parse(dataStr);
     var rows = data.length;
     var cols = data[0].length;
 
 	for(var i=0; i<cols; i++){
 		var head = document.createElement("th");
-		head.innerHTML = data[0][i];
+		head.innerHTML = oData[0][i];
 		header.appendChild(head);
 	}
 
@@ -37,7 +40,7 @@ function fillTable(){
 
 	if(rows>0){
 	    table.appendChild(header);
-		for(var i=1; i<rows; i++){
+		for(var i=0; i<rows; i++){
 			var row = table.insertRow();
 			for(var j=0; j<cols; j++){
 				var cell = row.insertCell();

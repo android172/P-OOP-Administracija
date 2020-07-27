@@ -46,11 +46,13 @@ public class MajorsController {
 
         try {
             Major new_major = new Major(Database.GetEmptyId("Majors"), name);
+            return "aaaaaa";
+            /*
             if (Database.AddMajor(new_major))
                 return "Major successfully added";
             else {
                 return "Database related error occurred; Major could not be added";
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
             return "Student could not be added because of the following error: " + e.getMessage();
