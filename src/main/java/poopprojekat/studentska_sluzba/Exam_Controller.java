@@ -21,9 +21,11 @@ public class Exam_Controller {
     public String add_exam_deadline(@RequestParam("token") long token, @RequestParam("name") String name,
             @RequestParam("start_date") String start_date, @RequestParam("end_date") String end_date,
             @RequestParam("start_app_date") String start_app_date, @RequestParam("end_app_date") String end_app_date) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } })) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
         try {
-            Database.AddExamDeadline(name, LocalDate.parse(start_date), LocalDate.parse(end_date), LocalDate.parse(start_app_date), LocalDate.parse(end_app_date));
+            Database.AddExamDeadline(name, LocalDate.parse(start_date), LocalDate.parse(end_date),
+                    LocalDate.parse(start_app_date), LocalDate.parse(end_app_date));
             return "Exam deadline was successfully added";
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,7 +35,8 @@ public class Exam_Controller {
 
     @GetMapping("/delete_exam_deadline")
     public String delete_exam_deadline(@RequestParam("token") long token, @RequestParam("name") String name) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } })) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
         try {
             Database.DeleteExamDeadline(name);
             return "Exam deadline was successfully removed";
@@ -43,18 +46,34 @@ public class Exam_Controller {
         }
     }
 
-
-    // TO DO: Daj listu ispita koje moze da prijavi dati student
+    @GetMapping("/get_all_exams")
+    public ArrayList<Exam> get_all_exams(@RequestParam("token") long token) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } })) return null;
+        return Database.GetAllExams();
+    }
+    
     @GetMapping("/get_exams")
-    public String get_exams(@RequestParam("token") long token, @RequestParam("student") String index, @RequestParam("exam_deadline") String exam_deadline) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}, {"Student", index}})) return null;
-        return null;
+    public ArrayList<Exam> get_exams(@RequestParam("token") long token, @RequestParam("student") String index,
+            @RequestParam("exam_deadline") String exam_deadline) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Student", index } })) return null;
+        try {
+            return Database.GetAvailableExams(new Index(index), exam_deadline);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // TO DO: Prijavi dati ispit
     @GetMapping("/apply_for_exam")
-    public void apply_for_exam(@RequestParam("token") long token, @RequestParam("student") String index, @RequestParam("exam") String exam_id) {
+    public String apply_for_exam(@RequestParam("token") long token, @RequestParam("student") String index, @RequestParam("exam") String exam_id, @RequestParam("payed") int payed) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } })) return null;
+        if (Database.IfBudget(new Index(index), LocalDate.now().getYear()) != "2" || Database.GetAttempts(new Index(index), exam_id) > 1) {
+
+        }
         
+
+        Database.ApplyForExam(index, exam_id, price);
     }
 
     // Student Controller

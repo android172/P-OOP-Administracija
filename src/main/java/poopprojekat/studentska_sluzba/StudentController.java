@@ -126,10 +126,9 @@ public class StudentController {
         try {
             Student new_student = new Student(first_name, last_name, new Index(index_num), LocalDate.parse(date_of_birth),
                     city, jmbg, major_id);
-            if (Database.AddStudent(new_student) && Database.AddUser(new User(index_num, jmbg, "Student"), index_num)) {
-                return "Student was added";
-            } else
-                return "Database related error occurred; Student could not be added";
+            Database.AddStudent(new_student);
+            Database.AddUser(new User(index_num, jmbg, "Student"), index_num);
+            return "Student was added";
         } catch (Exception e) {
             e.printStackTrace();
             return "Student could not be added because of the following error: " + e.getMessage();
@@ -200,15 +199,15 @@ public class StudentController {
 
        // we will append data with bonus column only if we chose to sort by said column,
        // otherwise only first_name, last_name and index columns are used
-       if (order_by != 0) {
+       if (order_by > 3) {
            ret_s = new String[requested_students.size()+1][4];
            switch (order_by) {
-               case 3:
+               case 4:
                    for (int i = 0; i < ret_s.length-1; i++)
                        ret_s[i+1][3] = requested_students.get(i).getDateOfBirth().toString();
                    ret_s[0][3] = "Datum rodjenja";
                    break;
-               case 4:
+               case 5:
                    for (int i = 0; i < ret_s.length-1; i++)
                        ret_s[i+1][3] = requested_students.get(i).getCity();
                    ret_s[0][3] = "Grad";

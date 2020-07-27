@@ -92,9 +92,9 @@ public class LecturerController {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         Lecturer new_lecturer = new Lecturer(first_name, last_name, title, lect_id);
         try {
-            if (Database.AddLecturer(new_lecturer) && Database.AddUser(new User(last_name + lect_id, lect_id, "Lecturer"), lect_id))
-                return "Lecturer was added";
-            return "An database level error occurred; Lecturer could not be added";
+            Database.AddLecturer(new_lecturer);
+            Database.AddUser(new User(last_name + lect_id, lect_id, "Lecturer"), lect_id);
+            return "Lecturer was added";
         } catch (Exception e) {
             e.printStackTrace();
             return "Lecturer could not be added because of the following error: " + e.getMessage();
