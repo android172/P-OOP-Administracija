@@ -297,6 +297,10 @@ button {
     width: 100%;
 }
 
+.labeled {
+	margin-top: 5px;
+}
+
 #dataframe {
 	position: absolute;
 	width: 400px;
