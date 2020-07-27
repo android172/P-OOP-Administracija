@@ -4,69 +4,99 @@
 	<title>Studentska sluzba</title>
 	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
 	<link rel="stylesheet" type="text/css" href="../static/css/data-style.css" th:href="@{/css/data-style.css}"/>
+	<script type="text/javascript" language="Javascript" src="../static/js/loader.js" th:src="@{/js/loader.js}"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 </head>
-<body>
+<body onload="getToken(); displayUsername(); addTokenToForm('search'); /*addTokenToForm('newform');*/ addTokenToLinks(); submitSearch();">
 	<div id="wrapper">
 		<header>
-			<h1><a href="admin">Admin</a> / Smerovi</h1>
+			<h1><a href="admin" class="tokenify">Admin</a> / Smerovi</h1>
 			<div id="user">
-				<p>Ime Prezime</p>
+				<p id="user-name">Ime Prezime</p>
 				<img src="../images/user-img.bmp" id="user-img">
+				<div id="user-options">
+					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
+					<button type="button" onclick="makeRequest('/logout_req','sendframe'); window.location.replace('/');">Log out</button>
+				</div>
 			</div>
 		</header>
 		<div id="content">
 			<div id="content-header">
-				<form action="/get_students" id="search" method="get" target="dataframe">
-					<input type="text" id="searchbar" value="" placeholder="Search...">
+				<form action="/get_all_majors" id="search" method="get" target="dataframe">
+					<input type="text" id="searchbar" value="" placeholder="Search..." onchange="search(this, 'data');">
 
 					<div class="form-element">
-						<label for="date_of_birth">Datum rodjenja:</label>
-						<select name="date_of_birth" onchange="this.form.submit()">
-							<option>all</option>
-						</select>
+						<label class="select-label">Rastuci poredak:</label>
+						<input type="checkbox" class="labeled" onchange="fillTable(this.checked);" checked>
 					</div>
 
-					<div class="form-element">
-						<label for="city">Grad:</label>
-						<select type="text" name="city" onchange="this.form.submit()">
-							<option>all</option>
-						</select>
+					<div class="form-element end">
+						<button  type="button" onclick="toggleElementById('new-element');" id="new-button">+</button>
 					</div>
-
-					<div class="form-element">
-						<label for="major">Smer:</label>
-						<select type="text" name="major" onchange="this.form.submit()">
-							<option>all</option>
-						</select>
-					</div>
-
-					<div class="form-element">
-						<label for="order_by">Redosled:</label>
-						<select type="text" name="order_by" value="birthyear-asc" onchange="this.form.submit()">
-							<option>birthyear-asc</option>
-						</select>
-					</div>
-					
-					<input type="submit" value="S">
 				</form>
-				<button onclick="showAddStudentForm();">+</button>
 			</div>
-			<table>
+			<table id="data">
 				<tr>
 					<th>Ime</th><th>Prezime</th><th>Indeks</th>
 				</tr>
-
 				<tr>
-					<td>Danijel</td><td>Andjelkovic</td><td>32/2018</td>
+					<td>Ime</td><td>Prezime</td><td>Indeks</td>
 				</tr>
-
 			</table>
 		</div>
 
-		 <iframe src="login" name="dataframe" id="dataframe" title="data"></iframe> 
+		<div id="new-element">
+			<div class="flex-col size-max">
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7</div>
+				<br>
+				<form action="/add_student" id="newform" method="get" target="sendframe" class="pad-medium wide flex-col">
+					<div class="flex-row wide pad-light">
+						<label for="first_name">Ime:</label><input type="text" name="first_name">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="last_name">Prezime:</label><input type="text" name="last_name">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="index_num">Index:</label><input type="text" name="index_num">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="date_of_birth">Datum rodjenja:</label><input type="date" name="date_of_birth">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="city">Grad:</label><input type="text" name="city">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="jmbg">JMBG:</label><input type="text" name="jmbg">
+					</div>
+
+					<div class="flex-row wide pad-light">
+						<label for="major_id">Smer:</label>
+						<div class="dropdown no-auto-submit">
+							<input name="major_id" value="" readonly>
+							<div class="dd-options" id="new-major-options">
+							</div>
+						</div>
+					</div>
+				</form>
+				<div class="flex-row wide pad-medium">
+					<button type="submit" form="newform">Submit</button>
+					<button type="reset" form="newform">Clear</button>
+				</div>
+			</div>
+		</div>
+
+		<iframe src="" name="sendframe" id="sendframe"></iframe>
+		<iframe src="" name="dataframe" id="dataframe" onload="parseData();"></iframe>
 	</div>
 </body>
 </html>

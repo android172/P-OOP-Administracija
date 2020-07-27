@@ -20,7 +20,7 @@
 		}
 	</script>
 </head>
-<body onload="getToken(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); loadDataToTable(); makeRequest('/get_student_filters','sendframe'); initGetFilters('sendframe');">
+<body onload="getToken(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); setCustomTable(true); submitSearch(); makeRequest('/get_student_filters','sendframe'); initGetFilters('sendframe');">
 	<div id="wrapper">
 		<header>
 			<h1><a href="admin" class="tokenify">Admin</a> / Studenti</h1>
@@ -92,7 +92,7 @@
 
 					<div class="form-element">
 						<label class="select-label">Rastuci poredak:</label>
-						<input type="checkbox" class="labeled" onchange="fillTable(this.checked);">
+						<input type="checkbox" class="labeled" onchange="fillTable(this.checked);" checked>
 					</div>
 
 					<div class="form-element end">

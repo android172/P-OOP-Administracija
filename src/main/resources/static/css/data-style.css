@@ -307,7 +307,7 @@ button {
 	height: 400px;
 	right: 0px;
     bottom: 0px;
-    visibility: hidden;
+    visibility: visible;
 }
 
 #sendframe {
@@ -316,7 +316,7 @@ button {
 	height: 400px;
 	left: 0px;
     bottom: 0px;
-    visibility: hidden;
+    visibility: visible;
 }
 
 .button-delete {

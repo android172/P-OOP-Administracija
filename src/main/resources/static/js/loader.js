@@ -1,38 +1,54 @@
 var hasData = false;
 
-function loadDataToTable(){
-	if(!hasData){
-		document.getElementById("search").submit();
-		hasData = true;
-	}else {
-		parseData();
-	}
+function submitSearch(){
+	document.getElementById("search").submit();
+	hasData = true;
 }
 
+var customTable = false;
 var oData = [];
 
+function setCustomTable(value){
+	customTable = value;
+}
+
 function parseData(){
-	var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
-	oData = JSON.parse(dataStr);
-	fillTable();
+	if(hasData){
+		var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
+		oData = JSON.parse(dataStr);
+		alert(oData);
+		fillTable();
+	}
 }
 
 function fillTable(asc=true){
 	var data = [];
-	if(asc)
-		data = oData.slice(1);
-	else
-		data = oData.slice(1).reverse();
 
 	var table = document.getElementById("data");
 	var header = document.createElement("tr");
 
+	if(customTable){
+		if(asc)
+			data = oData.slice(1);
+		else
+			data = oData.slice(1).reverse();
+
+		var headerData = oData[0];
+	}else{
+		if(asc)
+			data = oData;
+		else
+			data = oData.reverse();
+
+		var headerData = table.children[0];
+	}
+
     var rows = data.length;
-    var cols = data[0].length;
+    var cols = headerData.length;
 
 	for(var i=0; i<cols; i++){
 		var head = document.createElement("th");
-		head.innerHTML = oData[0][i];
+		head.innerHTML = headerData[i];
 		header.appendChild(head);
 	}
 
@@ -46,6 +62,13 @@ function fillTable(asc=true){
 				var cell = row.insertCell();
 				cell.innerHTML = data[i][j];
 			}
+			row.id = data[i][0];
+			row.onclick = function(){
+				/*
+				setCookie("index", this.id);
+				window.location.replace("/edit_student?token="+token+"&index="+this.id);
+				*/
+			};
 			var delButton = document.createElement("div");
 			delButton.innerHTML = "delete";
 			delButton.className = "button-delete";
@@ -76,6 +99,49 @@ function initGetFilters(frameID){
 	filtersEventListener = frame.addEventListener("load", function(){
 		getFilters(this);
 	});
+}
+
+function addOptionsToFilter(filterID, newOptions, multiselect, numExistingOptions, separate){
+	var filterElem = document.getElementById(filterID);
+	var i=0;
+	var len = newOptions.length;
+
+	while(i<len){
+		var optionName, optionValue;
+		var id = filterID+"-"+(i+numExistingOptions);
+		if(separate){
+			optData = newOptions[i].split("-");
+			optionName = optData[0];
+			optionValue = optData[1];
+		}else{
+			optionValue = optionName = newOptions[i];
+		}
+
+		var newOpt;
+
+		if(multiselect){
+			newOpt = document.createElement('div')
+			newOpt.className = "flex-row";
+			var label = document.createElement('label');
+
+			label.htmlFor = id;
+			label.innerHTML = optionName;
+			newOpt.appendChild(label);
+			var input = document.createElement('input');
+			input.type = "checkbox";
+			input.id = id;
+			input.value = optionValue;
+			newOpt.appendChild(input);
+		}else {
+			newOpt = document.createElement('option');
+			newOpt.value = optionValue;
+			newOpt.innerHTML = optionName;
+		}
+
+		filterElem.appendChild(newOpt);
+
+		i++;
+	}
 }
 
 function getFilters(frame){
