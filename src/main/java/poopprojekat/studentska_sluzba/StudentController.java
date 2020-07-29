@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 // /add_student?token=first_name=&last_name=&br_ind=&date_of_birth=&city=&jmbg=&major_id=               - add new student to database
 // /update_student?token=student=&first_name=&last_name=&br_ind=&date_of_birth=&city=&jmbg=&major_id=   - update existing student
 // /delete_student?token=index_num= - delete requested student from database
+// 
+//  
 @RestController
 public class StudentController {
 
@@ -32,7 +34,8 @@ public class StudentController {
     // get all student filters
     @GetMapping("/get_student_filters")
     public ArrayList<ArrayList<String>> get_student_filters(@RequestParam("token") long token) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
         ArrayList<ArrayList<String>> ret = new ArrayList<>();
         ret.add(Database.GetAllCities());
         ret.add(Database.GetAllMajors());
@@ -43,15 +46,18 @@ public class StudentController {
     // first and last names
     @GetMapping("/get_all_students")
     public String[][] get_students(@RequestParam("token") long token) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
         return filter_students_from_database(null, null, null, 1);
     }
 
     // returns filtered and ordered list of students
     @GetMapping("/get_students")
-    public String[][] get_students(@RequestParam("token") long token, @RequestParam("date_of_birth") String date_of_birth,
-            @RequestParam("city") String city, @RequestParam("major") String major, @RequestParam("order_by") String order_by) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+    public String[][] get_students(@RequestParam("token") long token,
+            @RequestParam("date_of_birth") String date_of_birth, @RequestParam("city") String city,
+            @RequestParam("major") String major, @RequestParam("order_by") String order_by) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
         // format picked dates
         LocalDate dates[] = null;
         if (!date_of_birth.equals("all")) {
@@ -99,7 +105,8 @@ public class StudentController {
     // return selected student
     @GetMapping("/get_student")
     public Student get_student(@RequestParam("token") long token, @RequestParam("index") String index) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}, {"Student", index}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Student", index } }))
+            return null;
         Index i;
         try {
             i = new Index(index);
@@ -112,7 +119,8 @@ public class StudentController {
 
     @GetMapping("/get_student_by_jmbg")
     public Student get_student_wj(@RequestParam("token") long token, @RequestParam("jmbg") String jmbg) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
         return Database.GetStudent(jmbg);
     }
 
@@ -122,10 +130,11 @@ public class StudentController {
             @RequestParam("last_name") String last_name, @RequestParam("index_num") String index_num,
             @RequestParam("date_of_birth") String date_of_birth, @RequestParam("city") String city,
             @RequestParam("jmbg") String jmbg, @RequestParam("major_id") String major_id) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
         try {
-            Student new_student = new Student(first_name, last_name, new Index(index_num), LocalDate.parse(date_of_birth),
-                    city, jmbg, major_id);
+            Student new_student = new Student(first_name, last_name, new Index(index_num),
+                    LocalDate.parse(date_of_birth), city, jmbg, major_id);
             Database.AddStudent(new_student);
             Database.AddUser(new User(index_num, jmbg, "Student"), index_num);
             return "Student was added";
@@ -137,36 +146,43 @@ public class StudentController {
 
     // update student
     @GetMapping("/update_student")
-    public String update_student(@RequestParam("token") long token, @RequestParam("student") String index_of_student_to_update,
-            @RequestParam("first_name") String first_name, @RequestParam("last_name") String last_name,
-            @RequestParam("index_num") String index_num, @RequestParam("date_of_birth") String date_of_birth,
-            @RequestParam("city") String city, @RequestParam("jmbg") String jmbg,
-            @RequestParam("major_id") String major_id) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+    public String update_student(@RequestParam("token") long token,
+            @RequestParam("student") String index_of_student_to_update, @RequestParam("first_name") String first_name,
+            @RequestParam("last_name") String last_name, @RequestParam("index_num") String index_num,
+            @RequestParam("date_of_birth") String date_of_birth, @RequestParam("city") String city,
+            @RequestParam("jmbg") String jmbg, @RequestParam("major_id") String major_id) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
         try {
             Index req_index = new Index(index_of_student_to_update);
             Student updated_student = new Student(req_index);
 
             if (first_name == "")
                 updated_student.setFirstName(null);
-            else updated_student.setFirstName(first_name);
+            else
+                updated_student.setFirstName(first_name);
             if (last_name == "")
                 updated_student.setLastName(null);
-            else updated_student.setLastName(last_name);
+            else
+                updated_student.setLastName(last_name);
             if (index_num != "")
                 updated_student.setIndex(new Index(index_num));
             if (date_of_birth == "")
                 updated_student.setDateOfBirth(null);
-            else updated_student.setDateOfBirth(LocalDate.parse(date_of_birth));
+            else
+                updated_student.setDateOfBirth(LocalDate.parse(date_of_birth));
             if (city == "")
                 updated_student.setCity(null);
-            else updated_student.setCity(city);
+            else
+                updated_student.setCity(city);
             if (jmbg == "")
                 updated_student.setJmbg(null);
-            else updated_student.setJmbg(jmbg);
+            else
+                updated_student.setJmbg(jmbg);
             if (major_id == "")
                 updated_student.setMajorId(null);
-            else updated_student.setMajorId(major_id);
+            else
+                updated_student.setMajorId(major_id);
 
             Database.EditStudent(req_index, updated_student);
             return "Student was updated";
@@ -179,7 +195,8 @@ public class StudentController {
     // delete student
     @GetMapping("/delete_student")
     public String delete_student(@RequestParam("token") long token, @RequestParam("index_num") String index) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
         try {
             Index req_index = new Index(index);
             Database.DeleteStudent(req_index);
@@ -190,6 +207,41 @@ public class StudentController {
             return "Couldn't delete student because of the following error: " + e.getMessage();
         }
     }
+
+    // apply student to given subjects
+    @GetMapping("/apply_for_subject")
+    public String apply_for_subject(@RequestParam("token") long token, @RequestParam("index_num") String index,
+            @RequestParam("subjects") String subjects) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Student", index } }))
+            return null;
+
+        String ids[] = subjects.split("\\+");
+        try {
+            Database.ApplyForSubject(new Index(index), ids);
+            return "application concluded successfully";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "application failed because of the following error: " + e.getMessage();
+        }
+    }
+
+    // return all students for given year and subjects
+    @GetMapping(value = "get_all_students_from_subject")
+    public ArrayList<Index> get_all_students_from_subject(@RequestParam("token") long token,
+            @RequestParam("subject") String subject_id) {
+        Lecturer lect = Database.GetLecturer(subject_id);
+        if (!Log_in_Controller.access_allowed(token,
+                new String[][] { { "Admin", "any" }, { "Student", lect.getLectId() } }))
+            return null;
+
+        try {
+            return Database.GetAllStudentsFromSubject(subject_id, LocalDate.now().getYear());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
 
    //  // private methods
    private String[][] filter_students_from_database(LocalDate date_of_birth[], String city[], String major[], int order_by) {

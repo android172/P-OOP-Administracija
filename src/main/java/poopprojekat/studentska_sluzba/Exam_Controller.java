@@ -66,23 +66,46 @@ public class Exam_Controller {
         }
     }
 
-    // TO DO: Prijavi dati ispit
+    @GetMapping(value = "add_exam")
+    public String add_exam(@RequestParam("token") long token, @RequestParam("subject_id") String subject_id,
+            @RequestParam("lect_id") String lect_id, @RequestParam("Date") String date) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
+
+        try {
+            Database.AddExam(new Exam(Database.GetEmptyId("Exams"), subject_id, lect_id, LocalDate.parse(date)));
+            return "Exam was successfully added";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Exam could not be added because of the following error: " + e.getMessage();
+        }
+    }
+
+    @GetMapping(value = "delete_exam")
+    public String delete_exam(@RequestParam("token") long token, @RequestParam("exam_id") String id) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } })) return null;
+        try {
+            Database.DeleteExam(id);
+            return "Exam was successfully deleted";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Exam could not be deleted because of the following error: " + e.getMessage();
+        }
+    }
+
     @GetMapping("/apply_for_exam")
     public String apply_for_exam(@RequestParam("token") long token, @RequestParam("student") String index,
             @RequestParam("exam") String exam_id, @RequestParam("payed") int payed) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
-            return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } })) return null;
+        
         try {
             if (Database.IfBudget(new Index(index), LocalDate.now().getYear()) == false
                     || Database.GetAttempts(new Index(index), exam_id) > 1) {
-                if (payed == 2000)
-                    return "The application has been completed successfully";
-                return "Payed amount is incorrect";
-            } else {
-                if (payed == 0)
-                    return "The application has been completed successfully";
-                return "Payed amount is incorrect";
-            }
+                if (payed != 2000) return "Payed amount is incorrect";
+            } else if (payed != 0) return "Payed amount is incorrect";
+
+            Database.ApplyForExam(new Index(index), exam_id, payed);
+            return "The application has been completed successfully";
         } catch (Exception e) {
             e.printStackTrace();
             return "Application was not completed because of the following exception: " + e.getMessage();
