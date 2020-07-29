@@ -15,14 +15,14 @@ public class StudentskaSluzbaApplication
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
         Database db = new Database("testing");
 
-        try
-        {
-            db.TestDummy();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+//        try
+//        {
+//            db.TestDummy();
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
 
 //        Subject s = new Subject("M002");
 //        s = Database.GetSubject(s);
@@ -74,7 +74,8 @@ public class StudentskaSluzbaApplication
 //
 //        System.out.println(Database.GetUser("1/2020", "0123456789123"));
 
-//        ArrayList<Lecturer> lect = Database.GetLecturers(new String[]{"Predmet1"}, new String[]{"Smer1"});
+//        ArrayList<Lecturer> lect = Database.GetLecturers(null, null, 1);
+//        System.out.println("-----------" + lect.size());
 //        for(Lecturer l: lect)
 //        {
 //            System.out.println(l);
@@ -94,6 +95,12 @@ public class StudentskaSluzbaApplication
 //        System.out.println("--------------");
 //        ArrayList<String> temp2 = Database.GetAllSubjects();
 //        for (String s:temp2)
+//        {
+//            System.out.println(s);
+//        }
+
+//        ArrayList<String> temp = Database.GetAllSubjects();
+//        for (String s: temp)
 //        {
 //            System.out.println(s);
 //        }

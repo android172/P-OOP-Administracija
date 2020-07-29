@@ -587,18 +587,10 @@ public class Database
         }
     }
 
-    public static void AddExam(Exam exam[]) throws Exception
+    public static void AddExam(Exam exam) throws Exception
     {
         sql = "INSERT INTO Users (ExamId, ExamDate, SubjectId, LectId) " +
-                "VALUES ";
-
-        for(int i=0;i<exam.length;i++)
-        {
-            sql += "( '" + exam[i].getId() + "', '" + exam[i].getDate() + "', '" + exam[i].getSubject_id() + "', '" + exam[i].getLect_id() + "' )";
-
-            if(i != exam.length)
-                sql += ", ";
-        }
+                "VALUES ( '" + exam.getId() + "', '" + exam.getDate() + "', '" + exam.getSubject_id() + "', '" + exam.getLect_id() + "' )";
 
         try
         {
@@ -1038,9 +1030,14 @@ public class Database
         ArrayList<Lecturer> lista = new ArrayList<>();
         boolean uslov = false;
         ResultSet res;
+        String sqlt;
 
-        String sqlt = "SELECT * FROM Lecturers as l join Subjects as s on l.LectId = s.LectId " +
-                "WHERE ";
+        if(subjects != null)
+            sqlt = "SELECT * FROM Lecturers as l join Subjects as s on l.LectId = s.LectId " +
+                    "WHERE ";
+        else
+            sqlt = "SELECT * FROM Lecturers as l " +
+                    "WHERE ";
 
         if(subjects != null)
         {
@@ -1096,9 +1093,8 @@ public class Database
         try
         {
             res = stat.executeQuery(sqlt);
-
             if(!res.first())
-                return lista;
+                return null;
 
             Lecturer l;
 
