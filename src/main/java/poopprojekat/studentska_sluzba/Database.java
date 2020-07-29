@@ -1477,6 +1477,44 @@ public class Database
         return false;
     }
 
+    public static ArrayList<Index> GetAllStudentFromSubject(String subjectId, int year) throws Exception
+    {
+        if(subjectId != null)
+        {
+            sql = "SELECT IndexNum FROM AppliedToListen " +
+                    "WHERE SubjectId = '" + subjectId + "' ";
+
+            if(year != 0)
+            {
+                sql += "AND Year = " + year + " ";
+            }
+        }
+        else
+            throw new Exception("SubjectId is null");
+
+        ResultSet res = null;
+        ArrayList<Index> applied = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                applied.add(new Index(res.getString("IndexNum")));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return applied;
+    }
+
     // Remove f-je
 
     public static void DeleteStudent(Index index) throws Exception
