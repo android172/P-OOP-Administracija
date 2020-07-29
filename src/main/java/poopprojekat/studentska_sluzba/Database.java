@@ -971,6 +971,31 @@ public class Database
         return s;
     }
 
+    public static String GetLecturerFromSubjectId(String subjectId)
+    {
+        sql = "SELECT LectId FROM Subjects " +
+                "WHERE SubjectId = '" + subjectId + "' ";
+
+        ResultSet res = null;
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            return res.getString("LectId");
+
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static Lecturer GetLecturer(String LectId)
     {
         sql = "SELECT * FROM Lecturers " +
@@ -1477,7 +1502,7 @@ public class Database
         return false;
     }
 
-    public static ArrayList<Index> GetAllStudentFromSubject(String subjectId, int year) throws Exception
+    public static ArrayList<Index> GetAllStudentsFromSubject(String subjectId, int year) throws Exception
     {
         if(subjectId != null)
         {
