@@ -91,6 +91,18 @@ public class Redirect_Controller {
         return null;
     }
 
+    @GetMapping("/exams")
+    public String exams(HttpServletResponse response, @RequestParam("token") long token){
+        if (Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "exams";
+
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @GetMapping("/login")
     public String login(){
         return "login";

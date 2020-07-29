@@ -16,7 +16,7 @@ function parseData(){
 	if(hasData){
 		var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
 		oData = JSON.parse(dataStr);
-		alert(oData);
+		//alert(oData);
 		fillTable();
 	}
 }
@@ -40,7 +40,7 @@ function fillTable(asc=true){
 		else
 			data = oData.reverse();
 
-		var headerData = table.children[0];
+		var headerData = Object.keys(data[0]);
 	}
 
     var rows = data.length;
@@ -58,17 +58,29 @@ function fillTable(asc=true){
 	    table.appendChild(header);
 		for(var i=0; i<rows; i++){
 			var row = table.insertRow();
-			for(var j=0; j<cols; j++){
-				var cell = row.insertCell();
-				cell.innerHTML = data[i][j];
+
+			if(customTable){
+				for(var j=0; j<cols; j++){
+					var cell = row.insertCell();
+					cell.innerHTML = data[i][j];
+				}
+				row.id = data[i][0];
+				/*row.onclick = function(){
+					setCookie("index", this.id);
+					window.location.replace("/edit_student?token="+token+"&index="+this.id);
+				};*/
+			}else{
+
+				var values = Object.values(data[i]);
+				var len = values.length;
+
+				for(var j=0; j<len; j++){
+					var cell = row.insertCell();
+					cell.innerHTML = values[j];
+				}
+				row.id = values[0];
 			}
-			row.id = data[i][0];
-			row.onclick = function(){
-				/*
-				setCookie("index", this.id);
-				window.location.replace("/edit_student?token="+token+"&index="+this.id);
-				*/
-			};
+
 			var delButton = document.createElement("div");
 			delButton.innerHTML = "delete";
 			delButton.className = "button-delete";
