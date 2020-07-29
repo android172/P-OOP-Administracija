@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.xml.crypto.Data;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
@@ -97,7 +98,7 @@ public class StudentskaSluzbaApplication
 //            System.out.println(s);
 //        }
 
-         Database.DropDatabase("testing");
+         //Database.DropDatabase("testing");
 
         //db.Close();
     }

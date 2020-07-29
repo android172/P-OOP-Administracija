@@ -16,7 +16,7 @@ import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 // AddLecturer(Lecturer p) - Adds lecturer
 // AddMajor(Major m) - Adds Major
 // AddUser(User user, String id) - Adds user, id is unique to lectuer/student, id for admin is -x
-// Add functions return true if sucessfull, false if not
+// Add functions return true if successful, false if not
 // GetStudents(Date dateOfBirth[], String city[], String MajorName[], int orderBy, boolean ascending) - accepts DoB/City/MajorName,
 //                                      orderby: 3 - sorts po DoB 4 - sorts po City, 6 - sorts po MajorId,
 //                                      ascending - true/false.. doesn't matter if orderby != 3/4/6
@@ -582,7 +582,61 @@ public class Database
         catch (SQLException throwables)
         {
             if(throwables.getErrorCode() == 1062)
-                throw new Exception("Exam is already applied for");
+                throw new Exception("Student is already aplied for this exam");
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void AddExam(Exam exam[]) throws Exception
+    {
+        sql = "INSERT INTO Users (ExamId, ExamDate, SubjectId, LectId) " +
+                "VALUES ";
+
+        for(int i=0;i<exam.length;i++)
+        {
+            sql += "( '" + exam[i].getId() + "', '" + exam[i].getDate() + "', '" + exam[i].getSubject_id() + "', '" + exam[i].getLect_id() + "' )";
+
+            if(i != exam.length)
+                sql += ", ";
+        }
+
+        try
+        {
+            stat.executeUpdate(sql);
+            System.out.println("User added");
+        }
+        catch (SQLException throwables)
+        {
+            if(throwables.getErrorCode() == 1062)
+                throw new Exception("Username is already in table Users");
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void ApplyForSubject(Index index, String subjectId[]) throws Exception
+    {
+        sql = "INSERT INTO ExamApplication (IndexNum, SubjectId, Year) " +
+                "VALUES ";
+
+        int currentyear = LocalDate.now().getYear();
+
+        for(int i=0;i<subjectId.length;i++)
+        {
+            sql += "( '" + index + "', ' " + subjectId[i] + "', '" + currentyear + "' ) ";
+
+            if(i != subjectId.length)
+                sql += ", ";
+        }
+
+        try
+        {
+            stat.executeUpdate(sql);
+            System.out.println("Subject applied");
+        }
+        catch (SQLException throwables)
+        {
+            if(throwables.getErrorCode() == 1062)
+                throw new Exception("Student is already aplied to this subject");
             throwables.printStackTrace();
         }
     }
@@ -1518,6 +1572,22 @@ public class Database
         {
             if(stat.executeUpdate(sql) == 0)
                 throw new Exception("ExamName doesn't exist");
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void DeleteExam(String examid) throws Exception
+    {
+        sql = "DELETE FROM ExamId " +
+                "WHERE ExamId = '" + examid + "' ";
+
+        try
+        {
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("ExamId doesn't exist");
         }
         catch (SQLException throwables)
         {
