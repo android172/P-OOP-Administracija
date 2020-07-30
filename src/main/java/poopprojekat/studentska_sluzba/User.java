@@ -5,11 +5,18 @@ public class User
     String username;
     String password;
     String role;
+    String id;
 
-    public User(String username, String pass, String role)
+    public User(String username, String pass, String role, String uniqueId)
+    {
+        this(username, role, uniqueId);
+        password = pass;
+    }
+
+    public User(String username, String role, String uniqueId)
     {
         this.username = username;
-        password = pass;
         this.role = role;
+        id = uniqueId;
     }
 }

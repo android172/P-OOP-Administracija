@@ -824,7 +824,7 @@ public class Database
         return s;
     }
 
-    public static ArrayList<Subject> GetSubjects(String subjectName[], int year[], String profName[], String majorId[], int orderBy)
+    public static ArrayList<Subject> GetSubjects(int year[], String profName[], String majorId[], int orderBy)
     {
         String sqlt;
 
@@ -840,21 +840,8 @@ public class Database
         Subject tempsubject;
         boolean uslov = false;
 
-        if(subjectName != null)
-        {
-            sqlt += "( ";
-            for(int i = 0;i<subjectName.length; i++)
-            {
-                sqlt += "s.SubjectName = '" + subjectName[i] + "' OR ";
-            }
-            sqlt += "0 ) ";
-            uslov = true;
-        }
         if(year != null)
         {
-            if(uslov)
-                sqlt += "AND ";
-
             sqlt += "( ";
             for(int i = 0;i<year.length;i++)
             {
@@ -2017,6 +2004,35 @@ public class Database
         }
 
         return exams;
+    }
+
+    public static ArrayList<User> GetAllUsers()
+    {
+        sql = "SELECT * FROM Users ";
+
+        ResultSet res = null;
+        ArrayList<User> users = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                users.add(new User(res.getString("Username"), res.getString("Role"), res.getString("UniqueId")));
+            }while(res.next());
+
+            return users;
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return users;
     }
 
 }
