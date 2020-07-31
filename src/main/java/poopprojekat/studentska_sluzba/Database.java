@@ -24,7 +24,7 @@ import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 //                                      if all params are null, returns all Students from table
 // GetStudent(String jmbg) - return Student with forwarded jmbg
 // GetStudent(Index index) - return Student with forwarded index number
-// GetSubjets(String subjectName[], int year[], String profName[], String majorName[]) - prima 1 ili vise parametra (ostali null)
+// GetSubjects(String subjectName[], int year[], String profName[], String majorName[]) - prima 1 ili vise parametra (ostali null)
 //                                                                               i pretrazuje ih, Vraca ArrayList<Subject>
 //                                                                               Ukoliko su svi parametri null, f-ja vraca sve predmete iz tabele Subjects
 // GetSubject(String SubjectId) - prima id predmeta, vraca Subject

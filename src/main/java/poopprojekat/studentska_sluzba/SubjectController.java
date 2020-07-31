@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 
 //INCLUDES:
-// /dropdown_lecturers?token= -returns list of all lecturers !!!!Za razliku od Dejanove funkcije ova ti vraca Lecturer umesto String!!!!
-                                                                //pa ti iz json-a mozes da uzmes ime i id
+// /dropdown_lecturers?token= -returns list of names of all lecturers
 // /get_all_subjects?token= -returns all subjects
 // /get_subjects?token=&name=&year=&lect_name=&major_name=&order_by  -returns filtered ordered list of subjects (ArrayList<Subject>)
 // /get_subjects_by_lecturer?token=&lect_id= -returns subjects of lecturer with given id
@@ -22,9 +21,21 @@ import java.util.ArrayList;
 public class SubjectController {
 
     @GetMapping("/dropdown_lecturers")
-    public ArrayList<Lecturer> dropdown_lecturers(@RequestParam("token") long token){
+    public ArrayList<String> dropdown_lecturers(@RequestParam("token") long token){
 
-        return Database.GetLecturers(null, null, 2);  //sorted by last name
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+
+        ArrayList<Lecturer> lecturers =  Database.GetLecturers(null, null, 3);  //sorted by last name
+        ArrayList<String> names = null;
+        if (lecturers != null) {
+            names = new ArrayList<>(lecturers.size());
+
+            for (Lecturer l :
+                    lecturers) {
+                names.add(l.getFirstName() + " " + l.getLastName());
+            }
+        }
+        return names;
     }
 
     @GetMapping("/get_all_subjects")
@@ -32,10 +43,9 @@ public class SubjectController {
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
-            return Database.GetSubjects(null, null, null, null, 1);
+            return Database.GetSubjects(null, null, null, 1);
         } catch (Exception e) {
             e.printStackTrace();
-            //todo log
             return null;
         }
     }
@@ -51,26 +61,21 @@ public class SubjectController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            //todo log
             return null;
         }
     }
 
     @GetMapping("/get_subjects")
     public ArrayList<Subject> get_subjects(@RequestParam("token") long token,
-                                           @RequestParam("name") String name,
                                            @RequestParam("year") String year,
                                            @RequestParam("lect_name") String lect_name,
                                            @RequestParam("major_name") String major_name,
-                                           @RequestParam("order_by") int ord){
+                                           @RequestParam("order_by") String ord){
 
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
             String[] names = null;
-            if (name != "") {
-                names = name.split("\\+");
-            }
             int[] years = new int[15];
             if (year != ""){
                 int i=0;
@@ -86,11 +91,35 @@ public class SubjectController {
             if (major_name != ""){
                 majors = major_name.split("\\+");
             }
-            return Database.GetSubjects(names, years, lects, majors, ord);
+
+            int order_ctg;
+            switch (ord) {
+                case "subj_name":
+                    order_ctg = 1;
+                    break;
+                case "subj_id":
+                    order_ctg = 2;
+                    break;
+                case "year":
+                    order_ctg = 3;
+                    break;
+                case "espb":
+                    order_ctg = 4;
+                    break;
+                case "major_name":
+                    order_ctg = 5;
+                    break;
+                case "lect_id":
+                    order_ctg = 6;
+                    break;
+                default:
+                    order_ctg = 0;
+            }
+
+            return Database.GetSubjects(years, lects, majors, order_ctg);
 
         } catch (Exception e) {
             e.printStackTrace();
-            //todo log
             return null;
         }
 
@@ -110,11 +139,9 @@ public class SubjectController {
 
             Subject subject = new Subject(name, id, espb, year, lect_id, major_id);
             Database.AddSubject(subject);
-            //todo log
             return "Subject successfully added";
         } catch (Exception e) {
             e.printStackTrace();
-            //todo log
             return "Subject could not be added because of the following error: " + e.getMessage();
         }
     }
@@ -134,11 +161,9 @@ public class SubjectController {
 
             Subject subject = new Subject(name, id, espb, year, lect_id, major_id);
             Database.EditSubject(old_id, subject);
-            //todo log
             return "Subject successfully updated";
         } catch (Exception e) {
             e.printStackTrace();
-            //todo log
             return "Subject could not be updated because of the following error: " + e.getMessage();
         }
     }
@@ -151,11 +176,9 @@ public class SubjectController {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
             Database.DeleteSubject(id);
-            //todo log
             return "Subject successfully deleted";
         } catch (Exception e) {
             e.printStackTrace();
-            //todo log
             return "Subject could not be deleted because of the following error: " + e.getMessage();
         }
     }
