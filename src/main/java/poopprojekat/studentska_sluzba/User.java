@@ -2,10 +2,10 @@ package poopprojekat.studentska_sluzba;
 
 public class User
 {
-    String username;
-    String password;
-    String role;
-    String id;
+    public String username;
+    public String password;
+    public String role;
+    public String id;
 
     public User(String username, String pass, String role, String uniqueId)
     {

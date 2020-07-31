@@ -20,10 +20,12 @@ import java.util.ArrayList;
 @RestController
 public class SubjectController {
 
-    @GetMapping("/dropdown_lecturers")
-    public ArrayList<String> dropdown_lecturers(@RequestParam("token") long token){
+    @GetMapping("/get_subject_filters")
+    public ArrayList<ArrayList<String>> get_subject_filters(@RequestParam("token") long token){
 
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+
+        ArrayList<ArrayList<String>> ret = new ArrayList<>();
 
         ArrayList<Lecturer> lecturers =  Database.GetLecturers(null, null, 3);  //sorted by last name
         ArrayList<String> names = null;
@@ -35,7 +37,12 @@ public class SubjectController {
                 names.add(l.getFirstName() + " " + l.getLastName());
             }
         }
-        return names;
+        ret.add(names);
+
+        ArrayList<String> majors = Database.GetAllMajors();
+        ret.add(majors);
+
+        return ret;
     }
 
     @GetMapping("/get_all_subjects")
