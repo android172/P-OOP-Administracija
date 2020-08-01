@@ -192,6 +192,7 @@ public class Database
                 "ESPB INTEGER not NULL, " +
                 "MajorId VARCHAR(10) not NULL, " +
                 "LectId VARCHAR(10) not NULL, " +
+                "PointsRequired INTEGER not NULL, " +
                 "PRIMARY KEY (id, SubjectId), " +
                 "FOREIGN KEY (MajorId) REFERENCES Majors (MajorId) ON DELETE CASCADE ON UPDATE CASCADE, " +
                 "FOREIGN KEY (LectId) REFERENCES Lecturers (LectId) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB ";
@@ -481,8 +482,8 @@ public class Database
 
     public static void AddSubject(Subject s) throws Exception       // SubjectId is unique
     {
-        sql = "INSERT INTO Subjects (SubjectName, SubjectId, Year, ESPB, MajorId, LectId) " +
-                "VALUES ( '" + s.subjectName + "', '" + s.subjectId + "', '" + s.year + "', '" + s.espb +"', '" + s.majorid +"', '" + s.lectid +"' ) ";
+        sql = "INSERT INTO Subjects (SubjectName, SubjectId, Year, ESPB, MajorId, LectId, PointsRequired) " +
+                "VALUES ( '" + s.subjectName + "', '" + s.subjectId + "', '" + s.year + "', '" + s.espb +"', '" + s.majorid +"', '" + s.lectid +"', '" + s.PointsRequired +"' ) ";
 
         try
         {
@@ -947,7 +948,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            s = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"));
+            s = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"), res.getInt("PointsRequired"));
 
         }
         catch (SQLException throwables)
@@ -1055,7 +1056,7 @@ public class Database
         {
             sqlt += "( ";
 
-            for(int i=0; i<subjects.length; i++)
+             for(int i=0; i<subjects.length; i++)
             {
                 sqlt += " s.SubjectName = '" + subjects[i] + "' OR ";
             }
@@ -1274,6 +1275,11 @@ public class Database
             sql = "SELECT SubjectId FROM Subjects";
             prefix = "S";
         }
+        else if(tableName == "Exams")
+        {
+            sql = "SELECT ExamId FROM Exams";
+            prefix = "E";
+        }
         else
             throw new Exception("Function 'GetEmptyId' doesn't work on this table");
 
@@ -1404,8 +1410,8 @@ public class Database
     {
         if(index != null && examName != null)
             sql = "SELECT * FROM Exams as e join ExamDeadline as ed on (ed.ExamName = '" + examName + "' AND ed.StartDate <= e.ExamDate AND ed.EndDate >= e.ExamDate) " +
-                "join AppliedToListen as al on e.SubjectId = al.SubjectId " +
-                "WHERE al.IndexNum = '" + index + "' AND al.DatePassed is null ";
+                "join AppliedToListen as al on e.SubjectId = al.SubjectId join Subjects as s on e.SubjectId = s.SubjectId " +
+                "WHERE al.IndexNum = '" + index + "' AND al.DatePassed is null AND al.Points >= s.PointsRequired ";
         else
             throw new Exception("Index or ExamName is null");
 
