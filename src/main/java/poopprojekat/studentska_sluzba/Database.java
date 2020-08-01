@@ -24,7 +24,7 @@ import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 //                                      if all params are null, returns all Students from table
 // GetStudent(String jmbg) - return Student with forwarded jmbg
 // GetStudent(Index index) - return Student with forwarded index number
-// GetSubjets(String subjectName[], int year[], String profName[], String majorName[]) - prima 1 ili vise parametra (ostali null)
+// GetSubjects(String subjectName[], int year[], String profName[], String majorName[]) - prima 1 ili vise parametra (ostali null)
 //                                                                               i pretrazuje ih, Vraca ArrayList<Subject>
 //                                                                               Ukoliko su svi parametri null, f-ja vraca sve predmete iz tabele Subjects
 // GetSubject(String SubjectId) - prima id predmeta, vraca Subject
@@ -483,7 +483,7 @@ public class Database
     public static void AddSubject(Subject s) throws Exception       // SubjectId is unique
     {
         sql = "INSERT INTO Subjects (SubjectName, SubjectId, Year, ESPB, MajorId, LectId, PointsRequired) " +
-                "VALUES ( '" + s.subjectName + "', '" + s.subjectId + "', '" + s.year + "', '" + s.espb +"', '" + s.majorid +"', '" + s.lectid +"', '" + s.PointsRequired +"' ) ";
+                "VALUES ( '" + s.subjectName + "', '" + s.subjectId + "', '" + s.year + "', '" + s.espb +"', '" + s.majorid +"', '" + s.lectid +"', '" + s.points_required +"' ) ";
 
         try
         {
@@ -920,7 +920,7 @@ public class Database
 
             do
             {
-                tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"));
+                tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"), -1);
                 subjects.add(tempsubject);
             }while(res.next());
 

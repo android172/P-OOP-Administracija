@@ -4,14 +4,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+
 //INCLUDES:
-// /get_user?token=&username=&password= -returns user with given username todo and password da se doda da moze samo preko username-a da se pretrazuje
-// /add_user?token=&username=&password=&year= -adds new user with given username, password todo and year nije svaki user student pa da ima indeks i godinu upisa
+// /get_user?token=&username=&password= -returns user with given username
+// /get_all_users?token= -return all users
+// /add_user?token=&username=&password=&year= -adds new user with given username, password
 // /update_user?token=&username=&new_username=&new_password=&new_role= -updates user with given username, sets new given values
 // /delete_user?token=&unique_id= -deletes user with given id
 
 @RestController
 public class UserController {
+
+    @GetMapping("/get_all_users")
+    public ArrayList<User> get_all_users(@RequestParam("token") long token){
+
+        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+        return Database.GetAllUsers();
+    }
 
     @GetMapping("/get_user")
     public String[] get_user(@RequestParam("token") long token,

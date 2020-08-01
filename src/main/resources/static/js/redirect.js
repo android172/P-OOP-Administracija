@@ -2,7 +2,7 @@ window.onload = function(){
 	getToken();
 	var path = window.location.pathname;
 	if(token=="") alert("no token!");
-	//alert(path);
+	alert(path);
 	switch(path){
 		case "/student":
 			getIndex();

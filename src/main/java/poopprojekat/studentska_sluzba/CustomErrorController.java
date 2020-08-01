@@ -4,7 +4,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
+/*@Controller
 public class CustomErrorController implements ErrorController {
 
     private static final String PATH = "/error";
@@ -18,4 +18,4 @@ public class CustomErrorController implements ErrorController {
     public java.lang.String getErrorPath() {
         return PATH;
     }
-}
+}*/

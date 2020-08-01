@@ -116,6 +116,8 @@ function initGetFilters(frameID){
 function addOptionsToFilter(filterID, newOptions, multiselect, numExistingOptions, separate){
 	var filterElem = document.getElementById(filterID);
 	var i=0;
+	if(newOptions == null)
+		return;
 	var len = newOptions.length;
 
 	while(i<len){
