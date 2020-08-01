@@ -82,7 +82,7 @@ public class SubjectController {
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
-            String[] names = null;
+            // String[] names = null;
             int[] years = new int[15];
             if (year != ""){
                 int i=0;
@@ -139,12 +139,13 @@ public class SubjectController {
                               @RequestParam("espb") int espb,
                               @RequestParam("year") int year,
                               @RequestParam("lect_id") String lect_id,
-                              @RequestParam("major_id") String major_id){
+                              @RequestParam("major_id") String major_id,
+                              @RequestParam("points_req") int points_req){
 
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
-            Subject subject = new Subject(name, id, espb, year, lect_id, major_id);
+            Subject subject = new Subject(name, id, espb, year, lect_id, major_id, points_req);
             Database.AddSubject(subject);
             return "Subject successfully added";
         } catch (Exception e) {
@@ -161,12 +162,13 @@ public class SubjectController {
                                  @RequestParam("espb") int espb,
                                  @RequestParam("year") int year,
                                  @RequestParam("lect_id") String lect_id,
-                                 @RequestParam("major_id") String major_id){
+                                 @RequestParam("major_id") String major_id,
+                                 @RequestParam("points_req") int points_req){
 
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
-            Subject subject = new Subject(name, id, espb, year, lect_id, major_id);
+            Subject subject = new Subject(name, id, espb, year, lect_id, major_id, points_req);
             Database.EditSubject(old_id, subject);
             return "Subject successfully updated";
         } catch (Exception e) {

@@ -919,7 +919,7 @@ public class Database
 
             do
             {
-                tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"));
+                tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"), -1);
                 subjects.add(tempsubject);
             }while(res.next());
 
@@ -947,7 +947,7 @@ public class Database
             if(!res.first())
                 return null;
 
-            s = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"));
+            s = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"), Integer.parseInt(res.getString("PointsRequired")));
 
         }
         catch (SQLException throwables)

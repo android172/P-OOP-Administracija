@@ -66,8 +66,9 @@ public class Generate_random_data_point {
 
     public static Subject get_random_subject() {
         try {
+            int req[] = {0, 26, 26, 26, 26, 36, 36};
             return new Subject(Subject_gen.get_random_subject(), Database.GetEmptyId("Subjects"),
-                    new Random().nextInt(3) + 4, new Random().nextInt(4) + 1, random_lect_id(), random_major_id());
+                    new Random().nextInt(3) + 4, new Random().nextInt(4) + 1, random_lect_id(), random_major_id(), req[new Random().nextInt(7)]);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
