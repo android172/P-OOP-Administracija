@@ -117,6 +117,21 @@ public class Database
 
     }
 
+    public void TempFix()
+    {
+        try
+        {
+            stat.executeUpdate("DROP TABLE ExamApplication");
+            CreateTableExamApplications();
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+
+    }
+
     public void CreateDatabase(String name)     //  Creates full database for the project
     {
         sql = "CREATE DATABASE " + name;
@@ -304,8 +319,8 @@ public class Database
                 "ExamId VARCHAR(10) not NULL UNIQUE ," +
                 "Price INTEGER not NULL," +
                 "PRIMARY KEY (id, IndexNum, ExamId), " +
-                "FOREIGN KEY (IndexNum) references Students(IndexNum), " +
-                "FOREIGN KEY (ExamId) references Exams(ExamId) ) ENGINE=InnoDB ";
+                "FOREIGN KEY (IndexNum) references Students(IndexNum) ON UPDATE CASCADE, " +
+                "FOREIGN KEY (ExamId) references Exams(ExamId) ON UPDATE CASCADE ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'ExamApplication'");
 
@@ -945,7 +960,7 @@ public class Database
 
             do
             {
-                tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"), -1);
+                tempsubject = new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"), res.getInt("PointsRequired"));
                 subjects.add(tempsubject);
             }while(res.next());
 

@@ -44,7 +44,7 @@ public class StudentskaSluzbaApplication
 //            System.out.println(st);
 //        }
 
-//        ArrayList<Subject> subs = Database.GetSubjects(null, null, null, null);
+//        ArrayList<Subject> subs = Database.GetSubjects(null, null, null, 3);
 //
 //        for(Subject s: subs)
 //        {
@@ -104,10 +104,10 @@ public class StudentskaSluzbaApplication
 //        {
 //            System.out.println(s);
 //        }
-
-        //Database.AddExam(new Exam(Database.GetEmptyId("Exams"), "S005", "P001", LocalDate.of(2020, 1, 8)));
-        //Database.ApplyForSubject(new Index("1/2019"), new String[]{"S005"});
-        //Database.ApplyForExam1(new Index("1/2019"), "E001", 0);
+        //db.TempFix();
+        //Database.AddExam(new Exam(Database.GetEmptyId("Exams"), "S005", "P004", LocalDate.of(2020, 1, 8)));
+        //Database.ApplyForSubject(new Index("1/2013"), new String[]{"S005"});
+        //Database.ApplyForExam1(new Index("1/2013"), "E001", 0);
         //Database.ApplyForExam(new Index("1/2019"), "E001", 0);
 
          //Database.DropDatabase("testing");
