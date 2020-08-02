@@ -17,25 +17,27 @@ import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 // AddMajor(Major m) - Adds Major
 // AddUser(User user, String id) - Adds user, id is unique to lectuer/student, id for admin is -x
 // Add functions return true if successful, false if not
-// GetStudents(Date dateOfBirth[], String city[], String MajorName[], int orderBy, boolean ascending) - accepts DoB/City/MajorName,
-//                                      orderby: 3 - sorts po DoB 4 - sorts po City, 6 - sorts po MajorId,
-//                                      ascending - true/false.. doesn't matter if orderby != 3/4/6
-//                                      function returns ArrayList<Student>
+// GetStudents(Date dateOfBirth[], String city[], String MajorName[], int orderBy) - accepts DoB/City/MajorName,
+//                                      orderby: 1 - Index; 2 - FirstName; 3 - LastName; 4 - sorts po DoB; 5 - sorts po City; 6 - sorts po MajorId,
+//                                      function returns ArrayList<Student> in ascending order
 //                                      if all params are null, returns all Students from table
 // GetStudent(String jmbg) - return Student with forwarded jmbg
 // GetStudent(Index index) - return Student with forwarded index number
-// GetSubjects(String subjectName[], int year[], String profName[], String majorName[]) - prima 1 ili vise parametra (ostali null)
-//                                                                               i pretrazuje ih, Vraca ArrayList<Subject>
-//                                                                               Ukoliko su svi parametri null, f-ja vraca sve predmete iz tabele Subjects
-// GetSubject(String SubjectId) - prima id predmeta, vraca Subject
-// GetLecturer(int LectId) - prima id profesora, vraca Lecturer
-// GetMajors(String majorName) - prima ime smera, vraca ArrayList<Major>
-// GetMajor(String majorId) - prima id smera, vraca Major
-// SubjectsOfLecturer(Lecturer p) - prima profesora i vraca sve predmete na kojima predaje. vraca ArrayList<Subjects>
-// GetHighestIndex(int year) - Vraca najveci br indeksa za zadatu godinu
-// GetEmptyId(tableName) - prima tabelu "Lecturers"/"Majors"/"Subjects" i vraca 1. slobodan Id. Izbacuje gresku ako prosledjena tabela nije jedna od navedenih
-// GetUser(String username, String password) - pretrazuje korisnika u bazi, ako postoji vraca korisnika, u suprotnom vraca null
-// GetLecturers(String subjects[], String majors[]) - pretrazuje po imenima predmeta i/ili smera i vraca listu Lecturers
+// GetSubjects(int year[], String profName[], String majorName[], int orderdy) - returns ArrayList<Subject> in ascending order
+//                                                                               orderby: 1 - SubjectName; 2 - SubjectId; 3 - Year; 4 - ESPB; 5 - MajorName; 6 - LectId,
+//                                                                               If all params are null, returns all subjects
+// GetSubject(String SubjectId) - returns subject
+// GetLecturer(int LectId) - returns Lecturer
+// GetMajors(String majorName) - returns ArrayList<Major>
+// GetMajor(String majorId) - returns Major
+// SubjectsOfLecturer(Lecturer p) - returns ArrayList<Subjects> of subjects that lecturer teaches
+// GetHighestIndex(int year) - returns highest index number for forwarded year
+// GetEmptyId(tableName) - returns first empty id for tables: Lecturers, Majors, Subjects, Exams
+// GetUser(String username, String password) - returns String array that contains Role and UniqueId
+// GetLecturers(String subjects[], String majors[], int orderby) - returns ArrayList<Lecturer> in ascending order
+//                                                                 orderby: 1 - LectId; 2 - FirstName; 3 - LastName; 4 - Title
+// GetUser(String id) returns username (String)
+// GetExamDeadlines(LocalDate targetdate) returns ArrayList<String> that contains exam names
 
 // EditStudent(Index index, Student updated) - prima index studenta kog treba izmeniti i promenjivu Student sa izmenjenim podacima
 // EditLecturer(int lectId, Lecturer updated) - prima id profesora kog treba izmeniti i Lecturer sa izmenjenim podacima
@@ -164,7 +166,7 @@ public class Database
                 "( id INTEGER not NULL AUTO_INCREMENT," +
                 "Username NVARCHAR(20) not NULL Unique, " +      // ind/god ili ind-god
                 "Password NVARCHAR(20) not NULL, " +
-                "Role VARCHAR(10) not NULL, " +          // Student, Profesor, Admin
+                "Role VARCHAR(20) not NULL, " +          // Student, Profesor, Admin
                 "UniqueId VARCHAR(10) not NULL UNIQUE , " +
                 "PRIMARY KEY (id, Username) ) ENGINE=InnoDB";
 
@@ -243,18 +245,16 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS AppliedToListen " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "IndexNum VARCHAR(10) not NULL," +
-                "SubjectId VARCHAR(10) not NULL," +
+                "IndexNum VARCHAR(10) not NULL UNIQUE," +
+                "SubjectId VARCHAR(10) not NULL UNIQUE," +
                 "Year INTEGER not NULL," +
                 "DatePassed Date, " +
-                "Attempts INTEGER, " +
+                "Attempts INTEGER DEFAULT '0', " +
                 "Mark INTEGER, " +
-                "Points INTEGER, " +
-                "LectId VARCHAR(10), " +
+                "Points INTEGER DEFAULT '0', " +
                 "PRIMARY KEY (id, IndexNum, SubjectId)," +
                 "FOREIGN KEY (IndexNum) REFERENCES Students(IndexNum) ON UPDATE CASCADE, " +
-                "FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId) ON UPDATE CASCADE, " +
-                "FOREIGN KEY (LectId) references Lecturers(LectId) ) ENGINE=InnoDB ";
+                "FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId) ON UPDATE CASCADE ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'AppliedToListen'");
 
@@ -274,13 +274,13 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Exams " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "ExamId VARCHAR(10) not NULL UNIQUE , " +
+                "ExamId VARCHAR(10) not NULL UNIQUE, " +
                 "ExamDate DATE not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
                 "LectId VARCHAR(10) not NULL," +
                 "PRIMARY KEY (id, ExamId)," +
-                "FOREIGN KEY (SubjectId) references Subjects(SubjectId)," +
-                "FOREIGN KEY (LectId) references Lecturers(LectId) ) ENGINE=InnoDB ";
+                "FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId) ON UPDATE CASCADE, " +
+                "FOREIGN KEY (LectId) REFERENCES Lecturers(LectId) ON UPDATE CASCADE ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'Exams'");
 
@@ -300,8 +300,8 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS ExamApplication " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "IndexNum VARCHAR(10) not NULL," +
-                "ExamId VARCHAR(10) not NULL," +
+                "IndexNum VARCHAR(10) not NULL UNIQUE ," +
+                "ExamId VARCHAR(10) not NULL UNIQUE ," +
                 "Price INTEGER not NULL," +
                 "PRIMARY KEY (id, IndexNum, ExamId), " +
                 "FOREIGN KEY (IndexNum) references Students(IndexNum), " +
@@ -325,7 +325,7 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS StudentStatus " +
                 "( id INTEGER not NULL AUTO_INCREMENT, " +
-                "IndexNum VARCHAR(10) not NULL, " +
+                "IndexNum VARCHAR(10) not NULL UNIQUE, " +
                 "Year INTEGER not NULL, " +
                 "CurrentYear INTEGER not NULL, " +
                 "Status VARCHAR(15) not NULL, " +
@@ -349,7 +349,7 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS ExamDeadline " +
                 "( id INTEGER not NULL AUTO_INCREMENT, " +
-                "ExamName VARCHAR(20) not NULL, " +
+                "ExamName VARCHAR(20) not NULL UNIQUE, " +
                 "StartDate DATE not NULL, " +
                 "EndDate DATE not NULL," +
                 "StartApplicationDate DATE not NULL," +
@@ -420,7 +420,7 @@ public class Database
         sql = "CREATE TRIGGER UpdateAttempts AFTER INSERT ON ExamApplication " +
                 "FOR EACH ROW " +
                 "UPDATE AppliedToListen as al SET Attempts = Attempts + 1 " +
-                "WHERE (SELECT IndexNum FROM inserted as i" +
+                "WHERE (SELECT IndexNum FROM inserted as i " +
                         "WHERE al.IndexNum = i.IndexNum)";
 
         System.out.println("Creating trigger 'ApplyForExamTrigger'");
@@ -570,11 +570,31 @@ public class Database
         }
     }
 
-    public static void ApplyForExam(Index index, String ExamId, int price) throws Exception
+    public static void ApplyForExam1(Index index, String examId, int price) throws Exception
     {
         sql = "INSERT INTO ExamApplication (IndexNum, ExamId, Price) " +
-                "VALUES ( '" + index + "', ' " + ExamId + "', '" + price + "' ) ";
+                "SELECT al.IndexNum, e.ExamId, '" + price + "' " +
+                "FROM AppliedToListen as al join Exams as e on e.SubjectId = al.SubjectId join Subjects as s on e.SubjectId = s.Subjectid " +
+                "WHERE al.IndexNum = '" + index + "' AND e.ExamId = '" + examId + "' AND al.DatePassed is null AND al.Points >= s.PointsRequired ";
+        System.out.println(sql);
+        try
+        {
+            stat.executeUpdate(sql);
+            System.out.println("Exam applied");
+        }
+        catch (SQLException throwables)
+        {
+            if(throwables.getErrorCode() == 1062)
+                throw new Exception("Student is already aplied for this exam");
+            throwables.printStackTrace();
+        }
+    }
 
+    public static void ApplyForExam(Index index, String examId, int price) throws Exception
+    {
+        sql = "INSERT INTO ExamApplication (IndexNum, ExamId, Price) " +
+                "VALUES ( '" + index + "', '" + examId + "', '" + price + "' ) ";
+        System.out.println(sql);
         try
         {
             stat.executeUpdate(sql);
@@ -590,34 +610,39 @@ public class Database
 
     public static void AddExam(Exam exam) throws Exception
     {
-        sql = "INSERT INTO Users (ExamId, ExamDate, SubjectId, LectId) " +
+        sql = "INSERT INTO Exams (ExamId, ExamDate, SubjectId, LectId) " +
                 "VALUES ( '" + exam.getId() + "', '" + exam.getDate() + "', '" + exam.getSubject_id() + "', '" + exam.getLect_id() + "' )";
 
         try
         {
             stat.executeUpdate(sql);
-            System.out.println("User added");
+            System.out.println("Exam added");
         }
         catch (SQLException throwables)
         {
             if(throwables.getErrorCode() == 1062)
-                throw new Exception("Username is already in table Users");
+                throw new Exception("ExamId is already in table Users");
             throwables.printStackTrace();
         }
     }
 
     public static void ApplyForSubject(Index index, String subjectId[]) throws Exception
     {
-        sql = "INSERT INTO ExamApplication (IndexNum, SubjectId, Year) " +
-                "VALUES ";
+        if(index != null && subjectId != null)
+            sql = "INSERT INTO AppliedToListen (IndexNum, SubjectId, Year) " +
+                    "VALUES ";
+        else
+        {
+            throw new Exception("index or subjectid[] is null");
+        }
 
         int currentyear = LocalDate.now().getYear();
 
         for(int i=0;i<subjectId.length;i++)
         {
-            sql += "( '" + index + "', ' " + subjectId[i] + "', '" + currentyear + "' ) ";
+            sql += "( '" + index + "', '" + subjectId[i] + "', '" + currentyear + "' ) ";
 
-            if(i != subjectId.length)
+            if(i != subjectId.length - 1)
                 sql += ", ";
         }
 
@@ -629,7 +654,7 @@ public class Database
         catch (SQLException throwables)
         {
             if(throwables.getErrorCode() == 1062)
-                throw new Exception("Student is already aplied to this subject");
+                throw new Exception("Student is already applied to this subject");
             throwables.printStackTrace();
         }
     }

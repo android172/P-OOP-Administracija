@@ -105,9 +105,18 @@ public class StudentskaSluzbaApplication
 //            System.out.println(s);
 //        }
 
+        //Database.AddExam(new Exam(Database.GetEmptyId("Exams"), "S005", "P001", LocalDate.of(2020, 1, 8)));
+        //Database.ApplyForSubject(new Index("1/2019"), new String[]{"S005"});
+        //Database.ApplyForExam1(new Index("1/2019"), "E001", 0);
+        //Database.ApplyForExam(new Index("1/2019"), "E001", 0);
+
          //Database.DropDatabase("testing");
 
         //db.Close();
     }
 
 }
+//
+//    SELECT al.IndexNum, e.ExamId, '0'
+//        FROM appliedtolisten as al join exams as e on al.SubjectId = e.SubjectId join subjects as s on e.SubjectId = s.SubjectId
+//        WHERE al.IndexNum = '1/2012' AND e.ExamId = 'E001' AND al.DatePassed is null AND al.Points >= s.PointsRequired
