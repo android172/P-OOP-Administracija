@@ -86,18 +86,18 @@ public class SubjectController {
             int[] years;
             String[] pom = year.split("\\+");
             years = new int[pom.length];
-            if (year != ""){
+            if (!year.equals("all")){
                 int i=0;
                 for (String tmp : pom) {
                     years[i++] = Integer.parseInt(tmp);
                 }
             }
             String[] lects = null;
-            if (lect_name != ""){
+            if (!lect_name.equals("all")){
                 lects = lect_name.split("\\+");
             }
             String[] majors = null;
-            if (major_name != ""){
+            if (!major_name.equals("all")){
                 majors = major_name.split("\\+");
             }
 
@@ -131,7 +131,6 @@ public class SubjectController {
             e.printStackTrace();
             return null;
         }
-
     }
 
     @GetMapping("/add_subject")
