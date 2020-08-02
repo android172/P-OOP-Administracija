@@ -549,10 +549,10 @@ public class Database
         }
     }
 
-    public static void AddUser(User user, String id) throws Exception
+    public static void AddUser(User user) throws Exception
     {
         sql = "INSERT INTO Users (Username, Password, Role, UniqueId) " +
-                "VALUES ( '" + user.username + "', '" + user.password + "', '" + user.role + "', '" + id + "' ) ";
+                "VALUES ( '" + user.username + "', '" + user.password + "', '" + user.role + "', '" + user.id + "' ) ";
 
         try
         {
@@ -591,7 +591,7 @@ public class Database
                 "SELECT al.IndexNum, e.ExamId, '" + price + "' " +
                 "FROM AppliedToListen as al join Exams as e on e.SubjectId = al.SubjectId join Subjects as s on e.SubjectId = s.Subjectid " +
                 "WHERE al.IndexNum = '" + index + "' AND e.ExamId = '" + examId + "' AND al.DatePassed is null AND al.Points >= s.PointsRequired ";
-        System.out.println(sql);
+
         try
         {
             stat.executeUpdate(sql);
@@ -609,7 +609,7 @@ public class Database
     {
         sql = "INSERT INTO ExamApplication (IndexNum, ExamId, Price) " +
                 "VALUES ( '" + index + "', '" + examId + "', '" + price + "' ) ";
-        System.out.println(sql);
+
         try
         {
             stat.executeUpdate(sql);
