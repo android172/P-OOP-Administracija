@@ -49,7 +49,7 @@ public class UserController {
 
         String index = Database.GetHighestIndex(year) + "/" + year;
         try {
-            Database.AddUser(user, index);
+            Database.AddUser(user);
             return "User successfully added";
         } catch (Exception e) {
             e.printStackTrace();
