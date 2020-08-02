@@ -955,6 +955,13 @@ public class Database
             throwables.printStackTrace();
         }
 
+
+        //test
+        for (Subject subject : subjects) {
+            System.out.println(subject);
+        }
+
+
         return subjects;
     }
 
