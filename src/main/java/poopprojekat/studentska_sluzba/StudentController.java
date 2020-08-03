@@ -136,7 +136,7 @@ public class StudentController {
             Student new_student = new Student(first_name, last_name, new Index(index_num),
                     LocalDate.parse(date_of_birth), city, jmbg, major_id);
             Database.AddStudent(new_student);
-            Database.AddUser(new User(index_num, jmbg, "Student"), index_num);
+            Database.AddUser(new User(index_num, jmbg, "Student", index_num));
             return "Student was added";
         } catch (Exception e) {
             e.printStackTrace();
@@ -230,10 +230,8 @@ public class StudentController {
     public ArrayList<Index> get_all_students_from_subject(@RequestParam("token") long token,
             @RequestParam("subject") String subject_id) {
         Lecturer lect = Database.GetLecturer(subject_id);
-        if (!Log_in_Controller.access_allowed(token,
-                new String[][] { { "Admin", "any" }, { "Student", lect.getLectId() } }))
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Student", lect.getLectId() } }))
             return null;
-
         try {
             return Database.GetAllStudentsFromSubject(subject_id, LocalDate.now().getYear());
         } catch (Exception e) {

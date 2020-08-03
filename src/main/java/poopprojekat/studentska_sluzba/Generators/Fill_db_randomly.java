@@ -12,7 +12,7 @@ public class Fill_db_randomly {
             for (int i = 0; i < number; i++) {
                 Student gen = Generate_random_data_point.get_random_student();
                 Database.AddStudent(gen);
-                Database.AddUser(new User(gen.getIndex().toString(), gen.getJmbg(), "Student"), gen.getIndex().toString());
+                Database.AddUser(new User(gen.getIndex().toString(), gen.getJmbg(), "Student", gen.getIndex().toString()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -24,7 +24,7 @@ public class Fill_db_randomly {
             for (int i = 0; i < number; i++) {
                 Lecturer gen = Generate_random_data_point.get_random_lecturer();
                 Database.AddLecturer(gen);
-                Database.AddUser(new User(gen.getLastName() + gen.getLectId(), gen.getLectId(), "Lecturer"), gen.getLectId());
+                Database.AddUser(new User(gen.getLastName() + gen.getLectId(), gen.getLectId(), "Lecturer", gen.getLectId().toString()));
             }
         } catch (Exception e) {
             e.printStackTrace();

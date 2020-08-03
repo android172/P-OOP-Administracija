@@ -93,7 +93,7 @@ public class LecturerController {
         Lecturer new_lecturer = new Lecturer(first_name, last_name, title, lect_id);
         try {
             Database.AddLecturer(new_lecturer);
-            Database.AddUser(new User(last_name + lect_id, lect_id, "Lecturer"));
+            Database.AddUser(new User(last_name + lect_id, lect_id, "Lecturer", lect_id));
             return "Lecturer was added";
         } catch (Exception e) {
             e.printStackTrace();

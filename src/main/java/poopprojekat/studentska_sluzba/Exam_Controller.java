@@ -56,7 +56,7 @@ public class Exam_Controller {
     @GetMapping("/get_exams")
     public ArrayList<Exam> get_exams(@RequestParam("token") long token, @RequestParam("student") String index,
             @RequestParam("exam_deadline") String exam_deadline) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Student", index } }))
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
             return null;
         try {
             return Database.GetAvailableExams(new Index(index), exam_deadline);
@@ -111,10 +111,6 @@ public class Exam_Controller {
             return "Application was not completed because of the following exception: " + e.getMessage();
         }
     }
-
-    // Student Controller
-    // TO DO: Daj sve studente sa datog predmeta
-    // TO DO: Upisi datog studenta na dati niz predmeta
 
     // Subject Controller
     // TO DO: Daj sve predmete na datom smeru
