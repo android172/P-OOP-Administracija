@@ -1,4 +1,4 @@
-var studentData;
+var studentData = [];
 var table1 = document.getElementById("table1");
 var table2 = document.getElementById("table2");
 var table3 = document.getElementById("table3");
@@ -25,10 +25,9 @@ function fillTables(){
 	
 	let table2_2 = '<table>'
 	const studije = giveMe(studentData,"");
-    const smer =  giveMe(studentData,"");
-	const centar =  giveMe(studentData,"");
+    const smer =  giveMe(studentData,"majorname");
 	const prosek =  giveMe(studentData,"");
-    table2_2 += `<tr><td>${studije}</td><td>${smer}</td><td>${centar}</td><td>${prosek}</td></tr>`
+    table2_2 += `<tr><td>${studije}</td><td>${smer}</td><td>'Kragujevac'</td><td>${prosek}</td></tr>`
     table2_2 += '</table>'
     table2.innerHTML = table2_2;
 	//Table 2 filled
@@ -43,4 +42,15 @@ function fillTables(){
 	//Table3 filled
 	
 	//Table4 filled
+}
+
+function makeRequest(requestStr, frameID, params=[]){
+  var frame = document.getElementById(frameID);
+  var str = requestStr;
+  str += "?token="+token;
+  var len = params.length;
+  for(var i=0; i<len; i++){
+    str+=params[i][0]+"="+params[i][1];
+  }
+  frame.src = str;
 }
