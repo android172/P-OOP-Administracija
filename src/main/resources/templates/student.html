@@ -14,13 +14,13 @@
 			<h1>Student</h1>
 			<div id="user">
 				<p><span>Ime Prezime</span></p>
-				<img src="../images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
+				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
 			</div><!--close user-->
 		</header>
 		<div id = "content">
 			<div id = "picture-info">
 				<div id = "background-pic-name">
-					<img src="../images/user-img.bmp" id="user-img-info" th:src="@{/images/user-img.bmp}"/>
+					<img src="../static/images/user-img.bmp" id="user-img-info" th:src="@{/images/user-img.bmp}"/>
 					<p><b><span>Ime Prezime</span></b></p>
 				</div>
 				<table id = "table1">
@@ -29,8 +29,8 @@
 						<th>JMBG</th>
 					</tr>
 					<tr>
-						<td>30/2018</td>
-						<td>0902999722212</td>
+						<td id = "Indeks"></td>
+						<td id = "JMBG"></td>
 					</tr>
 				</table>
 			</div><!--close picture info-->
@@ -38,33 +38,33 @@
 			<table id = "table2">
 				<tr>
 					<th>Studije</th>
-					<td>Osnovne akademske</td>
+					<td id = "Studije"></td>
 				</tr>
 				<tr>
 					<th>Smer</th>
-					<td>Informatika</td>
+					<td id = "Smer"></td>
 				</tr>
 				<tr>
 					<th>Centar</th>
-					<td>Kragujevac</td>
+					<td id = "Centar"></td>
 				</tr>
 				<tr>
 					<th>Prosek</th>
-					<td>0.0</td>
+					<td id = "Prosek"></td>
 				</tr>
 			</table>
 			<table id = "table3">
 				<tr>
 					<th>Godina upisa</th>
-					<td>2018</td>
+					<td id = "Godina_upisa"></td>
 				</tr>
 				<tr>
 					<th>Godina studija</th>
-					<td>2019</td>
+					<td id = "Godina_studija"></td>
 				</tr>
 				<tr>
 					<th>ESPB</th>
-					<td>0</td>
+					<td id = "ESPB"></td>
 				</tr>
 			</table>
 			</div>
@@ -92,6 +92,6 @@
 		</table>
 		</div><!--close content-->
 	</div><!--close wrapper-->
-	<iframe src="" name="dataframe" id="dataframe" onload="fillTable()"></iframe>
+	<iframe src="/get_student?index=" name="dataframe" id="dataframe" onload="fillStudentTables()"></iframe><!--pogledaj bazu podataka za index-->
 </body>
 </html>
