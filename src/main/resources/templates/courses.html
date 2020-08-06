@@ -132,39 +132,14 @@
 			<div class="flex-col size-max">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7</div>
 				<br>
-				<form action="/add_student" id="newform" method="get" target="sendframe" class="pad-medium wide flex-col">
-					<div class="flex-row wide pad-light">
-						<label for="first_name">Ime:</label><input type="text" name="first_name">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="last_name">Prezime:</label><input type="text" name="last_name">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="index_num">Index:</label><input type="text" name="index_num">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="date_of_birth">Datum rodjenja:</label><input type="date" name="date_of_birth">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="city">Grad:</label><input type="text" name="city">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="jmbg">JMBG:</label><input type="text" name="jmbg">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="major_id">Smer:</label>
-						<div class="dropdown no-auto-submit">
-							<input name="major_id" value="" readonly>
-							<div class="dd-options" id="new-major-options">
-							</div>
-						</div>
-					</div>
+				<form action="/add_subject" id="newform" method="get" target="sendframe" class="pad-medium wide new-grid">
+					<label for="name">Ime:</label><input type="text" name="name">
+					<label for="id">ID:</label><input type="text" name="id">
+					<label for="espb">ESPB:</label><input type="number" min="0" name="espb">
+					<label for="year">Godina:</label><input type="number" min="1900" max="3000" name="year">
+					<label for="lect_id">Predavac ID:</label><input type="text" name="lect_id">
+					<label for="major_id">Smer ID:</label><input type="text" name="major_id">
+					<label for="points_req">Broj poena:</label><input type="number" name="points_req">
 				</form>
 				<div class="flex-row wide pad-medium">
 					<button type="submit" form="newform">Submit</button>

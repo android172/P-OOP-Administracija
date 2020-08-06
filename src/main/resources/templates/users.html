@@ -34,10 +34,6 @@
 						<label class="select-label">Rastuci poredak:</label>
 						<input type="checkbox" class="labeled" onclick="fillTables(this.checked);" checked>
 					</div>
-
-					<div class="form-element end">
-						<button  type="button" onclick="toggleElementById('new-element');" id="new-button">+</button>
-					</div>
 				</form>
 			</div>
 			<br>
@@ -70,52 +66,6 @@
 					<td>Ime</td><td>Prezime</td><td>Indeks</td>
 				</tr>
 			</table>
-		</div>
-
-		<div id="new-element">
-			<div class="flex-col size-max">
-				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7</div>
-				<br>
-				<form action="/add_student" id="newform" method="get" target="sendframe" class="pad-medium wide flex-col">
-					<div class="flex-row wide pad-light">
-						<label for="first_name">Ime:</label><input type="text" name="first_name">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="last_name">Prezime:</label><input type="text" name="last_name">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="index_num">Index:</label><input type="text" name="index_num">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="date_of_birth">Datum rodjenja:</label><input type="date" name="date_of_birth">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="city">Grad:</label><input type="text" name="city">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="jmbg">JMBG:</label><input type="text" name="jmbg">
-					</div>
-
-					<div class="flex-row wide pad-light">
-						<label for="major_id">Smer:</label>
-						<div class="dropdown no-auto-submit">
-							<input name="major_id" value="" readonly>
-							<div class="dd-options" id="new-major-options">
-							</div>
-						</div>
-					</div>
-				</form>
-				<div class="flex-row wide pad-medium">
-					<button type="submit" form="newform">Submit</button>
-					<button type="reset" form="newform">Clear</button>
-				</div>
-			</div>
-		</div>
 
 		<iframe src="" name="sendframe" id="sendframe"></iframe>
 		<iframe src="" name="dataframe" id="dataframe" onload="parseData();"></iframe>
