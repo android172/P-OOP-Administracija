@@ -7,6 +7,7 @@ var table4 = document.getElementById("table4");
 function parseData(){
 	var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
 	studentData = JSON.parse(dataStr);
+	fillTables();
 }
 
 function giveMe(studentData,tagName){

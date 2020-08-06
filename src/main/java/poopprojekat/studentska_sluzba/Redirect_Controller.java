@@ -31,6 +31,18 @@ public class Redirect_Controller {
         return null;
     }
 
+    @GetMapping("/student")
+    public String student(HttpServletResponse response, @RequestParam("token") long token){
+        if (Log_in_Controller.access_allowed(token, new String[][] {{"Student", "any"}})) return "student";
+
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @GetMapping("/students")
     public String students(HttpServletResponse response, @RequestParam("token") long token){
         if (Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return "students";
