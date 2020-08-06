@@ -4,7 +4,7 @@
 	<title>Studentska sluzba</title>
 	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
 	<link rel="stylesheet" type="text/css" href="../static/css/data-style.css" th:href="@{/css/data-style.css}"/>
-	<script type="text/javascript" language="Javascript" src="../static/js/loader.js" th:src="@{/js/loader.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/user-loader.js" th:src="@{/js/user-loader.js}"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
@@ -28,11 +28,11 @@
 		<div id="content">
 			<div id="content-header">
 				<form action="/get_all_users" id="search" method="get" target="dataframe">
-					<input type="text" id="searchbar" value="" placeholder="Search..." onchange="search(this, 'data');">
+					<input type="text" id="searchbar" value="" placeholder="Search..." onchange="search(this, 'data-admin'); search(this, 'data-lecturer'); search(this, 'data-student');">
 
 					<div class="form-element">
 						<label class="select-label">Rastuci poredak:</label>
-						<input type="checkbox" class="labeled" onclick="fillTable(this.checked);" checked>
+						<input type="checkbox" class="labeled" onclick="fillTables(this.checked);" checked>
 					</div>
 
 					<div class="form-element end">
@@ -40,7 +40,29 @@
 					</div>
 				</form>
 			</div>
-			<table id="data">
+			<br>
+			<h1>Administratori:</h1>
+			<table id="data-admin">
+				<tr>
+					<th>Ime</th><th>Prezime</th><th>Indeks</th>
+				</tr>
+				<tr>
+					<td>Ime</td><td>Prezime</td><td>Indeks</td>
+				</tr>
+			</table>
+			<br>
+			<h1>Predavaci:</h1>
+			<table id="data-lecturer">
+				<tr>
+					<th>Ime</th><th>Prezime</th><th>Indeks</th>
+				</tr>
+				<tr>
+					<td>Ime</td><td>Prezime</td><td>Indeks</td>
+				</tr>
+			</table>
+			<br>
+			<h1>Studenti:</h1>
+			<table id="data-student">
 				<tr>
 					<th>Ime</th><th>Prezime</th><th>Indeks</th>
 				</tr>

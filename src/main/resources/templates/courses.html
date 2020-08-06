@@ -38,20 +38,14 @@
 				<form action="/get_subjects" id="search" method="get" target="dataframe">
 					<input type="text" id="searchbar" value="" placeholder="Search..." onchange="search(this, 'data');">
 
-                      				   <!--
-                                           @RequestParam("year") String year,//
-                                           @RequestParam("lect_name") String lect_name,
-                                           @RequestParam("major_name") String major_name,
-                                           @RequestParam("order_by") int ord)-->
-
 					<div class="form-element">
 						<label class="select-label">Godina:</label>
 	    				<div class="dropdown multiselect">
-							<input name="year" value="1" readonly>
+							<input name="year" value="all" readonly>
 							<div class="dd-options">
 								<div class="flex-row">
 									<label for="year-options-0">All</label>
-									<input type="checkbox" id="year-options-0" value="" checked>
+									<input type="checkbox" id="year-options-0" value="all" checked>
 								</div>
 								<div class="flex-row">
 									<label for="year-options-1">Prva</label>
@@ -59,15 +53,15 @@
 								</div>
 								<div class="flex-row">
 									<label for="year-options-2">Druga</label>
-									<input type="checkbox" id="year-options-2" value="2">
+									<input type="checkbox" id="year-options-2" value="2" checked>
 								</div>
 								<div class="flex-row">
 									<label for="year-options-3">Treca</label>
-									<input type="checkbox" id="year-options-3" value="3">
+									<input type="checkbox" id="year-options-3" value="3" checked>
 								</div>
 								<div class="flex-row">
 									<label for="year-options-4">Cetvrta</label>
-									<input type="checkbox" id="year-options-4" value="4">
+									<input type="checkbox" id="year-options-4" value="4" checked>
 								</div>
 							</div>
 						</div>
@@ -76,7 +70,7 @@
 					<div class="form-element">
 						<label class="select-label">Predavac:</label>
 	    				<div class="dropdown multiselect">
-							<input name="lect_name" value="" readonly>
+							<input name="lect_name" value="all" readonly>
 							<div class="dd-options" id="lect-options">
 								<div class="flex-row">
 									<label for="lect-options-0">All</label>
@@ -89,7 +83,7 @@
 					<div class="form-element">
 						<label class="select-label">Smer:</label>
 	    				<div class="dropdown multiselect">
-							<input name="major_name" value="" readonly>
+							<input name="major_name" value="all" readonly>
 							<div class="dd-options" id="major-options">
 								<div class="flex-row">
 									<label for="major-options-0">All</label>
