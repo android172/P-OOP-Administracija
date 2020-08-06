@@ -6,9 +6,10 @@
 	<meta charset="utf-8">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/student-loader.js" th:src="@{/js/student-loader.js}"></script>
 </head>
-<body>
+<body onload="getIndex(); makeRequest('/get_student', 'dataframe', [['index',index]]);">
 	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
 		<header>
 			<h1>Student</h1>
@@ -46,7 +47,7 @@
 				</tr>
 				<tr>
 					<th>Centar</th>
-					<td id = "Centar"></td>
+					<td></td>
 				</tr>
 				<tr>
 					<th>Prosek</th>
@@ -92,6 +93,6 @@
 		</table>
 		</div><!--close content-->
 	</div><!--close wrapper-->
-	<iframe src="/get_student?index=" name="dataframe" id="dataframe" onload="parseData()"></iframe><!--pogledaj bazu podataka za index-->
+	<iframe src="/get_student?index=" name="dataframe" id="dataframe" onload="parseData();"></iframe>
 </body>
 </html>
