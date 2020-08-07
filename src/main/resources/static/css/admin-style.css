@@ -2,32 +2,18 @@
 	height: 100%;
 	width: 600px;
 	margin-left: 15%;
-	background-color: rgba(200,200,200,0.2);
+	background-color: rgba(200,200,200,.2);
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	/*outline: 4px solid white; */
+	outline: 2px solid var(--color-highlight2); 
+	position: relative;
 
+	box-shadow: 0px 0px 15px #555;
 }
 
 #admin-options {
 	margin: 25px; 
-}
-
-/*#wrapper, #admin-options-wrapper::before {
-	background: url(images/lowpoly.png) 0 / cover fixed;
-}*/
-
-#admin-options-wrapper::before {
-	content: '';
-  	margin: 0;
-  	position: absolute;
-  	top: 0;
-  	right: 0;
-  	bottom: 0;
-  	left: 0;
-  	filter: blur(20px);
-  	z-index: -1;
 }
 
 ul {
@@ -43,7 +29,7 @@ li {
 h3 {
 	font-size: 40px;
 	font-weight: 500;
-	color: white;
+	color: var(--color-highlight2);
 	padding-bottom: 15px;
 }
 

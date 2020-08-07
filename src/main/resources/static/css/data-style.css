@@ -1,6 +1,9 @@
 :root {
 	--element-size: 35px;
 	--select-size: 30px;
+
+	--table-even: #393762;
+	--table-odd: #302e52;
 }
 
 #content {
@@ -39,26 +42,36 @@ a {
 
 table {
 	width: 100%;
+	margin-top: 10px;
+	border-collapse: collapse;
 }
 
-th {
-	outline: 1px solid var(--color-highlight);
-	background-color: var(--color-highlight2);
-	color: var(--color-highlight);
+tr>* {
+	color: var(--color-text);
+	padding-left: 15px;
+	border-left: 1px solid var(--color-highlight2);
+	border-right: 1px solid var(--color-highlight2);
 }
 
-td {
-	outline: 1px solid var(--color-highlight2);
-	background-color: var(--color-highlight);
+tr:first-child>*{
+	border-top: 1px solid var(--color-highlight2);
+}
+
+tr:first-child>*, table {
+	border-bottom: 1px solid var(--color-highlight2);
+}
+
+tr:nth-child(even)>* {
+	background-color: var(--table-even);
+}
+
+tr:nth-child(odd)>* {
+	background-color: var(--table-odd);
 }
 
 tr:hover>td {
 	cursor: pointer;
-	background-color: var(--color-header);
-}
-
-tr>* {
-	padding-left: 15px;
+	background-color: var(--color-highlight);
 }
 
 select {
@@ -277,6 +290,16 @@ button {
     justify-content: space-between;
 }
 
+.flex-row-stretch {
+	display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.flex-row-stretch>* {
+	width: 33%;
+}
+
 .flex-col {
     display: flex;
     flex-direction: column;
@@ -307,7 +330,7 @@ button {
 	height: 400px;
 	right: 0px;
     bottom: 0px;
-    visibility: visible;
+    visibility: hidden;
 }
 
 #sendframe {
@@ -316,19 +339,19 @@ button {
 	height: 400px;
 	left: 0px;
     bottom: 0px;
-    visibility: visible;
+    visibility: hidden;
 }
 
 .button-delete {
 	visibility: hidden;
 	position: absolute;
 	right: 25px;
+	margin-top: -2px;
 	font-size: 95%;
 
 	padding: 2px 8px 2px 8px;
 
-	color: var(--color-darker);
-	border-radius: 10px;
+	color: var(--color-highlight2);
 	border-style: solid;
 	border-width: 1px;
 	background-color: var(--color-highlight2);
@@ -339,9 +362,9 @@ button {
 
 .button-delete:hover {
 	cursor: pointer;
-	color: var(--color-text);
+	color: red;
 	background-color: var(--color-dark);
-	border-color: var(--color-darker);
+	border-color: red;
 }
 
 #data>tr:hover>.button-delete {
