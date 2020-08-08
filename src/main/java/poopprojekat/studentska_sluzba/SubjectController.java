@@ -83,10 +83,11 @@ public class SubjectController {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
             // String[] names = null;
-            int[] years;
+            int[] years = null;
             String[] pom = year.split("\\+");
-            years = new int[pom.length];
+
             if (!year.equals("all")){
+                years = new int[pom.length];
                 int i=0;
                 for (String tmp : pom) {
                     years[i++] = Integer.parseInt(tmp);
