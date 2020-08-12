@@ -38,6 +38,11 @@ import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 //                                                                 orderby: 1 - LectId; 2 - FirstName; 3 - LastName; 4 - Title
 // GetUser(String id) returns username (String)
 // GetExamDeadlines(LocalDate targetdate) returns ArrayList<String> that contains exam names
+// GetAvailableExams(Index index, String examName) returns ArrayList<Exam> of available exams that student can apply for
+// GetAttempts(Index index, String examId) reutnrs number of attempts for subject
+// IfBudget(Index index, int currectYear) returns true if student is on budget
+// GetAllStudentsFromSubject(String subjectId, int year) returns ArrayList<Index> of all students that are/were applied for subject in 'year'
+                                                        // if year = 0, returns all students from subject over time
 
 // EditStudent(Index index, Student updated) - prima index studenta kog treba izmeniti i promenjivu Student sa izmenjenim podacima
 // EditLecturer(int lectId, Lecturer updated) - prima id profesora kog treba izmeniti i Lecturer sa izmenjenim podacima
@@ -45,11 +50,12 @@ import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 // EditMajor(int majorId, Major updated) - prima id smera koji treba izmeniti i Major sa izmenjenim podacima
 // EditUser(String username, User updated) - prima username i User-a kome treba izmeniti username/password/role
 
-// DeleteStudent(Index index) - prima indeks studenta kog treba obrisati iz baze
-// DeleteLecturer(int lectId) - prima id profesora kog treba obrisati iz baze
-// DeleteMajor(int majorId) - prima id smera koji treba obrisati iz baze
-// DeleteSubject(int subjectId) - prima id predmeta koji treba obrisati iz baze
-// DeleteUser(String id) - prima brind ili id profesora (kao String) i brise user-a iz tabele Users
+// DeleteStudent(Index index) - Removes student from table Students
+// DeleteLecturer(int lectId) - Removes lecturer from table Lecturers. Automatically removes that lecturer from table Users
+// DeleteMajor(int majorId) - Removes major from table Majors
+// DeleteSubject(int subjectId) - Removes subject from table Subjects
+// DeleteUser(String id) - Removes user from table Users
+//
 
 public class Database
 {
@@ -1455,12 +1461,16 @@ public class Database
 
     public static ArrayList<Exam> GetAvailableExams(Index index, String examName) throws Exception
     {
-        if(index != null && examName != null)
-            sql = "SELECT * FROM Exams as e join ExamDeadline as ed on (ed.ExamName = '" + examName + "' AND ed.StartDate <= e.ExamDate AND ed.EndDate >= e.ExamDate) " +
-                "join AppliedToListen as al on e.SubjectId = al.SubjectId join Subjects as s on e.SubjectId = s.SubjectId " +
-                "WHERE al.IndexNum = '" + index + "' AND al.DatePassed is null AND al.Points >= s.PointsRequired ";
+        if(index != null)
+            if(examName != null)
+                sql = "SELECT * FROM Exams as e join ExamDeadline as ed on (ed.ExamName = '" + examName + "' AND ed.StartDate <= e.ExamDate AND ed.EndDate >= e.ExamDate) " +
+                    "join AppliedToListen as al on e.SubjectId = al.SubjectId join Subjects as s on e.SubjectId = s.SubjectId " +
+                    "WHERE al.IndexNum = '" + index + "' AND al.DatePassed is null AND al.Points >= s.PointsRequired ";
+            else
+                sql = "SELECT * FROM Exams as e join AppliedToListen as al on e.SubjectId = al.SubjectId join Subjects as s on e.SubjectId = s.SubjectId " +
+                        "WHERE al.IndexNum = '" + index + "' AND al.Points >= s.PointsRequired ";
         else
-            throw new Exception("Index or ExamName is null");
+            throw new Exception("Index is null");
 
         ResultSet res = null;
         ArrayList<Exam> available = new ArrayList<>();
