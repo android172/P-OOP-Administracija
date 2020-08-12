@@ -7,7 +7,6 @@ import java.util.TimerTask;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
@@ -44,6 +43,13 @@ public class Log_in_Controller {
             i++;
         }
         return "user doesn't exist";
+    }
+
+    @GetMapping("/access_allowed")
+    public static boolean access_allowed(@RequestParam("token") long token) {
+        if (Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}, {"Lecturer", "any"}, {"Student", "any"}}))
+            return true;
+        return false;
     }
 
     public static boolean access_allowed(long token, String roles[][]) {

@@ -66,6 +66,18 @@ public class Exam_Controller {
         }
     }
 
+    @GetMapping("/get_exams_for")
+    public ArrayList<Exam> get_exams(@RequestParam("token") long token, @RequestParam("student") String index) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
+            return null;
+        try {
+            return Database.GetAvailableExams(new Index(index), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @GetMapping(value = "add_exam")
     public String add_exam(@RequestParam("token") long token, @RequestParam("subject_id") String subject_id,
             @RequestParam("lect_id") String lect_id, @RequestParam("Date") String date) {
