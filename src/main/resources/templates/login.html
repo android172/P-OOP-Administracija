@@ -9,6 +9,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
 
     <script type="text/javascript" language="Javascript" src="../static/js/login.js" th:src="@{/js/login.js}"></script>
+    <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 </head>
 <body>
 	<div id="wrapper">
@@ -27,6 +28,7 @@
 			</form>
 		</div>
 		<iframe src="" name="loginframe" id="loginframe" onload="redirect();"></iframe>
+		<iframe src="" name="sendframe" id="sendframe" onload="autoRedirect();"></iframe>
 	</div>
 </body>
 </html>

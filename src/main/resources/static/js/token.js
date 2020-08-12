@@ -59,7 +59,7 @@ function makeRequest(requestStr, frameID, params=[]){
   str += "?token="+token;
   var len = params.length;
   for(var i=0; i<len; i++){
-    str+=params[i][0]+"="+params[i][1];
+    str+="&"+params[i][0]+"="+params[i][1];
   }
   frame.src = str;
 }

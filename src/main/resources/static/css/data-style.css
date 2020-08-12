@@ -49,6 +49,7 @@ table {
 tr>* {
 	color: var(--color-text);
 	padding-left: 15px;
+	height: 24px;
 	border-left: 1px solid var(--color-highlight2);
 	border-right: 1px solid var(--color-highlight2);
 }
@@ -346,10 +347,14 @@ button {
 	visibility: hidden;
 	position: absolute;
 	right: 25px;
-	margin-top: -2px;
 	font-size: 95%;
+	margin-top: 3px;
 
-	padding: 2px 8px 2px 8px;
+	height: 14px;
+	padding: 0px 4px 4px 4px;
+
+	text-transform: uppercase;
+	text-align: center;
 
 	color: var(--color-highlight2);
 	border-style: solid;
