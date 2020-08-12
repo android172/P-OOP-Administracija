@@ -325,24 +325,6 @@ button {
 	margin-top: 5px;
 }
 
-#dataframe {
-	position: absolute;
-	width: 400px;
-	height: 400px;
-	right: 0px;
-    bottom: 0px;
-    visibility: hidden;
-}
-
-#sendframe {
-	position: absolute;
-	width: 400px;
-	height: 400px;
-	left: 0px;
-    bottom: 0px;
-    visibility: hidden;
-}
-
 .button-delete {
 	visibility: hidden;
 	position: absolute;

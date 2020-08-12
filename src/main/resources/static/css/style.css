@@ -136,3 +136,23 @@ header > * {
 	align-items: center;
 	justify-content: center;
 }
+
+#dataframe {
+	position: absolute;
+	width: 400px;
+	height: 400px;
+	right: 0px;
+    bottom: 0px;
+}
+
+#sendframe {
+	position: absolute;
+	width: 400px;
+	height: 400px;
+	left: 0px;
+    bottom: 0px;
+}
+
+#sendframe, #dataframe, #loginframe {
+	visibility: hidden;
+}

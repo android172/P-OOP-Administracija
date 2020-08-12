@@ -104,13 +104,14 @@ function deleteRow(id){
 
 var filters = [];
 
-var filtersEventListener;
-
 function initGetFilters(frameID){
 	var frame = document.getElementById(frameID);
-	filtersEventListener = frame.addEventListener("load", function(){
+	var filtersEventListener = function(){
 		getFilters(this);
-	});
+		this.removeEventListener('load', filtersEventListener);
+	};
+
+	frame.addEventListener("load", filtersEventListener);
 }
 
 function addOptionsToFilter(filterID, newOptions, multiselect, numExistingOptions, separate){
@@ -160,7 +161,6 @@ function addOptionsToFilter(filterID, newOptions, multiselect, numExistingOption
 
 function getFilters(frame){
 	var filtersStr = frame.contentWindow.document.body.children[0].innerHTML;
-	frame.removeEventListener("load", filtersEventListener);
 	filters = JSON.parse(filtersStr);
 	populateFilters();
 }

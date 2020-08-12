@@ -9,8 +9,16 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 </head>
-<body onload="getToken(); addTokenToLinks();">
+<body onload="getToken(); addTokenToLinks(); displayUsername();">
 	<div id="wrapper">
+		<div id="user">
+			<p id="user-name"></p>
+			<img src="../images/user-img.bmp" id="user-img">
+			<div id="user-options">
+				<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
+				<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
+			</div>
+		</div>
 		<div id="admin-options-wrapper">
 			<div id="admin-options">
 				<h3>Administracija:</h3>
@@ -24,6 +32,7 @@
 				</ul>
 			</div>
 		</div>
+		<iframe src="" name="sendframe" id="sendframe"></iframe>
 	</div>
 </body>
 </html>

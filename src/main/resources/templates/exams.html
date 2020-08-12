@@ -25,11 +25,11 @@
 		<header>
 			<h1><a href="admin" class="tokenify">Admin</a> / Ispiti</h1>
 			<div id="user">
-				<p id="user-name">Ime Prezime</p>
+				<p id="user-name"></p>
 				<img src="../images/user-img.bmp" id="user-img">
 				<div id="user-options">
 					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
-					<button type="button" onclick="makeRequest('/logout_req','sendframe'); window.location.replace('/');">Log out</button>
+					<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
 				</div>
 			</div>
 		</header>

@@ -16,6 +16,10 @@
 	margin: 25px; 
 }
 
+*{
+	color: white;
+}
+
 ul {
 	/*list-style: none;*/
 	color: white;
@@ -58,4 +62,10 @@ a:after {
 a:hover:after { 
   width: 100%; 
   left: 0; 
+}
+
+#user {
+	padding: 15px;
+
+	background-color: var(--color-dark);
 }

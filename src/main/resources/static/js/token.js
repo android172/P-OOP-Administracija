@@ -53,13 +53,19 @@ function addTokenToLinks(){
 }
 
 
-function makeRequest(requestStr, frameID, params=[]){
+function makeRequest(requestStr, frameID, params=[], oncomplete=function(){}){
   var frame = document.getElementById(frameID);
   var str = requestStr;
   str += "?token="+token;
   var len = params.length;
-  for(var i=0; i<len; i++){
+  for(var i=0; i<len; i++)
     str+="&"+params[i][0]+"="+params[i][1];
-  }
+
+  //alert(oncomplete);
+  var eventListener = function(){
+    oncomplete();
+    this.removeEventListener('load', eventListener);
+  };
+  frame.addEventListener('load', eventListener);
   frame.src = str;
 }
