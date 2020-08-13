@@ -4,15 +4,15 @@ import java.time.LocalDate;
 
 public class Attempts {
     private Index index;
-    private int id_subject;
+    private String id_subject;
     private int year;
     private LocalDate date;
     private int number_of_attempts;
     private int grade;
     private int points;
-    private int examiner;
+    private String examiner;
 
-    public Attempts(Index index, int id_subject, int year, LocalDate date, int number_of_attempts, int grade, int points, int examiner) {
+    public Attempts(Index index, String id_subject, int year, LocalDate date, int number_of_attempts, int grade, int points, String examiner) {
         this.index = index;
         this.id_subject = id_subject;
         this.year = year;
@@ -26,13 +26,13 @@ public class Attempts {
     public LocalDate getDate() {
         return date;
     }
-    public int getExaminer() {
+    public String getExaminer() {
         return examiner;
     }
     public int getGrade() {
         return grade;
     }
-    public int getId_subject() {
+    public String getId_subject() {
         return id_subject;
     }
     public Index getIndex() {
@@ -51,13 +51,13 @@ public class Attempts {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-    public void setExaminer(int examiner) {
+    public void setExaminer(String examiner) {
         this.examiner = examiner;
     }
     public void setGrade(int grade) {
         this.grade = grade;
     }
-    public void setId_subject(int id_subject) {
+    public void setId_subject(String id_subject) {
         this.id_subject = id_subject;
     }
     public void setIndex(Index index) {

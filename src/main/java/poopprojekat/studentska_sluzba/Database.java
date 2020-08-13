@@ -1461,16 +1461,12 @@ public class Database
 
     public static ArrayList<Exam> GetAvailableExams(Index index, String examName) throws Exception
     {
-        if(index != null)
-            if(examName != null)
+        if(index != null && examName != null)
                 sql = "SELECT * FROM Exams as e join ExamDeadline as ed on (ed.ExamName = '" + examName + "' AND ed.StartDate <= e.ExamDate AND ed.EndDate >= e.ExamDate) " +
                     "join AppliedToListen as al on e.SubjectId = al.SubjectId join Subjects as s on e.SubjectId = s.SubjectId " +
                     "WHERE al.IndexNum = '" + index + "' AND al.DatePassed is null AND al.Points >= s.PointsRequired ";
-            else
-                sql = "SELECT * FROM Exams as e join AppliedToListen as al on e.SubjectId = al.SubjectId join Subjects as s on e.SubjectId = s.SubjectId " +
-                        "WHERE al.IndexNum = '" + index + "' AND al.Points >= s.PointsRequired ";
         else
-            throw new Exception("Index is null");
+            throw new Exception("Index or examName is null");
 
         ResultSet res = null;
         ArrayList<Exam> available = new ArrayList<>();
@@ -1588,6 +1584,42 @@ public class Database
         }
 
         return applied;
+    }
+
+    public static ArrayList<Attempts> GetAttemptsOfStudent(Index index, int year) throws Exception
+    {
+        if(index != null)
+        {
+            sql = "SELECT * FROM AppliedToListen as al join Subjects as s on al.SubjectId = s.SubjectId " +
+                    "WHERE al.IndexNum = '" + index + "' ";
+
+            if(year != 0)
+                sql += "AND Year = '" + year + "' ";
+        }
+        else
+            throw new Exception("Index is null");
+
+        ResultSet res = null;
+        ArrayList<Attempts> attempts = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                attempts.add(new Attempts(new Index(res.getString("al.IndexNum")), res.getString("al.SubjectId"), res.getInt("al.Year"), res.getDate("al.DatePassed").toLocalDate(), res.getInt("al.Attempts"), res.getInt("al.Mark"), res.getInt("al.Points"), res.getString("s.LectId")));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return attempts;
     }
 
     // Remove f-je
