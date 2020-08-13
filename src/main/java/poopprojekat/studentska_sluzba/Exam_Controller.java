@@ -95,7 +95,8 @@ public class Exam_Controller {
 
     @GetMapping(value = "delete_exam")
     public String delete_exam(@RequestParam("token") long token, @RequestParam("exam_id") String id) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } })) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
         try {
             Database.DeleteExam(id);
             return "Exam was successfully deleted";
@@ -108,19 +109,35 @@ public class Exam_Controller {
     @GetMapping("/apply_for_exam")
     public String apply_for_exam(@RequestParam("token") long token, @RequestParam("student") String index,
             @RequestParam("exam") String exam_id, @RequestParam("payed") int payed) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } })) return null;
-        
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
+            return null;
+
         try {
             if (Database.IfBudget(new Index(index), LocalDate.now().getYear()) == false
                     || Database.GetAttempts(new Index(index), exam_id) > 1) {
-                if (payed != 2000) return "Payed amount is incorrect";
-            } else if (payed != 0) return "Payed amount is incorrect";
+                if (payed != 2000)
+                    return "Payed amount is incorrect";
+            } else if (payed != 0)
+                return "Payed amount is incorrect";
 
             Database.ApplyForExam(new Index(index), exam_id, payed);
             return "The application has been completed successfully";
         } catch (Exception e) {
             e.printStackTrace();
             return "Application was not completed because of the following exception: " + e.getMessage();
+        }
+    }
+
+    @GetMapping("get_attempts_info")
+    public ArrayList<Attempts> get_attempts_info(
+            @RequestParam("token") long token,
+            @RequestParam("index") String index) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } })) return null;
+        try {
+            return Database.GetAttemptsOfStudent(new Index(index), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;   
         }
     }
 
