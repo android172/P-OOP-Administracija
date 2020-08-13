@@ -1,56 +1,43 @@
 var studentData = [];
-var table1 = document.getElementById("table1");
-var table2 = document.getElementById("table2");
-var table3 = document.getElementById("table3");
-var table4 = document.getElementById("table4");
 
 function parseData(){
-	var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
-	studentData = JSON.parse(dataStr);
+	var dataSt = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
+	studentData = JSON.parse(dataSt);
+	//var examSt = document.getElementById("examsframe").contentWindow.document.body.childNodes[0].innerHTML;
+	//examsData = JSON.parse(examSt);
 	fillTables();
-}
-
-function giveMe(studentData,tagName){
-    return studentData.getElementsByTagName(tagName)[0].innerHTML;
+	//fillTable4();
 }
 
 function fillTables(){
-	let table1_1 = '<table>'
-	const indeks = giveMe(studentData,"index");
-    const jmbg =  giveMe(studentData,"jmbg");
-    table1_1 += `<tr><td>${indeks}</td><td>${jmbg}</td></tr>`
-    table1_1 += '</table>'
-    table1.innerHTML = table1_1;
-	//Table 1 filled
 	
-	let table2_2 = '<table>'
-	const studije = giveMe(studentData,"");
-    const smer =  giveMe(studentData,"majorname");
-	const prosek =  giveMe(studentData,"");
-    table2_2 += `<tr><td>${studije}</td><td>${smer}</td><td>'Kragujevac'</td><td>${prosek}</td></tr>`
-    table2_2 += '</table>'
-    table2.innerHTML = table2_2;
-	//Table 2 filled
+	var ime = studentData["firstName"];
+	var prezime = studentData["lastName"];
+	document.getElementById("Ime").innerHTML = ime;
+	document.getElementById("Prezime").innerHTML = prezime;
+	document.getElementById("Ime1").innerHTML = ime;
+	document.getElementById("Prezime1").innerHTML = prezime;
+	var jmbg = studentData["jmbg"];
+	document.getElementById("JMBG").innerHTML = jmbg;
+	var broj_indeksa = studentData.index["number"];
+	document.getElementById("Broj_indeksa").innerHTML = broj_indeksa;
+	//Name,lastname,index number and JMBG filled
 	
-	let table3_3 = '<table>'
-	const godina_upisa = giveMe(studentData,"");
-    const godina_studija =  giveMe(studentData,"");
-	const ESPB =  giveMe(studentData,"");
-    table3_3 += `<tr><td>${godina_upisa}</td><td>${godina_studija}</td><td>${ESPB}</td>tr>`
-    table3_3 += '</table>'
-    table3.innerHTML = table3_3;
-	//Table3 filled
+
+    var smer =  studentData["majorname"];
+	document.getElementById("Smer").innerHTML = smer;
+	//const prosek =  giveMe(examsData,""); dok ne unesem jos ejdan ifream
+	//Majorname and GPA filled
+ 	
+	var godina_upisa = studentData.index["year"];
+	var godina_studija = new Date();
+	document.getElementById("Godina_studija").innerHTML = godina_studija.getFullYear();
+	document.getElementById("Godina_upisa").innerHTML = godina_upisa;
+	//const ESPB =  giveMe(examsData,""); dok ne unesem jos jedan ifream
+	//Years and ESPB filled
 	
-	//Table4 filled
 }
 
-function makeRequest(requestStr, frameID, params=[]){
-  var frame = document.getElementById(frameID);
-  var str = requestStr;
-  str += "?token="+token;
-  var len = params.length;
-  for(var i=0; i<len; i++){
-    str+=params[i][0]+"="+params[i][1];
-  }
-  frame.src = str;
+function fillTable4(){
+	
 }

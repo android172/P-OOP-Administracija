@@ -9,12 +9,12 @@
 	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/student-loader.js" th:src="@{/js/student-loader.js}"></script>
 </head>
-<body onload="getIndex(); makeRequest('/get_student', 'dataframe', [['index',index]]);">
+<body onload="getToken(); getIndex(); makeRequest('/get_student', 'dataframe', [['index',index]]);">
 	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
 		<header>
 			<h1>Student</h1>
 			<div id="user">
-				<p><span>Ime Prezime</span></p>
+				<p><b><span id = "Ime"></span> <span id = "Prezime"></span></b></p>
 				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
 			</div><!--close user-->
 		</header>
@@ -22,24 +22,24 @@
 			<div id = "picture-info">
 				<div id = "background-pic-name">
 					<img src="../static/images/user-img.bmp" id="user-img-info" th:src="@{/images/user-img.bmp}"/>
-					<p><b><span>Ime Prezime</span></b></p>
-				</div>
+					<p><b><span id = "Ime1"></span> <span id = "Prezime1"></span></b></p>
+				</div><!--close picture info-->
 				<table id = "table1">
 					<tr>
 						<th>Br. indeksa</th>
 						<th>JMBG</th>
 					</tr>
 					<tr>
-						<td id = "Indeks"></td>
+						<td id = "Broj_indeksa"></td>
 						<td id = "JMBG"></td>
 					</tr>
-				</table>
+				</table><!--close table 1-->
 			</div><!--close picture info-->
 			<div class = "tables">
 			<table id = "table2">
 				<tr>
 					<th>Studije</th>
-					<td id = "Studije"></td>
+					<td id = "Studije">Osnovne akademske</td>
 				</tr>
 				<tr>
 					<th>Smer</th>
@@ -47,13 +47,13 @@
 				</tr>
 				<tr>
 					<th>Centar</th>
-					<td></td>
+					<td>Kragujevac</td>
 				</tr>
 				<tr>
 					<th>Prosek</th>
 					<td id = "Prosek"></td>
 				</tr>
-			</table>
+			</table><!--close table 2-->
 			<table id = "table3">
 				<tr>
 					<th>Godina upisa</th>
@@ -67,9 +67,8 @@
 					<th>ESPB</th>
 					<td id = "ESPB"></td>
 				</tr>
-			</table>
-			</div>
-		</div><!--close tables-->
+			</table><!--close table 3-->
+			</div><!--close class tables-->
 		<table id = "table4">
 			<tr>
 				<th colspan = "6">Upisani Predmeti</th>
@@ -90,9 +89,10 @@
 				<td></td>
 				<td></td>
 			</tr>
-		</table>
+		</table><!--close table 4-->
 		</div><!--close content-->
 	</div><!--close wrapper-->
 	<iframe src="/get_student?index=" name="dataframe" id="dataframe" onload="parseData();"></iframe>
+	<iframe src="/get_student?index=" name="examsframe" id="examsframe" onload="parseData();"></iframe>
 </body>
 </html>
