@@ -78,7 +78,8 @@ function fillTable(){
 				var values = Object.values(data[i]);
 				var len = values.length;
 				for(var j=0; j<len; j++){
-					if(!Array.isArray(values[j]) && values[j].toLowerCase().search(terms) != -1)
+					//console.log(values[j]);
+					if(!Array.isArray(values[j]) && (""+values[j]).toLowerCase().search(terms) != -1)
 						match = true;
 				}
 			}
