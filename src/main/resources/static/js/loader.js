@@ -21,26 +21,36 @@ function parseData(){
 	}
 }
 
-function fillTable(asc=true){
+var asc = true;
+
+function changeOrder(newAsc){
+	asc = newAsc;
+	fillTable();
+}
+
+function fillTable(){
+
 	var data = [];
 
 	var table = document.getElementById("data");
+	var terms = document.getElementById("searchbar").value.toLowerCase();
 	var header = document.createElement("tr");
 
+	var headerData;
 	if(customTable){
 		if(asc)
 			data = oData.slice(1);
 		else
 			data = oData.slice(1).reverse();
 
-		var headerData = oData[0];
+		headerData = oData[0];
 	}else{
 		if(asc)
 			data = oData;
 		else
 			data = oData.reverse();
 
-		var headerData = Object.keys(data[0]);
+		headerData = Object.keys(data[0]);
 	}
 
     var rows = data.length;
@@ -57,39 +67,52 @@ function fillTable(asc=true){
 	if(rows>0){
 	    table.appendChild(header);
 		for(var i=0; i<rows; i++){
-			var row = table.insertRow();
 
+			var match = false;
 			if(customTable){
 				for(var j=0; j<cols; j++){
-					var cell = row.insertCell();
-					cell.innerHTML = data[i][j];
+					if(data[i][j].toLowerCase().search(terms) != -1)
+						match = true;
 				}
-				row.id = data[i][0];
-				/*row.onclick = function(){
-					setCookie("index", this.id);
-					window.location.replace("/edit_student?token="+token+"&index="+this.id);
-				};*/
 			}else{
-
 				var values = Object.values(data[i]);
 				var len = values.length;
-
 				for(var j=0; j<len; j++){
-					var cell = row.insertCell();
-					cell.innerHTML = values[j];
+					if(!Array.isArray(values[j]) && values[j].toLowerCase().search(terms) != -1)
+						match = true;
 				}
-				row.id = values[0];
 			}
+			if(match){
+				var row = table.insertRow();
 
-			var delButton = document.createElement("div");
-			delButton.innerHTML = "delete";
-			delButton.className = "button-delete";
-		    delButton.id = data[i][0];
-			delButton.onclick = function(){
-			    //console.log("deleting: "+this.id);
-			    deleteRow(this.id);
-			};
-			row.appendChild(delButton);
+				if(customTable){
+					for(var j=0; j<cols; j++){
+						var cell = row.insertCell();
+						cell.innerHTML = data[i][j];
+					}
+					row.id = data[i][0];
+					/*row.onclick = function(){
+						setCookie("index", this.id);
+						window.location.replace("/edit_student?token="+token+"&index="+this.id);
+					};*/
+				}else{
+					for(var j=0; j<len; j++){
+						var cell = row.insertCell();
+						cell.innerHTML = values[j];
+					}
+					row.id = values[0];
+				}
+
+				var delButton = document.createElement("div");
+				delButton.innerHTML = "delete";
+				delButton.className = "button-delete";
+			    delButton.id = data[i][0];
+				delButton.onclick = function(){
+				    //console.log("deleting: "+this.id);
+				    deleteRow(this.id);
+				};
+				row.appendChild(delButton);
+			}
 		}
 	}
 }

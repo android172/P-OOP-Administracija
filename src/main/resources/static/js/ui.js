@@ -108,25 +108,3 @@ function toggleElement(element){
 		element.style.display="none";
 	}
 }
-
-function search(searchbar, tableID){
-	var rows = document.getElementById(tableID).children;
-
-	var len = rows.length;
-	var len2 = rows[0].children.length;
-
-	var terms = searchbar.value.toLowerCase();
-
-	for(var i=1; i<len; i++){
-		var match = false;
-		for(var j=0; j<len2; j++){
-			if(rows[i].children[j].innerHTML.toLowerCase().search(terms) != -1)
-				match = true;
-		}
-		if(match)
-			rows[i].style.display="table-row";
-		else
-			rows[i].style.display="none";
-	}
-
-}

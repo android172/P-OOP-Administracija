@@ -4,7 +4,7 @@
 	<title>Studentska sluzba</title>
 	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
 	<link rel="stylesheet" type="text/css" href="../static/css/data-style.css" th:href="@{/css/data-style.css}"/>
-	<script type="text/javascript" language="Javascript" src="../static/js/loader.js" th:src="@{/js/loader.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/exam-loader.js" th:src="@{/js/exam-loader.js}"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
@@ -20,7 +20,13 @@
 		}
 	</script>
 </head>
-<body onload="getToken(); addTokenToLinks(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); setCustomTable(true); submitSearch(); makeRequest('/get_student_filters','sendframe'); initGetFilters('sendframe');">
+<body onload="getToken(); addTokenToLinks(); displayUsername(); 
+		
+		makeRequest('/get_all_exams','dataframe',[],function(){
+			parseDataToTable('exams'); 
+			makeRequest('/get_exam_deadlines','dataframe',[],function() {parseDataToTable('exam-deadlines');});
+		});">
+
 	<div id="wrapper">
 		<header>
 			<h1><a href="admin" class="tokenify">Admin</a> / Ispiti</h1>
@@ -62,7 +68,7 @@
 		</div>
 
 		<iframe src="" name="sendframe" id="sendframe"></iframe>
-		<iframe src="" name="dataframe" id="dataframe" onload="parseData();"></iframe>
+		<iframe src="" name="dataframe" id="dataframe"></iframe>
 	</div>
 </body>
 </html>

@@ -28,11 +28,11 @@
 		<div id="content">
 			<div id="content-header">
 				<form action="/get_all_majors" id="search" method="get" target="dataframe">
-					<input type="text" id="searchbar" value="" placeholder="Search..." onchange="search(this, 'data');">
+					<input type="text" id="searchbar" value="" placeholder="Search..." onchange="fillTable();">
 
 					<div class="form-element">
 						<label class="select-label">Rastuci poredak:</label>
-						<input type="checkbox" class="labeled" onchange="fillTable(this.checked);" checked>
+						<input type="checkbox" class="labeled" onchange="changeOrder(this.checked);" checked>
 					</div>
 
 					<div class="form-element end">
