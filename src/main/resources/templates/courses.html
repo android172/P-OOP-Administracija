@@ -20,7 +20,8 @@
 		}
 	</script>
 </head>
-<body onload="getToken(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); submitSearch(); makeRequest('/get_subject_filters','sendframe'); initGetFilters('sendframe');">
+<body onload="getToken(); setDataType('subject', 'id'); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); submitSearch(); makeRequest('/get_subject_filters','sendframe'); initGetFilters('sendframe');">
+	<div id="background"></div>
 	<div id="wrapper">
 		<header>
 			<h1><a href="admin" class="tokenify">Admin</a> / Predmeti</h1>
@@ -36,7 +37,7 @@
 		<div id="content">
 			<div id="content-header">
 				<form action="/get_subjects" id="search" method="get" target="dataframe">
-					<input type="text" id="searchbar" value="" placeholder="Search..." onchange="fillTable();">
+					<input type="text" id="searchbar" value="" placeholder="Search..." oninput="fillTable();">
 
 					<div class="form-element">
 						<label class="select-label">Godina:</label>

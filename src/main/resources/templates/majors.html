@@ -12,7 +12,8 @@
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 </head>
-<body onload="getToken(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); submitSearch();">
+<body onload="getToken(); setDataType('major', 'id'); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); submitSearch();">
+	<div id="background"></div>
 	<div id="wrapper">
 		<header>
 			<h1><a href="admin" class="tokenify">Admin</a> / Smerovi</h1>
@@ -28,7 +29,7 @@
 		<div id="content">
 			<div id="content-header">
 				<form action="/get_all_majors" id="search" method="get" target="dataframe">
-					<input type="text" id="searchbar" value="" placeholder="Search..." onchange="fillTable();">
+					<input type="text" id="searchbar" value="" placeholder="Search..." oninput="fillTable();">
 
 					<div class="form-element">
 						<label class="select-label">Rastuci poredak:</label>

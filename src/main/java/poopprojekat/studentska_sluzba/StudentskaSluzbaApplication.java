@@ -17,15 +17,6 @@ public class StudentskaSluzbaApplication
 
         // Database.DropDatabase("testing");
 
-    //    try
-    //    {
-    //        db.TestDummy();
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        e.printStackTrace();
-    //    }
-
 //        Subject s = new Subject("M002");
 //        s = Database.GetSubject(s);
 //        System.out.println(s);
@@ -113,6 +104,15 @@ public class StudentskaSluzbaApplication
         //Database.ApplyForExam(new Index("1/2019"), "E001", 0);
 
          //Database.DropDatabase("testing");
+
+        //    try
+        //    {
+        //        db.TestDummy();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        e.printStackTrace();
+        //    }
 
         //db.Close();
     }

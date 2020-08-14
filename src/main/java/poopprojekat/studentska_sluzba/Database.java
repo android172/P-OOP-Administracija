@@ -2093,7 +2093,7 @@ public class Database
 
             do
             {
-                exams.add(new Exam(res.getString("e.ExamId"), res.getString("e.SubjectId"), res.getString("e.LectId"), res.getDate("e.ExamDate").toLocalDate()));
+                exams.add(new Exam(res.getString("ExamId"), res.getString("SubjectId"), res.getString("LectId"), res.getDate("ExamDate").toLocalDate()));
             }while(res.next());
         }
         catch (SQLException throwables)

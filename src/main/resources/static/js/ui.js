@@ -31,6 +31,7 @@ function initDropDowns(){
 		if(dds[i].classList.contains("multiselect")){
 			while(j<len2){
 				let clicked = j;
+				opts.children[j].children[1].checked = true;
 				opts.children[j].children[1].addEventListener('change', function(){
 					var str = "";
 					var l=0;

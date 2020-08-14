@@ -23,10 +23,12 @@
 <body onload="getToken(); addTokenToLinks(); displayUsername(); 
 		
 		makeRequest('/get_all_exams','dataframe',[],function(){
-			parseDataToTable('exams'); 
-			makeRequest('/get_exam_deadlines','dataframe',[],function() {parseDataToTable('exam-deadlines');});
+			parseDataToTable('exams', false); 
+			makeRequest('/get_exam_deadlines','dataframe',[],function() {
+				parseDataToTable('exam-deadlines', true);
+			});
 		});">
-
+	<div id="background"></div>
 	<div id="wrapper">
 		<header>
 			<h1><a href="admin" class="tokenify">Admin</a> / Ispiti</h1>

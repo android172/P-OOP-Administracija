@@ -28,6 +28,14 @@ function changeOrder(newAsc){
 	fillTable();
 }
 
+var dataType = "student";
+var dataIdName = "index_num";
+
+function setDataType(type, idName){
+	dataType = type;
+	dataIdName = idName;
+}
+
 function fillTable(){
 
 	var data = [];
@@ -107,7 +115,10 @@ function fillTable(){
 				var delButton = document.createElement("div");
 				delButton.innerHTML = "delete";
 				delButton.className = "button-delete";
-			    delButton.id = data[i][0];
+				if(customTable)
+			    	delButton.id = data[i][0];
+			    else
+			    	delButton.id = data[i][dataIdName];
 				delButton.onclick = function(){
 				    //console.log("deleting: "+this.id);
 				    deleteRow(this.id);
@@ -122,8 +133,9 @@ function fillTable(){
     Salje zahtev za brisanje reda
 */
 function deleteRow(id){
-    document.getElementById("sendframe").src = "/delete_student?token="+token+"&index_num="+id;
-    document.getElementById("search").submit();
+    document.getElementById("sendframe").src = "/delete_"+dataType+"?token="+token+"&"+dataIdName+"="+id;
+    hasData = true;
+    submitSearch();
 }
 
 var filters = [];
