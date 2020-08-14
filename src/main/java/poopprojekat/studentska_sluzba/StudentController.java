@@ -127,16 +127,17 @@ public class StudentController {
     // add student
     @GetMapping("/add_student")
     public String add_student(@RequestParam("token") long token, @RequestParam("first_name") String first_name,
-            @RequestParam("last_name") String last_name, @RequestParam("index_num") String index_num,
+            @RequestParam("last_name") String last_name, @RequestParam("year") int year,
             @RequestParam("date_of_birth") String date_of_birth, @RequestParam("city") String city,
             @RequestParam("jmbg") String jmbg, @RequestParam("major_id") String major_id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
         try {
-            Student new_student = new Student(first_name, last_name, new Index(index_num),
+            Index ind = new Index(Database.GetHighestIndex(year), year);
+            Student new_student = new Student(first_name, last_name, ind,
                     LocalDate.parse(date_of_birth), city, jmbg, major_id);
             Database.AddStudent(new_student);
-            Database.AddUser(new User(index_num, jmbg, "Student", index_num));
+            Database.AddUser(new User(ind.toString(), jmbg, "Student", ind.toString()));
             return "Student was added";
         } catch (Exception e) {
             e.printStackTrace();

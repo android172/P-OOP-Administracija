@@ -111,10 +111,10 @@ public class Fill_db_randomly {
                     }
                 }
 
-                if (ending_date.isAfter(LocalDate.of(this_year, i+2, 1))) starting_date = ending_date;
-                else starting_date = LocalDate.of(this_year, i+2, 1);
+                if (ending_date.isAfter(LocalDate.of(this_year, (i+2) % 13, 1))) starting_date = ending_date;
+                else starting_date = LocalDate.of(this_year, (i+2) % 13, 1);
             }
-            else starting_date = LocalDate.of(this_year, i+2, 1);
+            else starting_date = LocalDate.of(this_year, (i+2) % 13, 1);
         }
     }
 }
