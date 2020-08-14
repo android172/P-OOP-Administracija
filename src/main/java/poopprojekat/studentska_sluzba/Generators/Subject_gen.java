@@ -12,6 +12,9 @@ public class Subject_gen {
         "Matematika 1",
         "Matematika 2",
         "Matematika 3",
-        "Informatika"
+        "Informatika",
+        "Osnovi programiranja",
+        "Strukture podataka i algoritmi",
+        "Objektno-Orijentisano programiranje"
     };
 }

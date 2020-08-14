@@ -75,7 +75,7 @@ public class Generate_random_data_point {
         }
     }
 
-    private static String random_lect_id() {
+    public static String random_lect_id() {
         ArrayList<Lecturer> lecturers = Database.GetLecturers(null, null, 1);
         return lecturers.get(new Random().nextInt(lecturers.size())).getLectId();
     }

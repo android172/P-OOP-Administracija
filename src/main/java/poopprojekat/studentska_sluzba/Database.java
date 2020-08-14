@@ -86,10 +86,13 @@ public class Database
     {
         CreateDatabase("Testing");
 
-        Fill_db_randomly.with_majors(1);
-        Fill_db_randomly.with_students(20);
-        Fill_db_randomly.with_lecturers(5);
-        Fill_db_randomly.with_Subjects(6);
+        AddUser(new User("admin", "123456789", "Admin", "A001"));
+
+        Fill_db_randomly.with_majors(3);
+        Fill_db_randomly.with_students(140);
+        Fill_db_randomly.with_lecturers(15);
+        Fill_db_randomly.with_Subjects(10);
+        Fill_db_randomly.with_exams(6);
     }
 
     public void ConnectToDatabase(String name)
@@ -209,7 +212,7 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Subjects " +
                 "( id INTEGER not NULL AUTO_INCREMENT, " +
-                "SubjectName NVARCHAR(30) not NULL, " +
+                "SubjectName NVARCHAR(50) not NULL, " +
                 "SubjectId VARCHAR(10) not NULL UNIQUE , " +
                 "Year INTEGER not NULL, " +
                 "ESPB INTEGER not NULL, " +
@@ -576,7 +579,7 @@ public class Database
     public static void AddExamDeadline(String name, LocalDate startdate, LocalDate enddate, LocalDate startapp, LocalDate endapp) throws Exception
     {
         sql = "INSERT INTO ExamDeadline (ExamName, StartDate, EndDate, StartApplicationDate, EndApplicationDate) " +
-                "VALUES ( '" + name + "', '" + startdate + "', '" + enddate + "', '" + startapp + "' " + endapp +" ) ";
+                "VALUES ( '" + name + "', '" + startdate + "', '" + enddate + "', '" + startapp + "', '" + endapp +"' ) ";
 
         try
         {
