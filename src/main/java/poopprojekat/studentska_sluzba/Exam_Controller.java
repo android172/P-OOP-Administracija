@@ -78,7 +78,7 @@ public class Exam_Controller {
         }
     }
 
-    @GetMapping(value = "add_exam")
+    @GetMapping(value = "/add_exam")
     public String add_exam(@RequestParam("token") long token, @RequestParam("subject_id") String subject_id,
             @RequestParam("lect_id") String lect_id, @RequestParam("Date") String date) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
@@ -93,7 +93,7 @@ public class Exam_Controller {
         }
     }
 
-    @GetMapping(value = "delete_exam")
+    @GetMapping(value = "/delete_exam")
     public String delete_exam(@RequestParam("token") long token, @RequestParam("exam_id") String id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
@@ -128,17 +128,27 @@ public class Exam_Controller {
         }
     }
 
-    @GetMapping("get_attempts_info")
-    public ArrayList<Attempts> get_attempts_info(
-            @RequestParam("token") long token,
+    @GetMapping("/get_attempts_info")
+    public ArrayList<Attempts> get_attempts_info(@RequestParam("token") long token,
             @RequestParam("index") String index) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } })) return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
+            return null;
         try {
             return Database.GetAttemptsOfStudent(new Index(index), 0);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;   
+            return null;
         }
+    }
+
+    @GetMapping("/budget")
+    public boolean is_budget(@RequestParam("token") long token, @RequestParam("index") String index) {
+        try {
+            return Database.IfBudget(new Index(index), LocalDate.now().getYear());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     // Subject Controller

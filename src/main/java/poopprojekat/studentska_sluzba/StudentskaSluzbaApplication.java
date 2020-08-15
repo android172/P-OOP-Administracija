@@ -17,6 +17,15 @@ public class StudentskaSluzbaApplication
 
         // Database.DropDatabase("testing");
 
+        // try
+        // {
+        //     db.TestDummy();
+        // }
+        // catch (Exception e)
+        // {
+        //     e.printStackTrace();
+        // }
+
 //        Subject s = new Subject("M002");
 //        s = Database.GetSubject(s);
 //        System.out.println(s);

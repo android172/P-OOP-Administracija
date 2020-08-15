@@ -21,7 +21,7 @@ public class Birthday_gen {
         if (month < 10) jmbg += "0";
         jmbg += month;
         if (year < 2000) jmbg += (year - 1000);
-        else jmbg += "000" + (year - 2000);
+        else jmbg += "00" + (year - 2000);
         jmbg += new Random().nextInt(10);
         jmbg += new Random().nextInt(10);
         jmbg += new Random().nextInt(10);
