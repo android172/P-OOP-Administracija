@@ -1625,6 +1625,70 @@ public class Database
         return attempts;
     }
 
+    public static ArrayList<Subject> GetSubjectsByMajor(String majorId) throws Exception
+    {
+        sql = "SELECT * FROM Subjects " +
+                "WHERE MajorId = '" + majorId + "' ";
+
+        ResultSet res = null;
+        ArrayList<Subject> subjects = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                subjects.add(new Subject(res.getString("SubjectName"), res.getString("SubjectId"), res.getInt("ESPB"), res.getInt("Year"), res.getString("LectId"), res.getString("MajorId"), res.getInt("PointsRequired")));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return subjects;
+    }
+
+    public static ArrayList<Subject> GetSubjectsByStudent(Index index, int year) throws Exception
+    {
+        if(index != null)
+        {
+            sql = "SELECT * FROM AppliedToListen as al join Subjects as s on al.SubjectId = s.SubjectId" +
+                    "WHERE al.IndexNum = '" + index + "' AND al.DatePassed is null ";
+
+            if(year != 0)
+                sql += "AND al.Year = '" + year + "' ";
+        }
+        else
+            throw new Exception("Index is null");
+
+        ResultSet res = null;
+        ArrayList<Subject> subjects = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                subjects.add(new Subject(res.getString("s.SubjectName"), res.getString("s.SubjectId"), res.getInt("s.ESPB"), res.getInt("s.Year"), res.getString("ss.LectId"), res.getString("s.MajorId"), res.getInt("s.PointsRequired")));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return subjects;
+    }
+
     // Remove f-je
 
     public static void DeleteStudent(Index index) throws Exception
