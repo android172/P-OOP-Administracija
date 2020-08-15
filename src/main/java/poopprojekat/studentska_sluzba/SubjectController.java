@@ -11,6 +11,7 @@ import java.util.ArrayList;
 // /get_all_subjects?token= -returns all subjects
 // /get_subjects?token=&name=&year=&lect_name=&major_name=&order_by  -returns filtered ordered list of subjects (ArrayList<Subject>)
 // /get_subjects_by_lecturer?token=&lect_id= -returns subjects of lecturer with given id
+// /get_subjects_by_major?token=&major_id= -returns subjects from given major
 //
 // /add_subject?token=&name=&id=&espb=&year=&lect_id=&major_id=
 // /update_subject?token=&name=&id=&new_id=&espb=&year=&lect_id=&major_id=
@@ -133,6 +134,23 @@ public class SubjectController {
             return null;
         }
     }
+
+    @GetMapping("/get_subjects_by_major")
+    public ArrayList<Subject> get_subjects_by_major(@RequestParam("token") long token,
+                                                    @RequestParam("major_id") String id){
+
+        try {
+            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+            if (id.equals("")) return Database.GetSubjectsByMajor(null);
+            return Database.GetSubjectsByMajor(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+//    @GetMapping("/get_subjects_by_student")
+//    public ArrayList<Subject> get_subjects_by_student(@RequestParam("index") Index index)
 
     @GetMapping("/add_subject")
     public String add_subject(@RequestParam("token") long token,
