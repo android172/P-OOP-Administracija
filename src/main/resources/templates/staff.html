@@ -13,7 +13,7 @@
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 	<script>
 		function populateFilters(){
-			addOptionsToFilter('subject-options', filters[0], true, 1, false);
+			addOptionsToFilter('subject-options', filters[0], true, 1, true);
 			addOptionsToFilter('major-options', filters[1], true, 1, true);
 			//addOptionsToFilter('new-major-options', filters[1], false, 0, true);
 			initDropDowns();
@@ -106,7 +106,16 @@
 					<label for="first_name">Ime:</label><input type="text" name="first_name">
 					<label for="last_name">Prezime:</label><input type="text" name="last_name">
 					<label for="lect_id">ID:</label><input type="text" name="lect_id">
-					<label for="title">Zvanje:</label><input type="text" name="title">
+					<label for="title">Zvanje:</label>
+						<div class="dropdown no-auto-submit">
+							<input name="title" value="" readonly>
+							<div class="dd-options" id="title-options">
+								<option value="Asistent">Asistent</option>
+								<option value="Docent">Docent</option>
+								<option value="Honorarni profesor">Honorarni profesor</option>
+								<option value="Redovni profesor">Redovni profesor</option>
+							</div>
+						</div>
 				</form>
 				<div class="flex-row wide pad-medium">
 					<button type="submit" form="newform">Submit</button>

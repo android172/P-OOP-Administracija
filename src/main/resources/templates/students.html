@@ -113,12 +113,12 @@
 
 		<div id="new-element">
 			<div class="flex-col size-max">
-				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7</div>
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
 				<br>
 				<form action="/add_student" id="newform" method="get" target="sendframe" class="pad-medium wide new-grid">
 						<label for="first_name">Ime:</label><input type="text" name="first_name">
 						<label for="last_name">Prezime:</label><input type="text" name="last_name">
-						<label for="index_num">Index:</label><input type="text" name="index_num">
+						<label for="year">Godina upisa:</label><input type="number" min="1900" max="2100" name="year">
 						<label for="date_of_birth">Datum rodjenja:</label><input type="date" name="date_of_birth">
 						<label for="city">Grad:</label><input type="text" name="city">
 						<label for="jmbg">JMBG:</label><input type="text" name="jmbg">

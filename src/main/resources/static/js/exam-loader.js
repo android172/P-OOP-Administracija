@@ -30,7 +30,7 @@ function fillTable(tableID){
     var head;
     for(var i=0; i<cols; i++){
 		head = document.createElement("th");
-		head.innerHTML = heads[i];
+		head.innerHTML = getDisplayName(heads[i]);
 		header.appendChild(head);
 	}
 

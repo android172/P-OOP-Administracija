@@ -169,7 +169,7 @@ input {
 .dd-options {
 	position: absolute;
 	top: 0px;
-	left: -5px;
+	left: 0px;
 
 	min-width: 100%;
 	height: auto;
@@ -190,20 +190,30 @@ input {
 }
 
 .dd-options>*{
-	min-width: 96.5% !important;
-	height: 15px;
+	width: auto;
+	height: auto;
 	background-color: var(--color-highlight2);
 	color: var(--color-darker);
 	margin: 0px;
-	padding: 4px;
+	padding: 6px;
 	flex-grow: 1;
 	overflow-wrap: normal;
-	z-index: 9;
 }
 
 .dd-options>*>*:first-child {
-	width: 100% !important;
+	width: auto;
+	height: auto;
+	flex-grow: 1;
 	color: var(--color-darker);
+	overflow-wrap: break-word;
+}
+
+
+.dd-options>*>*:last-child {
+	width: auto;
+	height: auto;
+	color: var(--color-darker);
+	margin-left: 4px;
 }
 
 .dd-options>*:hover{
@@ -215,7 +225,7 @@ input {
     width: 400px;
     height: 550px;
 
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
 
@@ -224,6 +234,16 @@ input {
     border-radius: 25px;
     border: 2px solid var(--color-highlight);
     display: none;
+}
+
+#new-element:after {
+	content: "Novi element:";
+	position: absolute;
+	top: 30px; left: 100px;
+
+	font-family: "Century Gothic", arial, sans-serif;
+	font-size: 24px;
+	color: var(--color-highlight2);
 }
 
 #new-button {
@@ -369,8 +389,17 @@ button {
 	float:right;
 }
 
+.no-auto-submit>* {
+	z-index: 11;
+}
+
 .new-grid {
 	display: inline-grid;
 	grid-template-columns: auto auto;
 	grid-row-gap: 20px;
+}
+
+input[type=number]{
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px; 
 }

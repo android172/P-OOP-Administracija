@@ -102,6 +102,8 @@ header > * {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+
+	z-index: 10;
 }
 
 #user:hover {

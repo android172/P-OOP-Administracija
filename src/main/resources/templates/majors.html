@@ -33,7 +33,7 @@
 
 					<div class="form-element">
 						<label class="select-label">Rastuci poredak:</label>
-						<input type="checkbox" class="labeled" onchange="changeOrder(this.checked);" checked>
+						<input type="checkbox" class="labeled" oninput="changeOrder(this.checked);" checked>
 					</div>
 
 					<div class="form-element end">
@@ -51,9 +51,9 @@
 			</table>
 		</div>
 
-		<div id="new-element">
+		<div id="new-element" style="height: 220px; padding-top: 50px;">
 			<div class="flex-col size-max">
-				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7</div>
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
 				<br>
 				<form action="/add_major" id="newform" method="get" target="sendframe" class="pad-medium wide new-grid">
 					<label for="name">Ime:</label><input type="text" name="name">

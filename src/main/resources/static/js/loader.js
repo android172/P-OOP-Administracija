@@ -15,7 +15,11 @@ function setCustomTable(value){
 function parseData(){
 	if(hasData){
 		var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
-		oData = JSON.parse(dataStr);
+		if(dataStr!=""){
+			oData = JSON.parse(dataStr);
+		}else{
+			oData = [];
+		}
 		//alert(oData);
 		fillTable();
 	}
@@ -61,7 +65,14 @@ function fillTable(){
 		else
 			data = oData.reverse();
 
-		headerData = Object.keys(data[0]);
+		if(data.length > 0){
+			headerData = Object.keys(data[0]);
+			var len = headerData.length;
+			for(var i=0; i<len; i++)
+				headerData[i] = getDisplayName(headerData[i]);
+		}
+		else
+			headerData = [];
 	}
 
     var rows = data.length;
@@ -136,10 +147,12 @@ function fillTable(){
     Salje zahtev za brisanje reda
 */
 function deleteRow(id){
-	var requestStr = "/delete_"+dataType+"?token="+token+"&"+dataIdName+"="+id;
-	console.log(requestStr)
-    document.getElementById("sendframe").src = requestStr;
-    submitSearch();
+	/*var requestStr = "/delete_"+dataType+"?token="+token+"&"+dataIdName+"="+id;
+	console.log(requestStr)*/
+    //document.getElementById("sendframe").src = requestStr;
+    makeRequest("/delete_"+dataType,"sendframe",[[dataIdName, id]], function(){
+    	submitSearch();
+    });
 }
 
 var filters = [];
