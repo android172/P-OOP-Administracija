@@ -58,15 +58,14 @@ public class UserController {
     }
 
     @GetMapping("/update_user")
-    public String update_user(@RequestParam("token") long token,
-                              @RequestParam("username") String username,
+    public String update_user(@RequestParam("username") String username,
                               @RequestParam("new_username") String new_username,
-                              @RequestParam("new_password") String new_password,
-                              @RequestParam("new_role") String new_role){
+                              @RequestParam("new_password") String new_password){
 
-        if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+        if (new_username.equals("")) new_username = null;
+        if (new_password.equals("")) new_password = null;
 
-        User updated_user = new User(new_username, new_password, new_role);
+        User updated_user = new User(new_username, new_password, null);
         try{
             Database.EditUser(username, updated_user);
             return "User successfully updated";
