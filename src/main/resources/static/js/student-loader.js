@@ -2,13 +2,18 @@ var studentData = [];
 
 function parseData(){
 	var dataSt = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
-	studentData = JSON.parse(dataSt);
-	//var examSt = document.getElementById("examsframe").contentWindow.document.body.childNodes[0].innerHTML;
-	//examsData = JSON.parse(examSt);
-	fillTables();
-	//fillTable4();
+	console.log(dataSt);
+	if(dataSt != ''){
+		studentData = JSON.parse(dataSt);
+		fillTables();
+	}
 }
-
+function parseData2(){
+	var budzetSt = document.getElementById("budgetframe").contentWindow.document.body.childNodes[0].innerHTML;
+	budzetData = JSON.parse(budzetSt);
+	console.log(budzetData);
+	statusBudget(budzetData);
+}
 function fillTables(){
 	
 	var ime = studentData["firstName"];
@@ -26,18 +31,21 @@ function fillTables(){
 
     var smer =  studentData["majorname"];
 	document.getElementById("Smer").innerHTML = smer;
-	//const prosek =  giveMe(examsData,""); dok ne unesem jos ejdan ifream
 	//Majorname and GPA filled
  	
 	var godina_upisa = studentData.index["year"];
 	var godina_studija = new Date();
 	document.getElementById("Godina_studija").innerHTML = godina_studija.getFullYear();
 	document.getElementById("Godina_upisa").innerHTML = godina_upisa;
-	//const ESPB =  giveMe(examsData,""); dok ne unesem jos jedan ifream
 	//Years and ESPB filled
 	
 }
 
-function fillTable4(){
-	
+function statusBudget(budzetData){
+	if(budzetData){
+		document.getElementById("Status").innerHTML = 'Budzet';
+	}
+	else{
+		document.getElementById("Status").innerHTML = 'Samofinansiranje';
+	}
 }

@@ -8,14 +8,18 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/student-loader.js" th:src="@{/js/student-loader.js}"></script>
+	<!--<script type="text/javascript" language="Javascript" src="../static/js/student-loader-part2.js" th:src="@{/js/student-loader-part2.js}"></script>-->
 </head>
-<body onload="getToken(); getIndex(); makeRequest('/get_student', 'dataframe', [['index',index]]);">
+<body onload="getToken(); getIndex(); makeRequest('/get_student', 'dataframe', [['index',index]], function(){parseData();}); makeRequest('/get_attempts_info', 'examsframe', [['index',index]],function(){parseDatapt2();});makeRequest('/budget', 'budgetframe', [['index',index]],function(){parseData2();});">
 	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
 		<header>
 			<h1>Student</h1>
 			<div id="user">
 				<p><b><span id = "Ime"></span> <span id = "Prezime"></span></b></p>
 				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
+				<div id="user-options">
+					<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
+				</div><!--close user options-->
 			</div><!--close user-->
 		</header>
 		<div id = "content">
@@ -67,6 +71,10 @@
 					<th>ESPB</th>
 					<td id = "ESPB"></td>
 				</tr>
+				<tr>
+					<th>Status</th>
+					<td id = "Status"></td>
+				</tr>
 			</table><!--close table 3-->
 			</div><!--close class tables-->
 		<table id = "table4">
@@ -92,7 +100,9 @@
 		</table><!--close table 4-->
 		</div><!--close content-->
 	</div><!--close wrapper-->
-	<iframe src="/get_student?index=" name="dataframe" id="dataframe" onload="parseData();"></iframe>
-	<iframe src="/get_student?index=" name="examsframe" id="examsframe" onload="parseData();"></iframe>
+	<iframe src="" name="dataframe" id="dataframe"></iframe>
+	<iframe src="" name="examsframe" id="examsframe" onload=""></iframe>
+	<iframe src="" name="budgetframe" id="budgetframe" onload=""></iframe>
+	<iframe src="" name="sendframe" id="sendframe"></iframe>
 </body>
 </html>
