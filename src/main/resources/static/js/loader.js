@@ -30,10 +30,13 @@ function changeOrder(newAsc){
 
 var dataType = "student";
 var dataIdName = "index_num";
+var dataColumnNum = 0;
 
-function setDataType(type, idName){
+function setDataType(type, idName, columnNum = 0){
 	dataType = type;
 	dataIdName = idName;
+	dataColumnNum = columnNum;
+	console.log(dataType +", " + dataIdName + ", " + dataColumnNum);
 }
 
 function fillTable(){
@@ -116,9 +119,9 @@ function fillTable(){
 				delButton.innerHTML = "delete";
 				delButton.className = "button-delete";
 				if(customTable)
-			    	delButton.id = data[i][0];
+			    	delButton.id = data[i][dataColumnNum];
 			    else
-			    	delButton.id = data[i][dataIdName];
+			    	delButton.id = values[dataColumnNum];
 				delButton.onclick = function(){
 				    //console.log("deleting: "+this.id);
 				    deleteRow(this.id);
@@ -133,8 +136,9 @@ function fillTable(){
     Salje zahtev za brisanje reda
 */
 function deleteRow(id){
-    document.getElementById("sendframe").src = "/delete_"+dataType+"?token="+token+"&"+dataIdName+"="+id;
-    hasData = true;
+	var requestStr = "/delete_"+dataType+"?token="+token+"&"+dataIdName+"="+id;
+	console.log(requestStr)
+    document.getElementById("sendframe").src = requestStr;
     submitSearch();
 }
 
