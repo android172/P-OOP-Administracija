@@ -1101,7 +1101,7 @@ public class Database
         ResultSet res;
         String sqlt;
 
-        if(subjects != null)
+        if(subjects != null || majorId != null)
             sqlt = "SELECT * FROM Lecturers as l join Subjects as s on l.LectId = s.LectId " +
                     "WHERE ";
         else
@@ -1614,7 +1614,7 @@ public class Database
 
             do
             {
-                attempts.add(new Attempts(new Index(res.getString("al.IndexNum")), res.getString("al.SubjectId"), res.getInt("al.Year"), res.getDate("al.DatePassed").toLocalDate(), res.getInt("al.Attempts"), res.getInt("al.Mark"), res.getInt("al.Points"), res.getString("s.LectId")));
+                attempts.add(new Attempts(new Index(res.getString("al.IndexNum")), res.getString("al.SubjectId"), res.getInt("al.Year"), res.getDate("al.DatePassed").toLocalDate(), res.getInt("al.Attempts"), res.getInt("al.Mark"), res.getInt("al.Points")));
             }while(res.next());
         }
         catch (SQLException throwables)
@@ -1687,6 +1687,109 @@ public class Database
         }
 
         return subjects;
+    }
+
+    public static ArrayList<Student> GetStudentsBySubject(String subjectId, int year) throws Exception
+    {
+        if(subjectId != null)
+        {
+            sql = "SELECT * FROM AppliedToListen as al join Students as s on al.IndexNum = s.IndexNum " +
+                    "WHERE al.SubjectId = '" + subjectId + "' AND DatePassed is null ";
+
+            if(year != 0)
+                sql += "AND al.Year = '" + year + "'";
+        }
+        else
+            throw new Exception("SubjectId is null");
+
+        ResultSet res = null;
+        ArrayList<Student> listen = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                listen.add(new Student(res.getString("s.FirstName"), res.getString("s.LastName"), new Index(res.getString("s.IndexNum"))));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return listen;
+    }
+
+    public static ArrayList<Exam> GetExamOfLect(String lectId) throws Exception
+    {
+        if(lectId != null)
+        {
+            sql = "SELECT * FROM Exams " +
+                    "WHERE LectId = '" + lectId + "' ";
+        }
+        else
+            throw new Exception("LectId is null");
+
+        ResultSet res = null;
+        ArrayList<Exam> exams = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                exams.add(new Exam(res.getString("ExamId"), res.getString("SubjectId"), res.getString("LectId"), res.getDate("ExamDate").toLocalDate()));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return exams;
+    }
+
+    public static ArrayList<Attempts> GetStudentsByExam(String examId) throws Exception
+    {
+        if(examId != null)
+        {
+            sql = "SELECT * FROM AppliedToListen as al " +
+                    "WHERE al.IndexNum IN (SELECT ea.IndexNum FROM ExamApplication as ea " +
+                                        "WHERE ea.ExamId = '" + examId + "' )";
+        }
+        else
+            throw new Exception("ExamId is null");
+
+        ResultSet res = null;
+        ArrayList<Attempts> applied = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                applied.add(new Attempts(new Index(res.getString("al.IndexNum")), res.getString("al.SubjectId"), res.getInt("al.Year"), res.getDate("DatePassed").toLocalDate(), res.getInt("al.Attempts"), res.getInt("Mark"), res.getInt("al.Points")));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return applied;
     }
 
     // Remove f-je
@@ -2055,6 +2158,33 @@ public class Database
         {
             if(stat.executeUpdate(sql) == 0)
                 throw new Exception("User doesn't exist");
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void EditGrading(Index index[], int year, String examId[], int mark[], int points[]) throws Exception
+    {
+        sql = "INSERT INTO AppliedToListen (IndexNum, SubjectId, DatePassed, Year, Mark, Points) " +
+                "VALUES ";
+
+        for(int i = 0; i<index.length;i++)
+        {
+            sql += "( '" + index[i] + "' , (SELECT SubjectId FROM Exams WHERE ExamId = " + examId[i] + "'), (SELECT ExamDate FROM Exams WHERE ExamId = '" + examId[i] + "') '" + year + "', '" + mark[i] + "', '" + points[i] + "' ) ";
+
+            if(i < index.length - 1)
+                sql += ", ";
+        }
+
+        sql += "ON DUPLICATE KEY UPDATE " +
+                "Mark = VALUES(Mark), Points = VALUES(Points), DatePassed = VALUES(DatePassed) ";
+
+        try
+        {
+            if(stat.executeUpdate(sql) == 0)
+                throw new Exception("Couldn't update");
         }
         catch (SQLException throwables)
         {

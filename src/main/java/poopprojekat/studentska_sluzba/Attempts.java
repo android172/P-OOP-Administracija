@@ -12,7 +12,7 @@ public class Attempts {
     private int points;
     private String examiner;
 
-    public Attempts(Index index, String id_subject, int year, LocalDate date, int number_of_attempts, int grade, int points, String examiner) {
+    public Attempts(Index index, String id_subject, int year, LocalDate date, int number_of_attempts, int grade, int points) {
         this.index = index;
         this.id_subject = id_subject;
         this.year = year;
@@ -20,7 +20,6 @@ public class Attempts {
         this.number_of_attempts = number_of_attempts;
         this.grade = grade;
         this.points = points;
-        this.examiner = examiner;
     }
 
     public LocalDate getDate() {
