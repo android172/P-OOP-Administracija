@@ -149,8 +149,21 @@ public class SubjectController {
         }
     }
 
-//    @GetMapping("/get_subjects_by_student")
-//    public ArrayList<Subject> get_subjects_by_student(@RequestParam("index") Index index)
+    @GetMapping("/get_subjects_by_student")
+    public ArrayList<Subject> get_subjects_by_student(@RequestParam("token") long token,
+                                                      @RequestParam("index_number") int number,
+                                                      @RequestParam("index_year") int ind_year,
+                                                      @RequestParam("year") int year){
+
+        try {
+            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+            Index index = new Index(number, ind_year);
+            return Database.GetSubjectsByStudent(index, year);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @GetMapping("/add_subject")
     public String add_subject(@RequestParam("token") long token,
