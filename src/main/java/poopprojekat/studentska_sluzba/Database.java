@@ -372,7 +372,7 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS StudentStatus " +
                 "( id INTEGER not NULL AUTO_INCREMENT, " +
-                "IndexNum VARCHAR(10) not NULL UNIQUE, " +
+                "IndexNum VARCHAR(10) not NULL, " +
                 "SchoolYear INTEGER not NULL, " +
                 "Year INTEGER not NULL, " +
                 "Status VARCHAR(20) not NULL, " +
