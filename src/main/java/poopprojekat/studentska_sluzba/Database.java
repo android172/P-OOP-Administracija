@@ -270,8 +270,8 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS AppliedToListen " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "IndexNum VARCHAR(10) not NULL UNIQUE," +
-                "SubjectId VARCHAR(10) not NULL UNIQUE," +
+                "IndexNum VARCHAR(10) not NULL," +
+                "SubjectId VARCHAR(10) not NULL," +
                 "Year INTEGER not NULL," +
                 "DatePassed Date, " +
                 "Attempts INTEGER DEFAULT '0', " +
@@ -685,7 +685,7 @@ public class Database
             if(i != index.length - 1)
                 sql += ", ";
         }
-
+        System.out.println(sql);
         try
         {
             stat.executeUpdate(sql);
