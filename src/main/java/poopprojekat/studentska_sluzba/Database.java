@@ -16,7 +16,13 @@ import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 // AddLecturer(Lecturer p) - Adds lecturer
 // AddMajor(Major m) - Adds Major
 // AddUser(User user, String id) - Adds user, id is unique to lectuer/student, id for admin is -x
-// Add functions return true if successful, false if not
+// AddExamDeadline(String name, LocalDate startdate, LocalDate enddate, LocalDate startapp, LocalDate endapp) Adds exam deadlines (example: ExamName = "Januarski")
+// ApplyForExam(Index index, String examId, int price)
+// AddExam(Exam exam)
+// ApplyForSubject(Index index, String subjectId[]) - Applies 1 student to multiple subjects
+// ApllyForSubject(Index index[], String subjectId) - Applies multiple students to 1 subject
+// AddStatus(Index index, int schoolYear, int year, boolean budget) - (schoolYear = (1,2,3 or 4))
+
 // GetStudents(Date dateOfBirth[], String city[], String MajorName[], int orderBy) - accepts DoB/City/MajorName,
 //                                      orderby: 1 - Index; 2 - FirstName; 3 - LastName; 4 - sorts po DoB; 5 - sorts po City; 6 - sorts po MajorId,
 //                                      function returns ArrayList<Student> in ascending order
@@ -43,19 +49,35 @@ import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 // IfBudget(Index index, int currectYear) returns true if student is on budget
 // GetAllStudentsFromSubject(String subjectId, int year) returns ArrayList<Index> of all students that are/were applied for subject in 'year'
                                                         // if year = 0, returns all students from subject over time
+// GetAttemtsOfStudent(Index index, int year) - returns ArraList<Attempts>
+// GetSubjectsByMajor(String majorId) - returns ArrayList<Subject>, returns all subjects from given majorId
+// GetSubjectsByStudent(Index index, int year) - returns ArrayList<Subject>, returns subjects that student applied to listen for given year
+                                                // if year = 0, returns all subjects that student was applied to (subjects can repeat if student failed that subject).
+// GetStudentsBySubject(String subjectId, int year) - returns ArrayList<Student>, returns all students that applied to given subject in given year.
+                                                    // if year = 0, returns all students that were applied on given subject
+// GetExamOfLect(String lectId) - returns ArrayList<Exam>, returns all exam where given lecturer is examiner
+// GetStudentsByExam(String examId) - returns ArrayList<Attempts>, returns all students that applied for given examId
 
-// EditStudent(Index index, Student updated) - prima index studenta kog treba izmeniti i promenjivu Student sa izmenjenim podacima
-// EditLecturer(int lectId, Lecturer updated) - prima id profesora kog treba izmeniti i Lecturer sa izmenjenim podacima
-// EditSubject(String subjectId, Subject updated) - prima id predmeta koji treba izmeniti i Subject sa izmenjenim podacima
-// EditMajor(int majorId, Major updated) - prima id smera koji treba izmeniti i Major sa izmenjenim podacima
-// EditUser(String username, User updated) - prima username i User-a kome treba izmeniti username/password/role
+// EditStudent(Index index, Student updated)
+// EditLecturer(int lectId, Lecturer updated)
+// EditSubject(String subjectId, Subject updated)
+// EditMajor(int majorId, Major updated)
+// EditUser(String username, User updated)
+// Grading(Index index[], int year, String examId[], mark[], points[]) - Grades students, all arrays must be equal lengths
 
 // DeleteStudent(Index index) - Removes student from table Students
 // DeleteLecturer(int lectId) - Removes lecturer from table Lecturers. Automatically removes that lecturer from table Users
 // DeleteMajor(int majorId) - Removes major from table Majors
 // DeleteSubject(int subjectId) - Removes subject from table Subjects
 // DeleteUser(String id) - Removes user from table Users
-//
+// DeletExamDeadline(String name) - Removes exam deadline from table ExamDeadline
+// DeleteExam(String examId) - Removes exam from table Exams
+
+// GetAllCities() - returns ArrayList<String> of all distinct cities in table Students
+// GetAllSubjects() - returns ArrayList<String> (subjectname-SubjectId )
+// GetAllMajors() - returns ArrayList<String> (MajorName-MajorId)
+// GetAllExams() - returns ArrayList<Exam> of all currently active exams (for current school year)
+// GetAllUsers() - returns ArrayList<User> (Username, role, id)
 
 public class Database
 {
@@ -351,8 +373,8 @@ public class Database
         sql = "CREATE TABLE IF NOT EXISTS StudentStatus " +
                 "( id INTEGER not NULL AUTO_INCREMENT, " +
                 "IndexNum VARCHAR(10) not NULL UNIQUE, " +
+                "SchoolYear INTEGER not NULL, " +
                 "Year INTEGER not NULL, " +
-                "CurrentYear INTEGER not NULL, " +
                 "Status VARCHAR(15) not NULL, " +
                 "PRIMARY KEY (id, IndexNum), " +
                 "FOREIGN KEY (IndexNum) references Students(IndexNum) ) ENGINE=InnoDB ";
@@ -695,6 +717,31 @@ public class Database
         {
             if(throwables.getErrorCode() == 1062)
                 throw new Exception("Student is already applied to this subject");
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void AddStatus(Index index, int schoolYear, int year, boolean budget) throws Exception
+    {
+        String temp;
+
+        if(budget)
+            temp = "Budzet";
+        else
+            temp = "Samofinansirajuci";
+
+        sql = "INSERT INTO StudentStatus (IndexNum, SchoolYear, Year, Status) " +
+                "VALUES ('" + index + "', '" + schoolYear +"', '" + year + "', '" + temp + "') ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+            System.out.println("Student status added");
+        }
+        catch (SQLException throwables)
+        {
+            if(throwables.getErrorCode() == 1062)
+                throw new Exception("Student status is already in table StudentStatus");
             throwables.printStackTrace();
         }
     }
@@ -1537,11 +1584,11 @@ public class Database
         return -1;
     }
 
-    public static boolean IfBudget(Index index, int currectYear) throws Exception
+    public static boolean IfBudget(Index index, int currentYear) throws Exception
     {
-        if(index != null && currectYear != 0)
+        if(index != null && currentYear != 0)
             sql = "SELECT * FROM StudentStatus " +
-                    "WHERE IndexNum = '" + index + "' AND CurrentYear = " + currectYear + " ";
+                    "WHERE IndexNum = '" + index + "' AND Year = " + currentYear + " ";
         else
             throw new Exception("Index or currentYear is null");
 
