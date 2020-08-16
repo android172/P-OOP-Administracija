@@ -1,7 +1,5 @@
 package poopprojekat.studentska_sluzba;
 
-import java.util.ArrayList;
-
 public class Lecturer
 {
     // Obavezne za dodavanje
@@ -9,8 +7,6 @@ public class Lecturer
     private String lastName;
     private String title;
     private String lectId;
-    //
-    ArrayList<Subject> teach = new ArrayList<>();
 
     public Lecturer(String id) // za pretragu baze
     {
@@ -38,14 +34,8 @@ public class Lecturer
     public String getTitle() {
         return title;
     }
-    public ArrayList<Subject> getSubjects() {
-        return teach;
-    }
 
     // setters
-    public void setSubjects() {
-        teach = Database.SubjectsOfLecturer(this);
-    }
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -62,14 +52,6 @@ public class Lecturer
     @Override
     public String toString()
     {
-        String s = firstName + " " + lastName + " ID:" + lectId + "\nTeaches:";
-
-        for (int i = 0; i < teach.size(); i++)
-        {
-            s += "\n--";
-            s += teach.get(i);
-        }
-
-        return s;
+        return firstName + " " + lastName + " ID:" + lectId + "\nTeaches:";
     }
 }

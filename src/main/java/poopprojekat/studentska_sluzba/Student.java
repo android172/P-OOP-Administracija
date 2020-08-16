@@ -1,7 +1,6 @@
 package poopprojekat.studentska_sluzba;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class Student
 {
@@ -15,7 +14,6 @@ public class Student
     private String majorname;
     //
     public String majorId;
-    public ArrayList<Subject> listen = new ArrayList<>();
 
     // constructors
     public Student(Index brind) {
@@ -55,14 +53,7 @@ public class Student
         setMajorId(id);
     }
 
-    public void ApplyToListen(Subject s) {
-        listen.add(s);
-    }
-
     // getters
-    public ArrayList<Subject> GetAppliedSubjects() {
-        return listen;
-    }
     public String getFirstName() {
         return firstName;
     }
