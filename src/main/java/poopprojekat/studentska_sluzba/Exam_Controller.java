@@ -143,6 +143,10 @@ public class Exam_Controller {
 
     @GetMapping("/budget")
     public boolean is_budget(@RequestParam("token") long token, @RequestParam("index") String index) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index }, {"Admin", "any"} })) {
+            System.out.println("access denied :: Exam_Controller.java :: line:~147");
+            return false;
+        }
         try {
             return Database.IfBudget(new Index(index), LocalDate.now().getYear());
         } catch (Exception e) {

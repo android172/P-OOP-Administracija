@@ -141,4 +141,12 @@ public class LecturerController {
             return "Couldn't delete lecturer because of the following error: " + e.getMessage();
         }
     }
+
+    // get_lecturer --
+    // za datog lecturera daj sve predmete koje predaje --
+    // za dati predmet daj sav info (attempts struktura) -
+    // daje listu ispita koje dati prof drzi -
+    // za dati ispit daje listu studentata koji su se na njega prijavili -
+    // za dati exam i datog profesora i datom studentu upisi ocenu -
+    // upisi poene datom studentu -
 }

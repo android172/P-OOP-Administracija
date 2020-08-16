@@ -7,6 +7,7 @@ import java.util.Random;
 
 import poopprojekat.studentska_sluzba.Database;
 import poopprojekat.studentska_sluzba.Exam;
+import poopprojekat.studentska_sluzba.Index;
 import poopprojekat.studentska_sluzba.Lecturer;
 import poopprojekat.studentska_sluzba.Student;
 import poopprojekat.studentska_sluzba.Subject;
@@ -52,8 +53,23 @@ public class Fill_db_randomly {
 
     public static void with_Subjects(int number) {
         try {
+            ArrayList<Student> students = Database.GetStudents(null, null, null, 1);
             for (int i = 0; i < number; i++) {
-                Database.AddSubject(Generate_random_data_point.get_random_subject());
+                Subject gen = Generate_random_data_point.get_random_subject();
+                Database.AddSubject(gen);
+
+                int subject_year = LocalDate.now().getYear() - gen.year + 1;
+                ArrayList<Index> applied = new ArrayList<>();
+                
+                for (Student s : students) {
+                    int index_year = s.getIndex().getYear();
+                    if (subject_year >= index_year) {
+                        int chance = 100;
+                        for (int j = 0; j < subject_year - index_year; j++) chance *= 0.6;
+                        if (new Random().nextInt(100) < chance) applied.add(s.getIndex());
+                    }
+                }
+                Database.ApplyForSubject(applied.toArray(new Index[applied.size()]), gen.subjectId);
             }
         } catch (Exception e) {
             e.printStackTrace();
