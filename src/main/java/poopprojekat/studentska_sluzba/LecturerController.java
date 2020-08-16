@@ -87,11 +87,11 @@ public class LecturerController {
     // add lecturer
     @GetMapping("/add_lecturer")
     public String add_lecturer(@RequestParam("token") long token, @RequestParam("first_name") String first_name,
-            @RequestParam("last_name") String last_name, @RequestParam("title") String title,
-            @RequestParam("lect_id") String lect_id) {
+            @RequestParam("last_name") String last_name, @RequestParam("title") String title) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
-        Lecturer new_lecturer = new Lecturer(first_name, last_name, title, lect_id);
         try {
+            String lect_id = Database.GetEmptyId("Lecturers");
+            Lecturer new_lecturer = new Lecturer(first_name, last_name, title, lect_id);
             Database.AddLecturer(new_lecturer);
             Database.AddUser(new User(last_name + lect_id, lect_id, "Lecturer", lect_id));
             return "Lecturer was added";
