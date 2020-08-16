@@ -38,6 +38,10 @@ function redirect(){
 
 window.onload = function(){
 	getToken();
+	
+	if(isNaN(token))
+		return;
+
 	if(token != "") {
 		makeRequest("/access_allowed","sendframe");
 	}
