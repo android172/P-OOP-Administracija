@@ -10,6 +10,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Exam_Controller {
 
+    @GetMapping("/get_exam_dropdown")
+    public String[][] get_exam_dropdown(@RequestParam("token") long token) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } })) return null;
+        ArrayList<Lecturer> lecturers = Database.GetLecturers(null, null, 1);
+        ArrayList<Subject> subjects = Database.GetSubjects(null, null, null, 1);
+        String [][] ret = new String[lecturers.size() + subjects.size()][2];
+        int i = 0;
+        for (Lecturer lecturer : lecturers) {
+            ret[i][0] = lecturer.getLastName() + " " + lecturer.getFirstName();
+            ret[i++][1] = lecturer.getLectId();
+        }
+        for (Subject subject : subjects) {
+            ret[i][0] = subject.subjectName;
+            ret[i++][1] = subject.subjectId;
+        }
+        return ret;
+    }
+
     @GetMapping("/get_exam_deadlines")
     public ArrayList<String> get_exam_deadlines(@RequestParam("token") long token) {
         if (Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
