@@ -44,6 +44,7 @@ table {
 	width: 100%;
 	margin-top: 10px;
 	border-collapse: collapse;
+	table-layout: auto;
 }
 
 tr>* {
@@ -52,6 +53,11 @@ tr>* {
 	height: 24px;
 	border-left: 1px solid var(--color-highlight2);
 	border-right: 1px solid var(--color-highlight2);
+}
+
+tr>th {
+	text-align: center;
+	padding-left: 0px !important;
 }
 
 tr:first-child>*{
@@ -220,41 +226,6 @@ input {
 	background-color: #3399ff;
 }
 
-#new-element {
-    background-color: var(--color-dark);
-    width: 400px;
-    height: 550px;
-
-    position: fixed;
-    top: 50%;
-    left: 50%;
-
-    margin-left: -200px;
-    margin-top: -250px;
-    border-radius: 25px;
-    border: 2px solid var(--color-highlight);
-    display: none;
-}
-
-#new-element:after {
-	content: "Novi element:";
-	position: absolute;
-	top: 30px; left: 100px;
-
-	font-family: "Century Gothic", arial, sans-serif;
-	font-size: 24px;
-	color: var(--color-highlight2);
-}
-
-#new-button {
-	height: var(--element-size);
-	width: var(--element-size);
-	border-radius: 50%;
-	padding: 0px;
-	margin: 0px;
-	font-weight: 900;
-}
-
 .size-max {
     width: 100%;
     height: 100%;
@@ -379,18 +350,22 @@ button {
 }
 
 .no-auto-submit>input {
-	width: 90%;
+	width: 95%;
 	
 	background-color: var(--color-darker);
 	border: inset;
 	border-width: 2px;
-	border-radius: 10px;
+	border-radius: 4px;
 
 	float:right;
+	position: relative;
+
+	z-index: 6;
 }
 
 .no-auto-submit>* {
-	z-index: 11;
+	position: absolute;
+	z-index: 7;
 }
 
 .new-grid {
@@ -402,4 +377,74 @@ button {
 input[type=number]{
 	border-top-right-radius: 0px;
 	border-bottom-right-radius: 0px; 
+}
+
+.add-row {
+	text-align: center;
+	background-color: var(--color-light) !important;
+}
+
+.add-row:hover {
+	color: black;
+	background-color: var(--color-highlight2) !important;
+}
+
+.popup-fixed {
+    background-color: var(--color-darker);
+    width: 400px;
+    height: 550px;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    margin-left: -200px;
+    margin-top: -250px;
+    border-radius: 25px;
+    border: 2px solid var(--color-highlight2);
+    display: none;
+
+    z-index: 4;
+}
+
+.popup-fixed>* {
+	z-index: 5;
+}
+
+.popup-fixed>*>* {
+
+}
+
+.popup-fixed:before {
+	content: "";
+	position: fixed;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	background-color: black;
+	opacity: 0.3;
+	z-index: -1;
+}
+
+.popup-fixed:after {
+	position: absolute;
+	top: 30px; left: 100px;
+
+	font-family: "Century Gothic", arial, sans-serif;
+	font-size: 24px;
+	color: var(--color-highlight2);
+
+	z-index: 5;
+}
+
+#new-element:after {
+	content: "Novi element:";
+}
+
+#new-button {
+	height: var(--element-size);
+	width: var(--element-size);
+	border-radius: 50%;
+	padding: 0px;
+	margin: 0px;
+	font-weight: 900;
 }

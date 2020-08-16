@@ -11,6 +11,7 @@
 
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/filters.js" th:src="@{/js/filters.js}"></script>
 	<script>
 		function populateFilters(){
 			addOptionsToFilter('subject-options', filters[0], true, 1, true);
@@ -98,21 +99,20 @@
 			</table>
 		</div>
 
-		<div id="new-element">
+		<div id="new-element" class="popup-fixed">
 			<div class="flex-col size-max">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7</div>
 				<br>
-				<form action="/add_lecturer" id="newform" method="get" target="sendframe" class="pad-medium wide new-grid">
-					<label for="first_name">Ime:</label><input type="text" name="first_name">
-					<label for="last_name">Prezime:</label><input type="text" name="last_name">
-					<label for="lect_id">ID:</label><input type="text" name="lect_id">
+				<form action="/add_lecturer" id="newform" method="get" target="sendframe" class="pad-medium wide new-grid" >
+					<label for="first_name">Ime:</label><input type="text" name="first_name" required>
+					<label for="last_name">Prezime:</label><input type="text" name="last_name" required>
 					<label for="title">Zvanje:</label>
 						<div class="dropdown no-auto-submit">
-							<input name="title" value="" readonly>
+							<input name="title" value="" readonly required>
 							<div class="dd-options" id="title-options">
 								<option value="Asistent">Asistent</option>
 								<option value="Docent">Docent</option>
-								<option value="Honorarni profesor">Honorarni profesor</option>
+								<option value="Honorarni profesor">Vanredni profesor</option>
 								<option value="Redovni profesor">Redovni profesor</option>
 							</div>
 						</div>

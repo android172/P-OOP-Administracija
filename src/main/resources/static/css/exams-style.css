@@ -1,0 +1,19 @@
+#new-exam, #new-deadline {
+	display: none;
+}
+
+#new-exam {
+	height: 400px;
+}
+
+#new-deadline {
+	height: 550px;
+}
+
+#new-exam:after {
+	content: "Dodaj ispit:";
+}
+
+#new-deadline:after {
+	content: "Dodaj rok:";
+}

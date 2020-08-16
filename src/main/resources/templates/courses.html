@@ -11,6 +11,7 @@
 
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/filters.js" th:src="@{/js/filters.js}"></script>
 	<script>
 		function populateFilters(){
 			addOptionsToFilter('lect-options', filters[0], true, 1, false);
@@ -130,31 +131,30 @@
 			</table>
 		</div>
 
-		<div id="new-element">
+		<div id="new-element" class="popup-fixed">
 			<div class="flex-col size-max">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7</div>
 				<br>
 				<form action="/add_subject" id="newform" method="get" target="sendframe" class="pad-medium wide new-grid">
-					<label for="name">Ime:</label><input type="text" name="name">
-					<label for="id">ID:</label><input type="text" name="id">
-					<label for="espb">ESPB:</label><input type="number" min="0" name="espb">
-					<label for="year">Godina:</label><input type="number" min="2000" max="3000" name="year">
+					<label for="name">Ime:</label><input type="text" name="name" required>
+					<label for="espb">ESPB:</label><input type="number" min="0" name="espb" required>
+					<label for="year">Godina:</label><input type="number" min="1" max="4" name="year" required>
 
 					<label for="lect_id">Predavac</label>
 					<div class="dropdown no-auto-submit">
-							<input name="lect_id" value="" readonly>
+							<input name="lect_id" value="" readonly required>
 							<div class="dd-options" id="new-lect-options">
 							</div>
 						</div>
 
 					<label for="major_id">Smer</label>
 					<div class="dropdown no-auto-submit">
-							<input name="major_id" value="" readonly>
+							<input name="major_id" value="" readonly required>
 							<div class="dd-options" id="new-major-options">
 							</div>
 						</div>
 
-					<label for="points_req">Broj poena:</label><input type="number" min="0" name="points_req">
+					<label for="points_req">Broj poena:</label><input type="number" min="0" name="points_req" required>
 				</form>
 				<div class="flex-row wide pad-medium">
 					<button type="submit" form="newform">Submit</button>

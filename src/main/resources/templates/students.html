@@ -11,6 +11,7 @@
 
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/filters.js" th:src="@{/js/filters.js}"></script>
 	<script>
 		function populateFilters(){
 			addOptionsToFilter('city-options', filters[0], true, 1, false);
@@ -111,21 +112,21 @@
 			</table>
 		</div>
 
-		<div id="new-element">
+		<div id="new-element" class="popup-fixed">
 			<div class="flex-col size-max">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
 				<br>
 				<form action="/add_student" id="newform" method="get" target="sendframe" class="pad-medium wide new-grid">
-						<label for="first_name">Ime:</label><input type="text" name="first_name">
-						<label for="last_name">Prezime:</label><input type="text" name="last_name">
-						<label for="year">Godina upisa:</label><input type="number" min="1900" max="2100" name="year">
-						<label for="date_of_birth">Datum rodjenja:</label><input type="date" name="date_of_birth">
-						<label for="city">Grad:</label><input type="text" name="city">
-						<label for="jmbg">JMBG:</label><input type="text" name="jmbg">
+						<label for="first_name">Ime:</label><input type="text" name="first_name" required>
+						<label for="last_name">Prezime:</label><input type="text" name="last_name" required>
+						<label for="year">Godina upisa:</label><input type="number" min="2000" max="2100" name="year" required>
+						<label for="date_of_birth">Datum rodjenja:</label><input type="date" name="date_of_birth" required>
+						<label for="city">Grad:</label><input type="text" name="city" required>
+						<label for="jmbg">JMBG:</label><input type="text" minlength="13" maxlength="13" name="jmbg" required>
 
 						<label for="major_id">Smer:</label>
 						<div class="dropdown no-auto-submit">
-							<input name="major_id" value="" readonly>
+							<input name="major_id" value="" readonly required>
 							<div class="dd-options" id="new-major-options">
 							</div>
 						</div>

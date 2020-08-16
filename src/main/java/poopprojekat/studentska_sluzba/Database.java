@@ -2301,7 +2301,7 @@ public class Database
 
             do
             {
-                subs.add(res.getString("SubjectName") + "-" + res.getString("SubjectId"));
+                subs.add(res.getString("SubjectName") + "|" + res.getString("SubjectId"));
             }while(res.next());
         }
         catch (SQLException throwables)
@@ -2327,7 +2327,7 @@ public class Database
 
             do
             {
-                majors.add(res.getString("MajorName") + "-" + res.getString("MajorId"));
+                majors.add(res.getString("MajorName") + "|" + res.getString("MajorId"));
             }while(res.next());
         }
         catch (SQLException throwables)

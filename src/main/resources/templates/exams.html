@@ -4,6 +4,7 @@
 	<title>Studentska sluzba</title>
 	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
 	<link rel="stylesheet" type="text/css" href="../static/css/data-style.css" th:href="@{/css/data-style.css}"/>
+	<link rel="stylesheet" type="text/css" href="../static/css/exams-style.css" th:href="@{/css/exams-style.css}"/>
 	<script type="text/javascript" language="Javascript" src="../static/js/exam-loader.js" th:src="@{/js/exam-loader.js}"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,16 +12,18 @@
 
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/filters.js" th:src="@{/js/filters.js}"></script>
 	<script>
 		function populateFilters(){
-			addOptionsToFilter('city-options', filters[0], true, 1, false);
-			addOptionsToFilter('major-options', filters[1], true, 1, true);
-			addOptionsToFilter('new-major-options', filters[1], false, 0, true);
+			addOptionsToFilter('new-lecturer-options', filters[0], false, 0, true);
+			addOptionsToFilter('new-subject-options', filters[1], false, 0, true);
 			initDropDowns();
 		}
 	</script>
 </head>
-<body onload="getToken(); addTokenToLinks(); displayUsername(); 
+<body onload="getToken(); addTokenToLinks(); displayUsername(); addTokenToForm('new-examform'); addTokenToForm('new-deadlineform');
+
+		makeRequest('/get_exam_dropdown','sendframe'); initGetFilters('sendframe');
 		
 		makeRequest('/get_all_exams','dataframe',[],function(){
 			parseDataToTable('exams', false); 
@@ -67,6 +70,50 @@
 					<td>Ime</td><td>Prezime</td><td>Indeks</td>
 				</tr>
 			</table>
+		</div>
+
+		<div id="new-exam" class="popup-fixed">
+			<div class="flex-col size-max">
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
+				<br>
+				<form action="/add_exam" id="new-examform" method="get" target="sendframe" class="pad-medium wide new-grid">
+						<label for="subject_id">Predmet:</label>
+						<div class="dropdown no-auto-submit">
+							<input name="subject_id" value="" readonly required>
+							<div class="dd-options" id="new-subject-options">
+							</div>
+						</div>
+						<label for="lect_id">Predavač:</label>
+						<div class="dropdown no-auto-submit">
+							<input name="lect_id" value="" readonly required>
+							<div class="dd-options" id="new-lecturer-options">
+							</div>
+						</div>
+						<label for="Date">Datum:</label><input type="date" name="Date" required>
+				</form>
+				<div class="flex-row wide pad-medium">
+					<button type="submit" form="new-examform">Submit</button>
+					<button type="reset" form="new-examform">Clear</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="new-deadline" class="popup-fixed">
+			<div class="flex-col size-max">
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
+				<br>
+				<form action="/add_exam_deadline" id="new-deadlineform" method="get" target="sendframe" class="pad-medium wide new-grid">
+						<label for="name">Ime:</label><input type="text" name="name" required>
+						<label for="start_date">Traje od:</label><input type="date" name="start_date" required>
+						<label for="end_date">Do:</label><input type="date" name="end_date" required>
+						<label for="start_app_date">Prijave od:</label><input type="date" name="start_app_date" required>
+						<label for="end_app_date">Do:</label><input type="date" name="end_app_date" required>
+				</form>
+				<div class="flex-row wide pad-medium">
+					<button type="submit" form="new-deadlineform">Submit</button>
+					<button type="reset" form="new-deadlineform">Clear</button>
+				</div>
+			</div>
 		</div>
 
 		<iframe src="" name="sendframe" id="sendframe"></iframe>
