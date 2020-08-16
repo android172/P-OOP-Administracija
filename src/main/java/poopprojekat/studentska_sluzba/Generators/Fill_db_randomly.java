@@ -22,6 +22,20 @@ public class Fill_db_randomly {
                 Database.AddStudent(gen);
                 Database.AddUser(
                         new User(gen.getIndex().toString(), gen.getJmbg(), "Student", gen.getIndex().toString()));
+                // 
+                int index_year = gen.getIndex().getYear();
+                int years = LocalDate.now().getYear() - index_year + 1;
+                int school_year = 1;
+                boolean budget = true;
+                for (int j = 0; j < years; j++) {
+                    if (school_year > 4) break;
+                    Database.AddStatus(gen.getIndex(), school_year, index_year + j, budget);
+                    if (new Random().nextInt(100) < 65) {
+                        school_year++;
+                        if (new Random().nextInt(100) < 50) budget = !budget;
+                    }
+                    else budget = false;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -375,7 +375,7 @@ public class Database
                 "IndexNum VARCHAR(10) not NULL UNIQUE, " +
                 "SchoolYear INTEGER not NULL, " +
                 "Year INTEGER not NULL, " +
-                "Status VARCHAR(15) not NULL, " +
+                "Status VARCHAR(20) not NULL, " +
                 "PRIMARY KEY (id, IndexNum), " +
                 "FOREIGN KEY (IndexNum) references Students(IndexNum) ) ENGINE=InnoDB ";
 
