@@ -161,6 +161,7 @@ public class Database
             CreateTableSubjects();
             CreateTableExams();
             CreateTableExamApplications();
+            TempFix();
             CreateTableAppliedToListen();
             CreateTableStudentStatus();
             CreateExamDeadline();
@@ -594,30 +595,12 @@ public class Database
         }
     }
 
-    public static void ApplyForExam1(Index index, String examId, int price) throws Exception
+    public static void ApplyForExam(Index index, String examId, int price) throws Exception
     {
         sql = "INSERT INTO ExamApplication (IndexNum, ExamId, Price) " +
                 "SELECT al.IndexNum, e.ExamId, '" + price + "' " +
                 "FROM AppliedToListen as al join Exams as e on e.SubjectId = al.SubjectId join Subjects as s on e.SubjectId = s.Subjectid " +
                 "WHERE al.IndexNum = '" + index + "' AND e.ExamId = '" + examId + "' AND al.DatePassed is null AND al.Points >= s.PointsRequired ";
-
-        try
-        {
-            stat.executeUpdate(sql);
-            System.out.println("Exam applied");
-        }
-        catch (SQLException throwables)
-        {
-            if(throwables.getErrorCode() == 1062)
-                throw new Exception("Student is already aplied for this exam");
-            throwables.printStackTrace();
-        }
-    }
-
-    public static void ApplyForExam(Index index, String examId, int price) throws Exception
-    {
-        sql = "INSERT INTO ExamApplication (IndexNum, ExamId, Price) " +
-                "VALUES ( '" + index + "', '" + examId + "', '" + price + "' ) ";
 
         try
         {
@@ -667,6 +650,39 @@ public class Database
             sql += "( '" + index + "', '" + subjectId[i] + "', '" + currentyear + "' ) ";
 
             if(i != subjectId.length - 1)
+                sql += ", ";
+        }
+
+        try
+        {
+            stat.executeUpdate(sql);
+            System.out.println("Subjects applied");
+        }
+        catch (SQLException throwables)
+        {
+            if(throwables.getErrorCode() == 1062)
+                throw new Exception("Student is already applied to this subject");
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void ApplyForSubject(Index index[], String subjectId) throws Exception
+    {
+        if(index != null && subjectId != null)
+            sql = "INSERT INTO AppliedToListen (IndexNum, SubjectId, Year) " +
+                    "VALUES ";
+        else
+        {
+            throw new Exception("index or subjectid[] is null");
+        }
+
+        int currentyear = LocalDate.now().getYear();
+
+        for(int i=0;i<index.length;i++)
+        {
+            sql += "( '" + index[i] + "', '" + subjectId + "', '" + currentyear + "' ) ";
+
+            if(i != index.length - 1)
                 sql += ", ";
         }
 
@@ -2165,7 +2181,7 @@ public class Database
         }
     }
 
-    public static void EditGrading(Index index[], int year, String examId[], int mark[], int points[]) throws Exception
+    public static void Grading(Index index[], int year, String examId[], int mark[], int points[]) throws Exception
     {
         sql = "INSERT INTO AppliedToListen (IndexNum, SubjectId, DatePassed, Year, Mark, Points) " +
                 "VALUES ";
