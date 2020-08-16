@@ -1630,6 +1630,9 @@ public class Database
 
             do
             {
+                if(res.getDate("DatePassed") == null)
+                    attempts.add(new Attempts(new Index(res.getString("al.IndexNum")), res.getString("al.SubjectId"), res.getInt("al.Year"), null, res.getInt("al.Attempts"), res.getInt("al.Mark"), res.getInt("al.Points")));
+
                 attempts.add(new Attempts(new Index(res.getString("al.IndexNum")), res.getString("al.SubjectId"), res.getInt("al.Year"), res.getDate("al.DatePassed").toLocalDate(), res.getInt("al.Attempts"), res.getInt("al.Mark"), res.getInt("al.Points")));
             }while(res.next());
         }
