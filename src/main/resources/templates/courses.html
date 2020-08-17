@@ -45,9 +45,10 @@
 						<label class="select-label">Godina:</label>
 	    				<div class="dropdown multiselect">
 							<input name="year" value="all" readonly>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options">
 								<div class="flex-row">
-									<label for="year-options-0">All</label>
+									<label for="year-options-0">Sve</label>
 									<input type="checkbox" id="year-options-0" value="all" checked>
 								</div>
 								<div class="flex-row">
@@ -74,9 +75,10 @@
 						<label class="select-label">Predavac:</label>
 	    				<div class="dropdown multiselect">
 							<input name="lect_name" value="all" readonly>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options" id="lect-options">
 								<div class="flex-row">
-									<label for="lect-options-0">All</label>
+									<label for="lect-options-0">Svi</label>
 									<input type="checkbox" id="lect-options-0" value="all" checked>
 								</div>
 							</div>
@@ -87,9 +89,10 @@
 						<label class="select-label">Smer:</label>
 	    				<div class="dropdown multiselect">
 							<input name="major_name" value="all" readonly>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options" id="major-options">
 								<div class="flex-row">
-									<label for="major-options-0">All</label>
+									<label for="major-options-0">Svi</label>
 									<input type="checkbox" id="major-options-0" value="all" checked>
 								</div>
 							</div>
@@ -100,6 +103,7 @@
 						<label class="select-label" for="order_by">Sortiraj po:</label>
 						<div class="dropdown">
 							<input name="order_by" value="subj_id" readonly>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options">
 								<option value="subj_id">ID</option>
 								<option value="subj_name">Ime</option>
@@ -133,7 +137,7 @@
 
 		<div id="new-element" class="popup-fixed">
 			<div class="flex-col size-max">
-				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7</div>
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
 				<br>
 				<form action="/add_subject" id="newform" method="get" target="sendframe" class="pad-medium wide new-grid">
 					<label for="name">Ime:</label><input type="text" name="name" required>
@@ -142,14 +146,16 @@
 
 					<label for="lect_id">Predavac</label>
 					<div class="dropdown no-auto-submit">
-							<input name="lect_id" value="" readonly required>
+							<input name="lect_id" value=""  minlength="1" readonly required>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options" id="new-lect-options">
 							</div>
 						</div>
 
 					<label for="major_id">Smer</label>
 					<div class="dropdown no-auto-submit">
-							<input name="major_id" value="" readonly required>
+							<input name="major_id" value="" minlength="1" readonly required>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options" id="new-major-options">
 							</div>
 						</div>

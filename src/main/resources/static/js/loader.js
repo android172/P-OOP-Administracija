@@ -40,11 +40,10 @@ function setDataType(type, idName, columnNum = 0){
 	dataType = type;
 	dataIdName = idName;
 	dataColumnNum = columnNum;
-	console.log(dataType +", " + dataIdName + ", " + dataColumnNum);
+	console.log(dataType + ", " + dataIdName + ", " + dataColumnNum);
 }
 
 function fillTable(){
-
 	var data = [];
 
 	var table = document.getElementById("data");
@@ -55,15 +54,18 @@ function fillTable(){
 	if(customTable){
 		if(asc)
 			data = oData.slice(1);
-		else
+		else{
 			data = oData.slice(1).reverse();
+		}
 
 		headerData = oData[0];
 	}else{
 		if(asc)
 			data = oData;
-		else
-			data = oData.reverse();
+		else{
+			data = [...oData.reverse()];
+			oData.reverse();
+		}
 
 		if(data.length > 0){
 			headerData = Object.keys(data[0]);

@@ -44,8 +44,9 @@
 						<label class="select-label">Datum rodjenja:</label>
 						<div class="dropdown">
 							<input name="date_of_birth" value="all" readonly>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options">
-								<option value="all">All</option>
+								<option value="all">Svi</option>
 								<input type="date" class="input-none">
 							</div>
 						</div>
@@ -55,9 +56,10 @@
 						<label class="select-label">Grad:</label>
 	    				<div class="dropdown multiselect">
 							<input name="city" value="all" readonly>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options" id="city-options">
 								<div class="flex-row">
-									<label for="city-options-0">All</label>
+									<label for="city-options-0">Svi</label>
 									<input type="checkbox" id="city-options-0" value="all" checked>
 								</div>
 							</div>
@@ -68,9 +70,10 @@
 						<label class="select-label">Smer:</label>
 	    				<div class="dropdown multiselect">
 							<input name="major" value="all" readonly>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options" id="major-options">
 								<div class="flex-row">
-									<label for="major-options-0">All</label>
+									<label for="major-options-0">Svi</label>
 									<input type="checkbox" id="major-options-0" value="all" checked>
 								</div>
 							</div>
@@ -81,6 +84,7 @@
 						<label class="select-label" for="order_by">Sortiraj po:</label>
 						<div class="dropdown">
 							<input name="order_by" value="index" readonly>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options">
 								<option value="index">Br. Indeksa</option>
 								<option value="last_name">Prezime</option>
@@ -126,7 +130,8 @@
 
 						<label for="major_id">Smer:</label>
 						<div class="dropdown no-auto-submit">
-							<input name="major_id" value="" readonly required>
+							<input name="major_id" value="" minlength="1" readonly required>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options" id="new-major-options">
 							</div>
 						</div>

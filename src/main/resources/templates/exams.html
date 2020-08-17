@@ -79,13 +79,14 @@
 				<form action="/add_exam" id="new-examform" method="get" target="sendframe" class="pad-medium wide new-grid">
 						<label for="subject_id">Predmet:</label>
 						<div class="dropdown no-auto-submit">
-							<input name="subject_id" value="" readonly required>
+							<input name="subject_id" value="" minlength="1" readonly required>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options" id="new-subject-options">
 							</div>
 						</div>
 						<label for="lect_id">Predavač:</label>
 						<div class="dropdown no-auto-submit">
-							<input name="lect_id" value="" readonly required>
+							<input name="lect_id" value="" minlength="1" readonly required>
 							<div class="dd-options" id="new-lecturer-options">
 							</div>
 						</div>
