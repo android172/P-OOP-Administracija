@@ -57,6 +57,19 @@ public class SubjectController {
             return null;
         }
     }
+    @GetMapping("/get_subject")
+    public Subject get_subject(@RequestParam("token") long token,
+                               @RequestParam("subjectId") String id){
+
+        try {
+            if (!Log_in_Controller.access_allowed(token, new String[][]{{"Admin", "any"}})) return null;
+            return Database.GetSubject(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("get_subject request error");
+            return null;
+        }
+    }
 
     @GetMapping("/get_subjects_by_lecturer")
     public ArrayList<Subject> get_subjects_by_lecturer(@RequestParam("token") long token,
@@ -168,7 +181,6 @@ public class SubjectController {
     @GetMapping("/add_subject")
     public String add_subject(@RequestParam("token") long token,
                               @RequestParam("name") String name,
-                              @RequestParam("id") String id,
                               @RequestParam("espb") int espb,
                               @RequestParam("year") int year,
                               @RequestParam("lect_id") String lect_id,
@@ -178,7 +190,7 @@ public class SubjectController {
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
 
-            Subject subject = new Subject(name, id, espb, year, lect_id, major_id, points_req);
+            Subject subject = new Subject(name, Database.GetEmptyId("Subjects"), espb, year, lect_id, major_id, points_req);
             Database.AddSubject(subject);
             return "Subject successfully added";
         } catch (Exception e) {
