@@ -345,8 +345,8 @@ button {
 	border-color: red;
 }
 
-#data>tr:hover>.button-delete {
-	visibility: visible;
+tr:hover>.button-delete {
+	visibility: visible !important;
 }
 
 .no-auto-submit>input {
