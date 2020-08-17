@@ -12,8 +12,9 @@ public class Exam_Controller {
 
     @GetMapping("/get_exam_dropdown")
     public ArrayList<ArrayList<String>> get_exam_dropdown(@RequestParam("token") long token) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } })) return null;
-        
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
+            return null;
+
         ArrayList<Lecturer> lecturers = Database.GetLecturers(null, null, 1);
         ArrayList<String> lect_names = new ArrayList<String>();
         for (Lecturer lecturer : lecturers)
@@ -93,6 +94,19 @@ public class Exam_Controller {
         }
     }
 
+    @GetMapping("get_exams_for_lecturer")
+    public ArrayList<Exam> get_exams_for_lecturer(@RequestParam("token") long token,
+            @RequestParam("lecturer_id") String lect_id) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Lecturer", lect_id } }))
+            return null;
+        try {
+            return Database.GetExamOfLect(lect_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @GetMapping(value = "/add_exam")
     public String add_exam(@RequestParam("token") long token, @RequestParam("subject_id") String subject_id,
             @RequestParam("lect_id") String lect_id, @RequestParam("Date") String date) {
@@ -143,22 +157,9 @@ public class Exam_Controller {
         }
     }
 
-    @GetMapping("/get_attempts_info")
-    public ArrayList<Attempts> get_attempts_info(@RequestParam("token") long token,
-            @RequestParam("index") String index) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
-            return null;
-        try {
-            return Database.GetAttemptsOfStudent(new Index(index), 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     @GetMapping("/budget")
     public boolean is_budget(@RequestParam("token") long token, @RequestParam("index") String index) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index }, {"Admin", "any"} })) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index }, { "Admin", "any" } })) {
             System.out.println("access denied :: Exam_Controller.java :: line:~147");
             return false;
         }
@@ -168,6 +169,47 @@ public class Exam_Controller {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @GetMapping("/grade_student")
+    public String grade_student(@RequestParam("token") long token, @RequestParam("index") String index,
+            @RequestParam("exam_id") String exam_id, @RequestParam("points") String points,
+            @RequestParam("grade") String grade) {
+        String lect_id = null;
+        for (Exam e : Database.GetAllExams())
+            if (e.getId() == exam_id) {
+                lect_id = e.getLect_id();
+                break;
+            }
+        if (lect_id == null) {
+            System.out.println("Exam id : " + exam_id + "doesn't exist");
+            return null;
+        }
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Lecturer", lect_id } }))
+            return null;
+
+        String index_as[] = index.split("\\+");
+        String exam_id_array[] = exam_id.split("\\+");
+        String grade_as[] = grade.split("\\+");
+        String points_as[] = points.split("\\+");
+        int length = index_as.length;
+
+        Index index_array[] = new Index[length];
+        int grade_array[] = new int[length];
+        int points_array[] = new int[length];
+
+        try {
+            for (int i = 0; i < index_array.length; i++) {
+                index_array[i] = new Index(index_as[i]);
+                grade_array[i] = Integer.parseInt(grade_as[i]);
+                points_array[i] = Integer.parseInt(points_as[i]);
+            }
+            Database.Grading(index_array, LocalDate.now().getYear(), exam_id_array, grade_array, points_array);
+            return "Student grading successful";
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            return "Grading failed due to the following error: " + e1.getMessage();
+        }
     }
 
     // Subject Controller
