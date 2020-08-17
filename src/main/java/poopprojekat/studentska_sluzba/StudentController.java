@@ -102,6 +102,29 @@ public class StudentController {
         return filter_students_from_database(dates, cities, majors, order_ctg);
     }
 
+    @GetMapping("get_students_by_exam")
+    public ArrayList<Attempts> get_students_by_exam(@RequestParam("token") long token,
+            @RequestParam("exam_id") String exam_id) {
+        String lect_id = null;
+        for (Exam e : Database.GetAllExams())
+            if (e.getId() == exam_id) {
+                lect_id = e.getLect_id();
+                break;
+            }
+        if (lect_id == null) {
+            System.out.println("Exam id : " + exam_id + "doesn't exist");
+            return null;
+        }
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Lecturer", lect_id } }))
+            return null;
+        try {
+            return Database.GetStudentsByExam(exam_id);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            return null;
+        }
+    }
+
     // return selected student
     @GetMapping("/get_student")
     public Student get_student(@RequestParam("token") long token, @RequestParam("index") String index) {
@@ -240,7 +263,33 @@ public class StudentController {
             return null;
         }
     }
+
+    @GetMapping("/get_attempts_info_for_index")
+    public ArrayList<Attempts> get_attempts_info(@RequestParam("token") long token,
+            @RequestParam("index") String index) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
+            return null;
+        try {
+            return Database.GetAttemptsOfStudent(new Index(index), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
+    @GetMapping("/get_attempts_info_for_subject")
+    public ArrayList<Attempts> get_attempts_info_s(@RequestParam("token") long token,
+            @RequestParam("subject_id") String subject_id) {
+        String lect_id = Database.GetSubject(subject_id).lectid;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Lecturer", lect_id } }))
+            return null;
+        try {
+            return Database.GetStudentsBySubject(subject_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
    //  // private methods
    private String[][] filter_students_from_database(LocalDate date_of_birth[], String city[], String major[], int order_by) {

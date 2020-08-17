@@ -13,12 +13,17 @@ function initDropDowns(){
 	var i=0;
 	var len = dds.length;
 	while(i<len){
-		let opts = dds[i].children[1];
+		let opts = dds[i].children[2];
 		dds[i].addEventListener('click', function(){
 			toggleElement(opts);
 		}, true);
 
 		let input = dds[i].children[0];
+		let displayInput = dds[i].children[1];
+		if(opts.children[0].children[0])
+			displayInput.innerHTML = opts.children[0].children[0].innerHTML;
+		else
+			displayInput.innerHTML = opts.children[0].innerHTML;
 
 		var j=0;
 		let len2 = opts.children.length;
@@ -35,11 +40,11 @@ function initDropDowns(){
 					if(clicked==0){
 						if(all) {
 							str="all+";
-							displayStr="Svi+";
+							displayStr="Svi, ";
 						}
 						else {
 							str="+";
-							displayStr="Nijedan+";
+							displayStr="Nijedan, ";
 						}
 						for(l=1; l<len2; l++)
 							opts.children[l].children[1].checked = all;
@@ -48,7 +53,7 @@ function initDropDowns(){
 					for(l=1; l<len2; l++){
 						if(opts.children[l].children[1].checked && clicked!=0){
 							str+=opts.children[l].children[1].value+"+";
-							displayStr+=opts.children[l].children[1].innerHTML+", ";
+							displayStr+=opts.children[l].children[0].innerHTML+", ";
 						}
 					}
 
@@ -58,6 +63,7 @@ function initDropDowns(){
 					str=str.substr(0,str.length-1);
 					displayStr=displayStr.substr(0,displayStr.length-2);
 					input.value = str;
+					displayInput.innerHTML = displayStr;
 					input.form.submit();
 				}, true);
 				j++;
@@ -67,13 +73,13 @@ function initDropDowns(){
 				while(j<len2){
 					opts.children[j].addEventListener('change', function(){
 						input.value = this.value;
-						//displayInput.value = this.innerHTML;
+						displayInput.innerHTML = this.innerHTML;
 						input.form.submit();
 						toggleElement(opts);
 					}, true)
 					opts.children[j].addEventListener('click', function(){
 						input.value = this.value;
-						//displayInput.value = this.innerHTML;
+						displayInput.innerHTML = this.innerHTML;
 						input.form.submit();
 						toggleElement(opts);
 					}, true)
@@ -82,13 +88,13 @@ function initDropDowns(){
 			}else{
 				while(j<len2){
 					opts.children[j].addEventListener('change', function(){
-						input.value = this.value;
-						//displayInput.value = this.innerHTML;
+						input.value = this.value; 
+						displayInput.innerHTML = this.innerHTML;
 						toggleElement(opts);
 					}, true)
 					opts.children[j].addEventListener('click', function(){
 						input.value = this.value;
-						//displayInput.value = this.innerHTML;
+						displayInput.innerHTML = this.innerHTML;
 						toggleElement(opts);
 					}, true)
 					j++;
@@ -103,7 +109,7 @@ function clearDropDowns(){
 	var i=0;
 	var len = dds.length;
 	for(i=0; i<len; i++){
-			dds[i].children[1].style.display = "none";
+			dds[i].children[2].style.display = "none";
 	}
 }
 

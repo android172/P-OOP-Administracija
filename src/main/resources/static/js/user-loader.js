@@ -16,18 +16,28 @@ function parseData(){
 	}
 }
 
-function fillTables(asc=true){
+var asc = true;
+
+function changeOrder(newAsc){
+	asc = newAsc;
+	fillTables();
+}
+
+function fillTables(){
 	var data = [];
 
 	var adminTable = document.getElementById("data-admin");
 	var lectTable = document.getElementById("data-lecturer");
 	var studentTable = document.getElementById("data-student");
+	var terms = document.getElementById("searchbar").value.toLowerCase();
 	var header = document.createElement("tr");
 
 	if(asc)
 			data = oData;
-		else
-			data = oData.reverse();
+		else{
+			data = [...oData.reverse()];
+			oData.reverse();
+		}
 
     var rows = data.length;
 
@@ -47,14 +57,18 @@ function fillTables(asc=true){
 	studentTable.appendChild(header);
 
 	if(rows>0){
-	    
 		for(var i=0; i<rows; i++){
-			var row = document.createElement("tr");
+			var match = false;
+			var values = Object.values(data[i]);
+			var len = values.length;
 
-				var values = Object.values(data[i]);
-				var len = values.length;
+			for(var j=0; j<len; j++){
+				if(values[j] && values[j].toLowerCase().search(terms) != -1)
+					match = true;
+			}
+			if(match){
+				var row = document.createElement("tr");
 
-				
 				var cell = row.insertCell();
 				cell.innerHTML = values[0];
 				cell = row.insertCell();
@@ -76,18 +90,9 @@ function fillTables(asc=true){
 					break;
 				}
 			}
-
-			/*var delButton = document.createElement("div");
-			delButton.innerHTML = "delete";
-			delButton.className = "button-delete";
-		    delButton.id = data[i][0];
-			delButton.onclick = function(){
-			    //console.log("deleting: "+this.id);
-			    deleteRow(this.id);
-			};
-			row.appendChild(delButton);*/
 		}
 	}
+}
 
 /*
     Salje zahtev za brisanje reda

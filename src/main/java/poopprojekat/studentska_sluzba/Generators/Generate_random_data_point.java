@@ -38,14 +38,14 @@ public class Generate_random_data_point {
         String title;
         switch (new Random().nextInt(4)) {
             case 0:
-                title = "full-time professor";
+                title = "Redovni profesor";
                 break;
             case 1:
-                title = "part-time professor";
+                title = "Vanredni profesor";
             case 2:
-                title = "docent";
+                title = "Docent";
             default:
-                title = "assistant";
+                title = "Asistent";
         }
         try {
             return new Lecturer(Name_gen.get_random_first_name(), Name_gen.get_random_last_name(), title, Database.GetEmptyId("Lecturers"));

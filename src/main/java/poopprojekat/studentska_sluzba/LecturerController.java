@@ -93,6 +93,16 @@ public class LecturerController {
             String lect_id = Database.GetEmptyId("Lecturers");
             Lecturer new_lecturer = new Lecturer(first_name, last_name, title, lect_id);
             Database.AddLecturer(new_lecturer);
+            last_name = last_name.replace("ć", "c");
+            last_name = last_name.replace("č", "c");
+            last_name = last_name.replace("ž", "z");
+            last_name = last_name.replace("š", "s");
+            last_name = last_name.replace("đ", "d");
+            last_name = last_name.replace("Ć", "c");
+            last_name = last_name.replace("Č", "c");
+            last_name = last_name.replace("Ž", "z");
+            last_name = last_name.replace("Š", "s");
+            last_name = last_name.replace("Đ", "d");
             Database.AddUser(new User(last_name + lect_id, lect_id, "Lecturer", lect_id));
             return "Lecturer was added";
         } catch (Exception e) {
@@ -145,8 +155,8 @@ public class LecturerController {
     // get_lecturer --
     // za datog lecturera daj sve predmete koje predaje --
     // za dati predmet daj sav info (attempts struktura) -
-    // daje listu ispita koje dati prof drzi -
-    // za dati ispit daje listu studentata koji su se na njega prijavili -
-    // za dati exam i datog profesora i datom studentu upisi ocenu -
-    // upisi poene datom studentu -
+    // daje listu ispita koje dati prof drzi --
+    // za dati ispit daje listu studentata koji su se na njega prijavili --
+    // za dati exam i datog profesora i datom studentu upisi ocenu --
+    // upisi poene datom studentu --
 }
