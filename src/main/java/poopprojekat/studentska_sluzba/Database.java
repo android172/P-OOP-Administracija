@@ -111,7 +111,7 @@ public class Database
         AddUser(new User("admin", "123456789", "Admin", "A001"));
 
         Fill_db_randomly.with_majors(3);
-        Fill_db_randomly.with_students(140);
+        Fill_db_randomly.with_students(20);
         Fill_db_randomly.with_lecturers(15);
         Fill_db_randomly.with_Subjects(10);
         Fill_db_randomly.with_exams(6);
@@ -187,7 +187,13 @@ public class Database
             CreateTableAppliedToListen();
             CreateTableStudentStatus();
             CreateExamDeadline();
+            CreateTableDeletedStudents();
+            CreateTableDeletedSubjects();
+            CreateTableDeletedLecturers();
+            CreateTableDeletedMajors();
+            CreateTableDeletedExams();
             CreateApplyForExamTrigger();
+            CreateArchiveStudentsTrigger();
         }
         catch (SQLException throwables)
         {
@@ -300,8 +306,8 @@ public class Database
                 "Mark INTEGER, " +
                 "Points INTEGER DEFAULT '0', " +
                 "PRIMARY KEY (id, IndexNum, SubjectId)," +
-                "FOREIGN KEY (IndexNum) REFERENCES Students(IndexNum) ON UPDATE CASCADE, " +
-                "FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId) ON UPDATE CASCADE ) ENGINE=InnoDB ";
+                "FOREIGN KEY (IndexNum) REFERENCES Students(IndexNum) ON UPDATE CASCADE ON DELETE NO ACTION , " +
+                "FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId) ON UPDATE CASCADE ON DELETE NO ACTION ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'AppliedToListen'");
 
@@ -326,8 +332,8 @@ public class Database
                 "SubjectId VARCHAR(10) not NULL," +
                 "LectId VARCHAR(10) not NULL," +
                 "PRIMARY KEY (id, ExamId)," +
-                "FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId) ON UPDATE CASCADE, " +
-                "FOREIGN KEY (LectId) REFERENCES Lecturers(LectId) ON UPDATE CASCADE ) ENGINE=InnoDB ";
+                "FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId) ON UPDATE CASCADE ON DELETE CASCADE , " +
+                "FOREIGN KEY (LectId) REFERENCES Lecturers(LectId) ON UPDATE CASCADE ON DELETE CASCADE ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'Exams'");
 
@@ -351,8 +357,8 @@ public class Database
                 "ExamId VARCHAR(10) not NULL UNIQUE ," +
                 "Price INTEGER not NULL," +
                 "PRIMARY KEY (id, IndexNum, ExamId), " +
-                "FOREIGN KEY (IndexNum) references Students(IndexNum) ON UPDATE CASCADE, " +
-                "FOREIGN KEY (ExamId) references Exams(ExamId) ON UPDATE CASCADE ) ENGINE=InnoDB ";
+                "FOREIGN KEY (IndexNum) references Students(IndexNum) ON UPDATE CASCADE ON DELETE CASCADE , " +
+                "FOREIGN KEY (ExamId) references Exams(ExamId) ON UPDATE CASCADE ON DELETE CASCADE ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'ExamApplication'");
 
@@ -377,7 +383,7 @@ public class Database
                 "Year INTEGER not NULL, " +
                 "Status VARCHAR(20) not NULL, " +
                 "PRIMARY KEY (id, IndexNum), " +
-                "FOREIGN KEY (IndexNum) references Students(IndexNum) ) ENGINE=InnoDB ";
+                "FOREIGN KEY (IndexNum) references Students(IndexNum) ON DELETE NO ACTION ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'StudentStatus'");
         try
@@ -403,15 +409,15 @@ public class Database
                 "EndApplicationDate DATE not NULL," +
                 "PRIMARY KEY (id, ExamName) ) ENGINE=InnoDB ";
 
-        System.out.println("Creating table 'StudentStatus'");
+        System.out.println("Creating table 'ExamDeadline'");
         try
         {
             stat.executeQuery(sql);
-            System.out.println("Table 'StudentStatus' has been created");
+            System.out.println("Table 'ExamDeadline' has been created");
         }
         catch (SQLException throwables)
         {
-            System.out.println("Creating table 'StudentStatus' failed");
+            System.out.println("Creating table 'ExamDeadline' failed");
             throwables.printStackTrace();
         }
     }
@@ -426,16 +432,16 @@ public class Database
                 "Title VARCHAR(30) not NULL, " +
                 "PRIMARY KEY (id, LectId) ) ENGINE=InnoDB ";
 
-        System.out.println("Creating table 'ExamsArchive'");
+        System.out.println("Creating table 'Lecturers'");
 
         try
         {
             stat.executeQuery(sql);
-            System.out.println("Table 'ExamsArchive' has been created");
+            System.out.println("Table 'Lecturers' has been created");
         }
         catch (SQLException throwables)
         {
-            System.out.println("Creating table 'ExamsArchive' failed");
+            System.out.println("Creating table 'Lecturers' failed");
             throwables.printStackTrace();
         }
     }
@@ -462,24 +468,126 @@ public class Database
         }
     }
 
-    private void CreateApplyForExamTrigger()
+    private void CreateTableDeletedStudents()
     {
-        sql = "CREATE TRIGGER UpdateAttempts AFTER INSERT ON ExamApplication " +
-                "FOR EACH ROW " +
-                "UPDATE AppliedToListen as al SET Attempts = Attempts + 1 " +
-                "WHERE (SELECT IndexNum FROM inserted as i " +
-                        "WHERE al.IndexNum = i.IndexNum)";
+        sql = "CREATE TABLE IF NOT EXISTS DeletedStudents " +
+                "( id INTEGER not NULL AUTO_INCREMENT," +
+                "IndexNum VARCHAR(10) not NULL UNIQUE," +
+                "FirstName NVARCHAR(30) not NULL," +
+                "LastName NVARCHAR(30) not NULL," +
+                "JMBG VARCHAR(15) not NULL UNIQUE," +
+                "DateOfBirth DATE not NULL," +
+                "City NVARCHAR(30) not NULL," +
+                "MajorId VARCHAR(10) not NULL, " +
+                "PRIMARY KEY (id, JMBG, IndexNum) ) ENGINE=InnoDB ";
 
-        System.out.println("Creating trigger 'ApplyForExamTrigger'");
+        System.out.println("Creating table 'DeletedStudents'");
 
         try
         {
             stat.executeQuery(sql);
-            System.out.println("trigger 'ApplyForExamTrigger' has been created");
+            System.out.println("Table 'DeletedStudents' has been created");
         }
         catch (SQLException throwables)
         {
-            System.out.println("Creating trigger 'ApplyForExamTrigger' failed");
+            System.out.println("Creating table 'DeletedStudents' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateTableDeletedSubjects()
+    {
+        sql = "CREATE TABLE IF NOT EXISTS DeletedSubjects " +
+                "( id INTEGER not NULL AUTO_INCREMENT, " +
+                "SubjectName NVARCHAR(50) not NULL, " +
+                "SubjectId VARCHAR(10) not NULL UNIQUE , " +
+                "Year INTEGER not NULL, " +
+                "ESPB INTEGER not NULL, " +
+                "MajorId VARCHAR(10) not NULL, " +
+                "LectId VARCHAR(10) not NULL, " +
+                "PointsRequired INTEGER not NULL, " +
+                "PRIMARY KEY (id, SubjectId) ) ENGINE=InnoDB ";
+
+        System.out.println("Creating table 'DeletedSubjects'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("Table 'DeletedSubjects' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating table 'DeletedSubjects' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateTableDeletedLecturers()
+    {
+        sql = "CREATE TABLE IF NOT EXISTS DeletedLecturers " +
+                "( id INTEGER not NULL AUTO_INCREMENT," +
+                "LectId VARCHAR(10) not NULL UNIQUE ," +
+                "FirstName NVARCHAR(15) not NULL," +
+                "LastName NVARCHAR(15) not NULL, " +
+                "Title VARCHAR(30) not NULL, " +
+                "PRIMARY KEY (id, LectId) ) ENGINE=InnoDB ";
+
+        System.out.println("Creating table 'DeletedLecturer'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("Table 'DeletedLecturers' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating table 'DeletedLecturers' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateTableDeletedMajors()
+    {
+        sql = "CREATE TABLE IF NOT EXISTS DeletedMajors " +
+                "( id INTEGER not NULL AUTO_INCREMENT," +
+                "MajorId VARCHAR(10) not NULL UNIQUE ," +
+                "MajorName NVARCHAR(30) not NULL," +
+                "PRIMARY KEY(id, MajorId) ) ENGINE=InnoDB";
+
+        System.out.println("Creating table 'DeletedMajors'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("Table 'DeletedMajors' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating table 'DeletedMajors' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateTableDeletedExams()
+    {
+        sql = "CREATE TABLE IF NOT EXISTS DeletedExams " +
+                "( id INTEGER not NULL AUTO_INCREMENT," +
+                "ExamId VARCHAR(10) not NULL UNIQUE, " +
+                "ExamDate DATE not NULL," +
+                "SubjectId VARCHAR(10) not NULL," +
+                "LectId VARCHAR(10) not NULL," +
+                "PRIMARY KEY (id, ExamId) ) ENGINE=InnoDB ";
+
+        System.out.println("Creating table 'DeletedExams'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("Table 'DeletedExams' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating table 'DeletedExams' failed");
             throwables.printStackTrace();
         }
     }
@@ -507,6 +615,50 @@ public class Database
     // boolean true u AddX -> uspesno dodalo
     // null u GetX -> ne postoji
     // Za AddX f-je sve obavezne promenjive moraju biti popunjene
+
+    // Triggers
+
+    private void CreateApplyForExamTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS UpdateAttempts AFTER INSERT ON ExamApplication " +
+                "FOR EACH ROW " +
+                "UPDATE AppliedToListen as al SET Attempts = Attempts + 1 " +
+                "WHERE (SELECT IndexNum FROM inserted as i " +
+                "WHERE al.IndexNum = i.IndexNum)";
+
+        System.out.println("Creating trigger 'ApplyForExam'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ApplyForExam' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ApplyForExam' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateArchiveStudentsTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS ArchiveStudents AFTER DELETE ON Students FOR EACH ROW " +
+                "INSERT INTO DeletedStudents (IndexNum, FirstName, LastName, JMBG, DateOfBirth, City, MajorId) " +
+                "SELECT d.IndexNum, d.FirstName, d.LastName, d.JMBG, d.DateOfBirth, d.City, d.MajorId FROM Deleted as d";
+
+        System.out.println("Creating trigger 'ArchiveStudents'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ArchiveStudents' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ArchiveStudents' failed");
+            throwables.printStackTrace();
+        }
+    }
 
     // ADD f-je -----------------------------------------------------
 
@@ -707,7 +859,7 @@ public class Database
             if(i != index.length - 1)
                 sql += ", ";
         }
-        System.out.println(sql);
+
         try
         {
             stat.executeUpdate(sql);
@@ -1791,6 +1943,39 @@ public class Database
         return listen;
     }
 
+    public static ArrayList<Attempts> GetStudentsBySubject(String subjectId) throws Exception
+    {
+        if(subjectId != null)
+        {
+            sql = "SELECT * FROM AppliedToListen " +
+                    "WHERE SubjectId = '" + subjectId + "' AND YEAR = '" + LocalDate.now().getYear() + "' ";
+        }
+        else
+            throw new Exception("SubjectId is null");
+
+        ResultSet res = null;
+        ArrayList<Attempts> applied = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                applied.add(new Attempts(new Index(res.getString("IndexNum")), res.getString("SubjectId"), res.getInt("Year"), res.getDate("DatePassed").toLocalDate(), res.getInt("Attempts"), res.getInt("Mark"), res.getInt("Points")));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return applied;
+    }
+
     public static ArrayList<Exam> GetExamOfLect(String lectId) throws Exception
     {
         if(lectId != null)
@@ -1958,7 +2143,7 @@ public class Database
 
     public static void DeleteExam(String examid) throws Exception
     {
-        sql = "DELETE FROM ExamId " +
+        sql = "DELETE FROM Exams " +
                 "WHERE ExamId = '" + examid + "' ";
 
         try
