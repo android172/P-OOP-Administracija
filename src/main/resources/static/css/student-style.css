@@ -10,7 +10,6 @@ header {
 	flex-direction: row;
 	align-items: center;
 	justify-content: flex-start;
-
 	position: relative;
 }
 
@@ -121,6 +120,7 @@ h1 {
 	width: 100%;
 	float: left;
 	position: relative;
+	visibility: visible;
 }
 #table4>tbody>tr>td{
 	background-color: var(--color-highlight2) !important;
@@ -169,3 +169,36 @@ h1 {
     visibility: hidden;
 }
 
+#table5{
+	width: 100%;
+	float: left;
+	position: relative;
+	visibility: hidden;
+}
+#table5>tbody>tr>td{
+	background-color: var(--color-highlight2) !important;
+}
+
+#table5>tbody>tr>th{
+	background-color: var(--color-highlight) !important;
+}
+#table6{
+	width: 100%;
+	float: left;
+	position: relative;
+	visibility: hidden;
+}
+#table6>tbody>tr>td{
+	background-color: var(--color-highlight2) !important;
+}
+
+#table6>tbody>tr>th{
+	background-color: var(--color-highlight) !important;
+}
+.button{
+	text-align: center;
+	display: inline-block;
+	font-size: 17px;
+	background-color: var(--color-highlight);
+	cursor: pointer;
+}

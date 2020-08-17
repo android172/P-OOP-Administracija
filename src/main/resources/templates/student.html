@@ -3,14 +3,16 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
 	<link rel="stylesheet" type="text/css" href="../static/css/student-style.css" th:href="@{/css/student-style.css}"/>
+	<link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
 	<meta charset="utf-8">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/student-loader.js" th:src="@{/js/student-loader.js}"></script>
-	<!--<script type="text/javascript" language="Javascript" src="../static/js/student-loader-part2.js" th:src="@{/js/student-loader-part2.js}"></script>-->
+	<script type="text/javascript" language="Javascript" src="../static/js/student-loader-part2.js" th:src="@{/js/student-loader-part2.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/showTable.js" th:src="@{/js/showTable.js}"></script>
 </head>
-<body onload="getToken(); getIndex(); makeRequest('/get_student', 'dataframe', [['index',index]], function(){parseData();}); makeRequest('/get_attempts_info', 'examsframe', [['index',index]],function(){parseDatapt2();});makeRequest('/budget', 'budgetframe', [['index',index]],function(){parseData2();});">
+<body onload="getToken(); getIndex(); makeRequest('/get_student', 'dataframe', [['index',index]], function(){parseData();}); makeRequest('/budget', 'budgetframe', [['index',index]],function(){parseDataBudget();}); makeRequest('/get_attempts_info', 'examsframe', [['index',index]],function(){parseDataExams();});">
 	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
 		<header>
 			<h1>Student</h1>
@@ -18,6 +20,7 @@
 				<p><b><span id = "Ime"></span> <span id = "Prezime"></span></b></p>
 				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
 				<div id="user-options">
+					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
 					<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
 				</div><!--close user options-->
 			</div><!--close user-->
@@ -27,7 +30,7 @@
 				<div id = "background-pic-name">
 					<img src="../static/images/user-img.bmp" id="user-img-info" th:src="@{/images/user-img.bmp}"/>
 					<p><b><span id = "Ime1"></span> <span id = "Prezime1"></span></b></p>
-				</div><!--close picture info-->
+				</div><!--close background picture name-->
 				<table id = "table1">
 					<tr>
 						<th>Br. indeksa</th>
@@ -76,33 +79,79 @@
 					<td id = "Status"></td>
 				</tr>
 			</table><!--close table 3-->
-			</div><!--close class tables-->
-		<table id = "table4">
+		</div><!--close class tables-->
+		<input type="button" class = "button" value="Upisani predmeti" onclick='showTable4();'>
+		<input type="button" class = "button" value="Prijava ispita" onclick='showTable5();'>
+		<input type="button" class = "button" value="Ispitni rokovi" onclick='showTable6();'>
+			<table id = "table4">
+				<tr>
+					<th colspan = "6">Upisani Predmeti</th>
+				</tr>
+				<tr>
+					<th>Predmet</th>
+					<th>IDPredmet</th>
+					<th>Godina</th>
+					<th>ESPB</th>
+					<th>Profesor</th>
+					<th>Smer</th>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table><!--close table 4-->
+		<table id = "table5">
+				<tr>
+					<th colspan = "6">Prijava ispita</th>
+				</tr>
+				<tr>
+					<th>Predmet</th>
+					<th>IDPredmet</th>
+					<th>Godina</th>
+					<th>ESPB</th>
+					<th>Profesor</th>
+					<th>Smer</th>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+		</table><!--close table 5-->
+		<table id = "table6">
 			<tr>
-				<th colspan = "6">Upisani Predmeti</th>
+				<th colspan = "7">Ispitni rokovi</th>				</tr>
+				<tr>
+					<th>Ispitni rok</th>
+					<th>Predmet</th>
+					<th>IDPredmet</th>
+					<th>Godina</th>
+					<th>ESPB</th>
+					<th>Profesor</th>
+					<th>Smer</th>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				<td></td>
 			</tr>
-			<tr>
-				<th>Predmet</th>
-				<th>IDPredmet</th>
-				<th>Godina</th>
-				<th>ESPB</th>
-				<th>Profesor</th>
-				<th>Smer</th>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-		</table><!--close table 4-->
+		</table><!--close table 6-->
 		</div><!--close content-->
 	</div><!--close wrapper-->
 	<iframe src="" name="dataframe" id="dataframe"></iframe>
-	<iframe src="" name="examsframe" id="examsframe" onload=""></iframe>
-	<iframe src="" name="budgetframe" id="budgetframe" onload=""></iframe>
+	<iframe src="" name="examsframe" id="examsframe"></iframe>
+	<iframe src="" name="budgetframe" id="budgetframe"></iframe>
 	<iframe src="" name="sendframe" id="sendframe"></iframe>
 </body>
 </html>

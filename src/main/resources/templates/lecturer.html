@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
+	<link rel="stylesheet" type="text/css" href="../static/css/lecturer-style.css" th:href="@{/css/lecturer-style.css}"/>
+	<link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
+	<meta charset="utf-8">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
+</head>
+
+<body>
+	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
+		<header>
+			<h1>Lecturer</h1>
+			<div id="user">
+				<p><b><span id = "Ime"></span> <span id = "Prezime"></span></b></p>
+				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
+				<div id="user-options">
+					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
+					<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
+				</div><!--close user options-->
+			</div><!--close user-->
+		</header>
+		<div id = "content">
+			<div id = "picture-info">
+				<div id = "background-pic-name">
+					<img src="../static/images/user-img.bmp" id="user-img-info" th:src="@{/images/user-img.bmp}"/>
+					<p><b><span id = "Ime1"></span> <span id = "Prezime1"></span></b></p>
+				</div><!--close background picture name-->
+			</div><!--close picture info-->
+				<table id = "table1">
+					<tr>
+						<th>Titula</th>
+					</tr>
+					<tr>
+						<td id = "Titula"></td>
+					</tr>
+				</table><!--close table 1-->
+		</div><!--close content-->
+	</div><!--close wrapper-->
+</body>
