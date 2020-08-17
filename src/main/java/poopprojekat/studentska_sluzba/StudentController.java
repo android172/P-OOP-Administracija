@@ -168,42 +168,41 @@ public class StudentController {
         }
     }
 
-    // update student
     @GetMapping("/update_student")
     public String update_student(@RequestParam("token") long token,
-            @RequestParam("student") String index_of_student_to_update, @RequestParam("first_name") String first_name,
-            @RequestParam("last_name") String last_name, @RequestParam("index_num") String index_num,
-            @RequestParam("date_of_birth") String date_of_birth, @RequestParam("city") String city,
-            @RequestParam("jmbg") String jmbg, @RequestParam("major_id") String major_id) {
+            @RequestParam("index") String index_of_student_to_update, @RequestParam("firstName") String first_name,
+            @RequestParam("lastName") String last_name, @RequestParam("new-index") String index_num,
+            @RequestParam("dateOfBirth") String date_of_birth, @RequestParam("city") String city,
+            @RequestParam("jmbg") String jmbg, @RequestParam("majorId") String major_id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
         try {
             Index req_index = new Index(index_of_student_to_update);
             Student updated_student = new Student(req_index);
 
-            if (first_name == "")
+            if (first_name.equals(""))
                 updated_student.setFirstName(null);
             else
                 updated_student.setFirstName(first_name);
-            if (last_name == "")
+            if (last_name.equals(""))
                 updated_student.setLastName(null);
             else
                 updated_student.setLastName(last_name);
-            if (index_num != "")
+            if (index_num.equals(""))
                 updated_student.setIndex(new Index(index_num));
-            if (date_of_birth == "")
+            if (date_of_birth.equals(""))
                 updated_student.setDateOfBirth(null);
             else
                 updated_student.setDateOfBirth(LocalDate.parse(date_of_birth));
-            if (city == "")
+            if (city.equals(""))
                 updated_student.setCity(null);
             else
                 updated_student.setCity(city);
-            if (jmbg == "")
+            if (jmbg.equals(""))
                 updated_student.setJmbg(null);
             else
                 updated_student.setJmbg(jmbg);
-            if (major_id == "")
+            if (major_id.equals(""))
                 updated_student.setMajorId(null);
             else
                 updated_student.setMajorId(major_id);
@@ -218,7 +217,7 @@ public class StudentController {
 
     // delete student
     @GetMapping("/delete_student")
-    public String delete_student(@RequestParam("token") long token, @RequestParam("index_num") String index) {
+    public String delete_student(@RequestParam("token") long token, @RequestParam("index") String index) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
         try {

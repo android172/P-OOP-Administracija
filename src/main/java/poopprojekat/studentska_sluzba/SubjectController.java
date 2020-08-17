@@ -191,12 +191,12 @@ public class SubjectController {
     public String update_subject(@RequestParam("token") long token,
                                  @RequestParam("id") String old_id,
                                  @RequestParam("name") String name,
-                                 @RequestParam("new_id") String id,
+                                 @RequestParam("new-id") String id,
                                  @RequestParam("espb") int espb,
                                  @RequestParam("year") int year,
-                                 @RequestParam("lect_id") String lect_id,
-                                 @RequestParam("major_id") String major_id,
-                                 @RequestParam("points_req") int points_req){
+                                 @RequestParam("lectid") String lect_id,
+                                 @RequestParam("majorid") String major_id,
+                                 @RequestParam("points_required") int points_req){
 
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;

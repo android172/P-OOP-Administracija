@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 	<title>Studentska sluzba</title>
+	<link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
 	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
 	<link rel="stylesheet" type="text/css" href="../static/css/data-style.css" th:href="@{/css/data-style.css}"/>
 	<script type="text/javascript" language="Javascript" src="../static/js/loader.js" th:src="@{/js/loader.js}"></script>
@@ -17,11 +18,12 @@
 			addOptionsToFilter('city-options', filters[0], true, 1, false);
 			addOptionsToFilter('major-options', filters[1], true, 1, true);
 			addOptionsToFilter('new-major-options', filters[1], false, 0, true);
+			addOptionsToFilter('update-major-options', filters[1], false, 0, true);
 			initDropDowns();
 		}
 	</script>
 </head>
-<body onload="getToken(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); setCustomTable(true); submitSearch(); makeRequest('/get_student_filters','sendframe'); initGetFilters('sendframe');">
+<body onload="getToken(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToForm('updateform'); addTokenToLinks(); setCustomTable(true); submitSearch(); makeRequest('/get_student_filters','sendframe'); initGetFilters('sendframe');">
 	<div id="background"></div>
 	<div id="wrapper">
 		<header>
@@ -41,7 +43,7 @@
 					<input type="text" id="searchbar" value="" placeholder="Search..." oninput="fillTable();">
 
 					<div class="form-element">
-						<label class="select-label">Datum rodjenja:</label>
+						<label class="select-label">Datum rođenja:</label>
 						<div class="dropdown">
 							<input name="date_of_birth" value="all" readonly>
 							<div class="dropdown-preview"></div>
@@ -97,7 +99,7 @@
 					</div>
 
 					<div class="form-element">
-						<label class="select-label">Rastuci poredak:</label>
+						<label class="select-label">Rastući poredak:</label>
 						<input type="checkbox" class="labeled" oninput="changeOrder(this.checked);" checked>
 					</div>
 
@@ -124,7 +126,7 @@
 						<label for="first_name">Ime:</label><input type="text" name="first_name" required>
 						<label for="last_name">Prezime:</label><input type="text" name="last_name" required>
 						<label for="year">Godina upisa:</label><input type="number" min="2000" max="2100" name="year" required>
-						<label for="date_of_birth">Datum rodjenja:</label><input type="date" name="date_of_birth" required>
+						<label for="date_of_birth">Datum rođenja:</label><input type="date" name="date_of_birth" required>
 						<label for="city">Grad:</label><input type="text" name="city" required>
 						<label for="jmbg">JMBG:</label><input type="text" minlength="13" maxlength="13" name="jmbg" required>
 
@@ -139,6 +141,35 @@
 				<div class="flex-row wide pad-medium">
 					<button type="submit" form="newform">Submit</button>
 					<button type="reset" form="newform">Clear</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="update-element" class="popup-fixed">
+			<div class="flex-col size-max">
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
+				<br>
+				<form action="/update_student" id="updateform" method="get" target="sendframe" class="pad-medium wide new-grid">
+					<label for="firstName">Ime:</label><input type="text" name="firstName" required>
+					<label for="lastName">Prezime:</label><input type="text" name="lastName" required>
+					<label for="new-index">Indeks:</label><input type="text" name="new-index" required>
+					<label for="year">Godina upisa:</label><input type="number" min="2000" max="2100" name="year" required>
+					<label for="dateOfBirth">Datum rodjenja:</label><input type="date" name="dateOfBirth" required>
+					<label for="city">Grad:</label><input type="text" name="city" required>
+					<label for="jmbg">JMBG:</label><input type="text" minlength="13" maxlength="13" name="jmbg" required>
+
+					<label for="majorId">Smer:</label>
+					<div class="dropdown no-auto-submit">
+						<input name="majorId" value="" minlength="1" readonly required>
+						<div class="dropdown-preview"></div>
+						<div class="dd-options" id="update-major-options">
+						</div>
+					</div>
+					<input type="hidden" name="" id="updated_id" required>
+				</form>
+				<div class="flex-row wide pad-medium">
+					<button type="submit" form="updateform">Submit</button>
+					<button type="reset" form="updateform">Clear</button>
 				</div>
 			</div>
 		</div>

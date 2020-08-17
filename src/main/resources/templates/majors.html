@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 	<title>Studentska sluzba</title>
+	<link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
 	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
 	<link rel="stylesheet" type="text/css" href="../static/css/data-style.css" th:href="@{/css/data-style.css}"/>
 	<script type="text/javascript" language="Javascript" src="../static/js/loader.js" th:src="@{/js/loader.js}"></script>
@@ -12,7 +13,7 @@
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 </head>
-<body onload="getToken(); setDataType('major', 'id'); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); submitSearch();">
+<body onload="getToken(); setDataType('major', 'id', 0, 0); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToForm('updateform'); addTokenToLinks(); submitSearch();">
 	<div id="background"></div>
 	<div id="wrapper">
 		<header>
@@ -32,7 +33,7 @@
 					<input type="text" id="searchbar" value="" placeholder="Search..." oninput="fillTable();">
 
 					<div class="form-element">
-						<label class="select-label">Rastuci poredak:</label>
+						<label class="select-label">Rastući poredak:</label>
 						<input type="checkbox" class="labeled" oninput="changeOrder(this.checked);" checked>
 					</div>
 
@@ -61,6 +62,22 @@
 				<div class="flex-row wide pad-medium">
 					<button type="submit" form="newform">Submit</button>
 					<button type="reset" form="newform">Clear</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="update-element" class="popup-fixed" style="height: 220px; padding-top: 50px;">
+			<div class="flex-col size-max">
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
+				<br>
+				<form action="/update_major" id="updateform" method="get" target="sendframe" class="pad-medium wide new-grid">
+					<label for="new-id">ID:</label><input type="text" name="new-id" required>
+					<label for="name">Ime:</label><input type="text" name="name" required>
+					<input type="hidden" name="" id="updated_id" required>
+				</form>
+				<div class="flex-row wide pad-medium">
+					<button type="submit" form="updateform">Submit</button>
+					<button type="reset" form="updateform">Clear</button>
 				</div>
 			</div>
 		</div>

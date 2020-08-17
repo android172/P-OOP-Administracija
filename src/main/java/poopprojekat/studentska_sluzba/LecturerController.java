@@ -79,7 +79,7 @@ public class LecturerController {
 
     // return requested lecturer
     @GetMapping("/get_lecturer")
-    public Lecturer getLecturers(@RequestParam("token") long token, @RequestParam("lect_id") String lect_id) {
+    public Lecturer getLecturers(@RequestParam("token") long token, @RequestParam("lectId") String lect_id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}, {"Lecturer", lect_id}})) return null;
         return Database.GetLecturer(lect_id);
     }
@@ -100,24 +100,25 @@ public class LecturerController {
             return "Lecturer could not be added because of the following error: " + e.getMessage();
         }
     }
+
     // update lecturer
     @GetMapping("/update_lecturer")
-    public String update_lecturer(@RequestParam("token") long token, @RequestParam("lecturer") String id_of_lec_to_up, @RequestParam("first_name") String first_name,
-            @RequestParam("last_name") String last_name, @RequestParam("title") String title, @RequestParam("lect_id") String lect_id) {
+    public String update_lecturer(@RequestParam("token") long token, @RequestParam("lectId") String id_of_lec_to_up, @RequestParam("firstName") String first_name,
+            @RequestParam("lastName") String last_name, @RequestParam("title") String title, @RequestParam("new-lectId") String lect_id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         try {
             Lecturer updated_lecturer = new Lecturer(id_of_lec_to_up);
 
-            if (first_name == "")
+            if (first_name.equals(""))
                 updated_lecturer.setFirstName(null);
             else updated_lecturer.setFirstName(first_name);
-            if (last_name == "")
+            if (last_name.equals(""))
                 updated_lecturer.setLastName(null);
             else updated_lecturer.setLastName(last_name);
-            if (title == "")
+            if (title.equals(""))
                 updated_lecturer.setTitle(null);
             else updated_lecturer.setTitle(title);
-            if (lect_id == "")
+            if (lect_id.equals(""))
                 updated_lecturer.setLectId(lect_id);
 
             Database.EditLecturer(lect_id, updated_lecturer);

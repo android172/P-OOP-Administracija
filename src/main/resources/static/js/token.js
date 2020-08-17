@@ -45,11 +45,11 @@ function addTokenToForm(formID){
 }
 
 function addTokenToLinks(){
-	var links = document.getElementsByClassName("tokenify");
-	var len = links.length;
-	for(var i=0; i<len; i++){
-		links[i].href+="?token="+token;
-	}
+    var links = document.getElementsByClassName("tokenify");
+    var len = links.length;
+    for(var i=0; i<len; i++){
+    	links[i].href+="?token="+token;
+    }
 }
 
 

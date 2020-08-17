@@ -18,11 +18,13 @@
 			addOptionsToFilter('major-options', filters[1], true, 1, true);
 			addOptionsToFilter('new-lect-options', filters[0], false, 0, false);
 			addOptionsToFilter('new-major-options', filters[1], false, 0, true);
+			addOptionsToFilter('update-lect-options', filters[0], false, 0, false);
+			addOptionsToFilter('update-major-options', filters[1], false, 0, true);
 			initDropDowns();
 		}
 	</script>
 </head>
-<body onload="getToken(); setDataType('subject', 'id', 1); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToLinks(); submitSearch(); makeRequest('/get_subject_filters','sendframe'); initGetFilters('sendframe');">
+<body onload="getToken(); setDataType('subject', 'id', 1, 1); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToForm('updateform'); addTokenToLinks(); submitSearch(); makeRequest('/get_subject_filters','sendframe'); initGetFilters('sendframe');">
 	<div id="background"></div>
 	<div id="wrapper">
 		<header>
@@ -72,7 +74,7 @@
 					</div>
 
 					<div class="form-element">
-						<label class="select-label">Predavac:</label>
+						<label class="select-label">Predavač:</label>
 	    				<div class="dropdown multiselect">
 							<input name="lect_name" value="all" readonly>
 							<div class="dropdown-preview"></div>
@@ -110,13 +112,13 @@
 								<option value="year">Godina</option>
 								<option value="espb">ESPB</option>
 								<option value="major_name">Smer</option>
-								<option value="lect_id">Predavac</option>
+								<option value="lect_id">Predavač</option>
 							</div>
 						</div>
 					</div>
 
 					<div class="form-element">
-						<label class="select-label">Rastuci poredak:</label>
+						<label class="select-label">Rastući poredak:</label>
 						<input type="checkbox" class="labeled" oninput="changeOrder(this.checked);" checked>
 					</div>
 
@@ -144,7 +146,7 @@
 					<label for="espb">ESPB:</label><input type="number" min="0" name="espb" required>
 					<label for="year">Godina:</label><input type="number" min="1" max="4" name="year" required>
 
-					<label for="lect_id">Predavac</label>
+					<label for="lect_id">Predavač</label>
 					<div class="dropdown no-auto-submit">
 							<input name="lect_id" value=""  minlength="1" readonly required>
 							<div class="dropdown-preview"></div>
@@ -165,6 +167,43 @@
 				<div class="flex-row wide pad-medium">
 					<button type="submit" form="newform">Submit</button>
 					<button type="reset" form="newform">Clear</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="update-element" class="popup-fixed">
+			<div class="flex-col size-max">
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
+				<br>
+				<form action="/update_subject" id="updateform" method="get" target="sendframe" class="pad-medium wide new-grid">
+					<label for="new-id">ID:</label><input type="text" name="new-id" required>
+					<label for="name">Ime:</label><input type="text" name="name" required>
+					<label for="espb">ESPB:</label><input type="number" min="0" name="espb" required>
+					<label for="year">Godina:</label><input type="number" min="1" max="4" name="year" required>
+
+					<label for="lectid">Predavač</label>
+					<div class="dropdown no-auto-submit">
+							<input name="lectid" value=""  minlength="1" readonly required>
+							<div class="dropdown-preview"></div>
+							<div class="dd-options" id="update-lect-options">
+							</div>
+						</div>
+
+					<label for="majorid">Smer</label>
+					<div class="dropdown no-auto-submit">
+							<input name="majorid" value="" minlength="1" readonly required>
+							<div class="dropdown-preview"></div>
+							<div class="dd-options" id="update-major-options">
+							</div>
+						</div>
+
+					<label for="points_required">Broj poena:</label><input type="number" min="0" name="points_required" required>
+
+					<input type="hidden" name="" id="updated_id" required>
+				</form>
+				<div class="flex-row wide pad-medium">
+					<button type="submit" form="updateform">Submit</button>
+					<button type="reset" form="updateform">Clear</button>
 				</div>
 			</div>
 		</div>

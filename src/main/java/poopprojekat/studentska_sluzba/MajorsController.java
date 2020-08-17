@@ -54,11 +54,10 @@ public class MajorsController {
         }
     }
 
-
     @GetMapping("/update_major")
     public String update_major(@RequestParam("token") long token,
                                @RequestParam("id") String id,
-                               @RequestParam("new_id") String new_id,
+                               @RequestParam("new-id") String new_id,
                                @RequestParam("name") String new_major_name){
 
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;

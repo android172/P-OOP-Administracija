@@ -33,14 +33,16 @@ function changeOrder(newAsc){
 }
 
 var dataType = "student";
-var dataIdName = "index_num";
+var dataIdName = "index";
 var dataColumnNum = 0;
+var objIdOrder = 2;
 
-function setDataType(type, idName, columnNum = 0){
+function setDataType(type, idName, columnNum = 0, newObjIdOrder = 0){
 	dataType = type;
 	dataIdName = idName;
 	dataColumnNum = columnNum;
-	console.log(dataType + ", " + dataIdName + ", " + dataColumnNum);
+	objIdOrder = newObjIdOrder;
+	console.log(dataType + ", " + dataIdName + ", " + dataColumnNum + ", " + objIdOrder);
 }
 
 function fillTable(){
@@ -115,17 +117,13 @@ function fillTable(){
 						var cell = row.insertCell();
 						cell.innerHTML = data[i][j];
 					}
-					row.id = data[i][0];
-					/*row.onclick = function(){
-						setCookie("index", this.id);
-						window.location.replace("/edit_student?token="+token+"&index="+this.id);
-					};*/
+					row.id = data[i][dataColumnNum];
 				}else{
 					for(var j=0; j<len; j++){
 						var cell = row.insertCell();
 						cell.innerHTML = values[j];
 					}
-					row.id = values[0];
+					row.id = values[dataColumnNum];
 				}
 
 				var delButton = document.createElement("div");
@@ -140,6 +138,17 @@ function fillTable(){
 				    deleteRow(this.id);
 				};
 				row.appendChild(delButton);
+
+				row.onclick = function(){
+					makeRequest("/get_"+dataType,"sendframe",[[dataIdName, this.id]],function(){
+						var elementDataStr = document.getElementById("sendframe").contentWindow.document.body.childNodes[0].innerHTML;
+						console.log(elementDataStr);
+						if(elementDataStr!=""){
+							var elementData = JSON.parse(elementDataStr);
+							fillUpdateForm(elementData);
+						}
+					});
+				}
 			}
 		}
 	}
@@ -149,10 +158,39 @@ function fillTable(){
     Salje zahtev za brisanje reda
 */
 function deleteRow(id){
-	/*var requestStr = "/delete_"+dataType+"?token="+token+"&"+dataIdName+"="+id;
-	console.log(requestStr)*/
-    //document.getElementById("sendframe").src = requestStr;
     makeRequest("/delete_"+dataType,"sendframe",[[dataIdName, id]], function(){
     	submitSearch();
     });
+}
+
+function fillUpdateForm(elementData){
+	var form = document.getElementById("updateform");
+
+	var keys = Object.keys(elementData);
+	var values = Object.values(elementData);
+	var len = values.length;
+	for(var i=0; i<len; i++){
+		
+		if(i==objIdOrder && form.elements["new-"+keys[i]]){
+			console.log(form.elements["new-"+keys[i]].name + "<- " + keys[i] + ":" + values[i]);
+			form.elements["new-"+keys[i]].value = values[i];
+		}
+		else if(form.elements[keys[i]]){
+			console.log(form.elements[keys[i]].name + "<- " + keys[i] + ":" + values[i]);
+			form.elements[keys[i]].value = values[i];
+		}
+	}
+
+	var inputId = document.getElementById("updated_id");
+	inputId.name = dataIdName;
+	inputId.value = values[objIdOrder];
+	inputId.style.display = "none";
+
+	if(dataIdName == "index"){
+		var index = Object.values(values[objIdOrder]);
+		form.elements["new-index"].value = index[0];
+		form.elements["year"].value = index[1];
+	}
+
+	toggleElement(form.parentNode.parentNode);
 }

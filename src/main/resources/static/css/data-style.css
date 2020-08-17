@@ -196,6 +196,7 @@ input {
 }
 
 .dd-options>*{
+	min-width: 90%;
 	width: auto;
 	height: auto;
 	background-color: var(--color-highlight2);
@@ -438,6 +439,10 @@ input[type=number]{
 
 #new-element:after {
 	content: "Novi element:";
+}
+
+#update-element:after {
+	content: "Ažuriraj element:";
 }
 
 #new-button {
