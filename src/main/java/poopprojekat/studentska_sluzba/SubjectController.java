@@ -63,7 +63,7 @@ public class SubjectController {
                                            @RequestParam("lect_id") String id){
 
         try {
-            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+            if (!Log_in_Controller.access_allowed(token, new String[][] { {"Admin", "any"}, {"Lecturer", id} })) return null;
 
             return Database.SubjectsOfLecturer(Database.GetLecturer(id));
 

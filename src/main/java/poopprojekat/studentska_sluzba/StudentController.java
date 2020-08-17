@@ -107,12 +107,12 @@ public class StudentController {
             @RequestParam("exam_id") String exam_id) {
         String lect_id = null;
         for (Exam e : Database.GetAllExams())
-            if (e.getId() == exam_id) {
+            if (e.getId().equals(exam_id)) {
                 lect_id = e.getLect_id();
                 break;
             }
         if (lect_id == null) {
-            System.out.println("Exam id : " + exam_id + "doesn't exist");
+            System.out.println("Exam id : " + exam_id + " doesn't exist");
             return null;
         }
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Lecturer", lect_id } }))
