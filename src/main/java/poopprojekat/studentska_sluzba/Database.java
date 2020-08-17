@@ -153,7 +153,9 @@ public class Database
         try
         {
             stat.executeUpdate("DROP TABLE ExamApplication");
+            stat.executeUpdate("DROP TABLE StudentStatus");
             CreateTableExamApplications();
+            CreateTableStudentStatus();
         }
         catch (SQLException throwables)
         {
@@ -183,7 +185,6 @@ public class Database
             CreateTableSubjects();
             CreateTableExams();
             CreateTableExamApplications();
-            TempFix();
             CreateTableAppliedToListen();
             CreateTableStudentStatus();
             CreateExamDeadline();
@@ -193,7 +194,13 @@ public class Database
             CreateTableDeletedMajors();
             CreateTableDeletedExams();
             CreateApplyForExamTrigger();
+            CreateCheckStatusInsertTrigger();
+            CreateCheckAppliedInsertTrigger();
             CreateArchiveStudentsTrigger();
+            CreateArchiveSubjectsTrigger();
+            CreateArchiveExamsTrigger();
+            CreateArchiveMajorsTrigger();
+            CreateArchiveLecturersTrigger();
         }
         catch (SQLException throwables)
         {
@@ -305,9 +312,7 @@ public class Database
                 "Attempts INTEGER DEFAULT '0', " +
                 "Mark INTEGER, " +
                 "Points INTEGER DEFAULT '0', " +
-                "PRIMARY KEY (id, IndexNum, SubjectId)," +
-                "FOREIGN KEY (IndexNum) REFERENCES Students(IndexNum) ON UPDATE CASCADE ON DELETE NO ACTION , " +
-                "FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId) ON UPDATE CASCADE ON DELETE NO ACTION ) ENGINE=InnoDB ";
+                "PRIMARY KEY (id, IndexNum, SubjectId) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'AppliedToListen'");
 
@@ -382,8 +387,7 @@ public class Database
                 "SchoolYear INTEGER not NULL, " +
                 "Year INTEGER not NULL, " +
                 "Status VARCHAR(20) not NULL, " +
-                "PRIMARY KEY (id, IndexNum), " +
-                "FOREIGN KEY (IndexNum) references Students(IndexNum) ON DELETE NO ACTION ) ENGINE=InnoDB ";
+                "PRIMARY KEY (id, IndexNum) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'StudentStatus'");
         try
@@ -622,9 +626,9 @@ public class Database
     {
         sql = "CREATE TRIGGER IF NOT EXISTS UpdateAttempts AFTER INSERT ON ExamApplication " +
                 "FOR EACH ROW " +
-                "UPDATE AppliedToListen as al SET Attempts = Attempts + 1 " +
-                "WHERE (SELECT IndexNum FROM inserted as i " +
-                "WHERE al.IndexNum = i.IndexNum)";
+                "INSERT INTO AppliedToListen (Attempts) " +
+                "SELECT Attempts + 1 FROM AppliedToListen " +
+                "WHERE IndexNum = new.IndexNum ";
 
         System.out.println("Creating trigger 'ApplyForExam'");
 
@@ -640,11 +644,57 @@ public class Database
         }
     }
 
+    private void CreateCheckStatusInsertTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS CheckStatusInsert BEFORE INSERT ON StudentStatus " +
+                "FOR EACH ROW " +
+                "IF new.IndexNum NOT IN (SELECT s.IndexNum FROM Students as s) " +
+                "THEN  SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Student does not exist'; " +
+                "END IF; ";
+
+        System.out.println("Creating trigger 'CheckStatusInsert'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'CheckStatusInsert' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'CheckStatusInsert' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateCheckAppliedInsertTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS CheckAppliedInsert BEFORE INSERT ON AppliedToListen " +
+                "FOR EACH ROW " +
+                "IF new.IndexNum NOT IN (SELECT s.IndexNum FROM Students as s)" +
+                "THEN  SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Student does not exist'; " +
+                "ELSEIF new.SubjectId NOT IN (SELECT s.SubjectId FROM Subjects as s) " +
+                "THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Subject does not exist';" +
+                "END IF; ";
+
+        System.out.println("Creating trigger 'CheckAppliedInsert'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'CheckAppliedInsert' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'CheckAppliedInsert' failed");
+            throwables.printStackTrace();
+        }
+    }
+
     private void CreateArchiveStudentsTrigger()
     {
         sql = "CREATE TRIGGER IF NOT EXISTS ArchiveStudents AFTER DELETE ON Students FOR EACH ROW " +
                 "INSERT INTO DeletedStudents (IndexNum, FirstName, LastName, JMBG, DateOfBirth, City, MajorId) " +
-                "SELECT d.IndexNum, d.FirstName, d.LastName, d.JMBG, d.DateOfBirth, d.City, d.MajorId FROM Deleted as d";
+                "VALUES (old.IndexNum, old.FirstName, old.LastName, old.JMBG, old.DateOfBirth, old.City, old.MajorId) ";
 
         System.out.println("Creating trigger 'ArchiveStudents'");
 
@@ -656,6 +706,86 @@ public class Database
         catch (SQLException throwables)
         {
             System.out.println("Creating trigger 'ArchiveStudents' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateArchiveLecturersTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS ArchiveLecturers AFTER DELETE ON Lecturers FOR EACH ROW " +
+                "INSERT INTO DeletedLecturers (LectId, FirstName, LastName, Title) " +
+                "VALUES (old.LectId, old.FirstName, old.LastName, old.Title) ";
+
+        System.out.println("Creating trigger 'ArchiveLecturers'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ArchiveLecturers' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ArchiveLecturers' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateArchiveSubjectsTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS ArchiveSubjects AFTER DELETE ON Subjects FOR EACH ROW " +
+                "INSERT INTO DeletedSubjects (SubjectName, SubjectId, Year, ESPB, MajorId, LectId, PointsRequired) " +
+                "VALUES (old.SubjectName, old.SubjectId, old.Year, old.ESPB, old.MajorId, old.LectId, old.POintsRequired) ";
+
+        System.out.println("Creating trigger 'ArchiveSubjects'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ArchiveSubjects' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ArchiveSubjects' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateArchiveMajorsTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS ArchiveMajors AFTER DELETE ON Majors FOR EACH ROW " +
+                "INSERT INTO DeletedMajors (MajorId, MajorName) " +
+                "VALUES (old.MajorId, old.MajorName) ";
+
+        System.out.println("Creating trigger 'ArchiveMajors'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ArchiveMajors' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ArchiveMajors' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateArchiveExamsTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS ArchiveExams AFTER DELETE ON Exams FOR EACH ROW " +
+                "INSERT INTO DeletedExams (ExamId, ExamDate, SubjectId, LectId) " +
+                "VALUES (old.ExamId, old.ExamDate, old.SubjectId, old.LectId) ";
+
+        System.out.println("Creating trigger 'ArchiveExams'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ArchiveExams' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ArchiveExams' failed");
             throwables.printStackTrace();
         }
     }
@@ -1831,8 +1961,8 @@ public class Database
             {
                 if(res.getDate("DatePassed") == null)
                     attempts.add(new Attempts(new Index(res.getString("al.IndexNum")), res.getString("al.SubjectId"), res.getInt("al.Year"), null, res.getInt("al.Attempts"), res.getInt("al.Mark"), res.getInt("al.Points")));
-
-                attempts.add(new Attempts(new Index(res.getString("al.IndexNum")), res.getString("al.SubjectId"), res.getInt("al.Year"), res.getDate("al.DatePassed").toLocalDate(), res.getInt("al.Attempts"), res.getInt("al.Mark"), res.getInt("al.Points")));
+                else
+                    attempts.add(new Attempts(new Index(res.getString("al.IndexNum")), res.getString("al.SubjectId"), res.getInt("al.Year"), res.getDate("al.DatePassed").toLocalDate(), res.getInt("al.Attempts"), res.getInt("al.Mark"), res.getInt("al.Points")));
             }while(res.next());
         }
         catch (SQLException throwables)
