@@ -2095,7 +2095,10 @@ public class Database
 
             do
             {
-                applied.add(new Attempts(new Index(res.getString("IndexNum")), res.getString("SubjectId"), res.getInt("Year"), res.getDate("DatePassed").toLocalDate(), res.getInt("Attempts"), res.getInt("Mark"), res.getInt("Points")));
+                if(res.getDate("DatePassed") == null)
+                    applied.add(new Attempts(new Index(res.getString("IndexNum")), res.getString("SubjectId"), res.getInt("Year"), null, res.getInt("Attempts"), res.getInt("Mark"), res.getInt("Points")));
+                else
+                    applied.add(new Attempts(new Index(res.getString("IndexNum")), res.getString("SubjectId"), res.getInt("Year"), res.getDate("DatePassed").toLocalDate(), res.getInt("Attempts"), res.getInt("Mark"), res.getInt("Points")));
             }while(res.next());
         }
         catch (SQLException throwables)
