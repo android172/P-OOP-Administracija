@@ -60,8 +60,8 @@ function fillTable(tableID){
 		delButton.className = "button-delete";
 	    delButton.id = values[0];
 		delButton.onclick = function(){
-		    makeRequest("/delete_deadline","sendframe",[["exam_id", this.id]], function(){
-		    	makeRequest('/get_exams','dataframe',[],function() {
+		    makeRequest("/delete_exam","sendframe",[["exam_id", this.id]], function(){
+		    	makeRequest('/get_all_exams','dataframe',[],function() {
 					parseDataToTable('exams', false);
 				});
 		    });
@@ -109,7 +109,7 @@ function fillTableCustom(tableID){
 		delButton.className = "button-delete";
 	    delButton.id = data[i];
 		delButton.onclick = function(){
-		    makeRequest("/delete_deadline","sendframe",[["name", this.id]], function(){
+		    makeRequest("/delete_exam_deadline","sendframe",[["name", this.id]], function(){
 		    	makeRequest('/get_exam_deadlines','dataframe',[],function() {
 					parseDataToTable('exam-deadlines', true);
 				});

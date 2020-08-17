@@ -111,8 +111,6 @@ public class Fill_db_randomly {
         ArrayList<Subject> subjects = Database.GetSubjects(null, null, null, 0);
         int active_chance = 90;
 
-        int exam_id = 1;
-
         for (int i = 0; i < deadline_possibilities.length; i++) {
             if (used[i]) {
                 String deadline = deadline_possibilities[i];
@@ -131,12 +129,11 @@ public class Fill_db_randomly {
                         if (new Random().nextInt(100) < active_chance) {
                             try {
                                 Database.AddExam(
-                                        new Exam("E" + exam_id, subject.subjectId, Generate_random_data_point.random_lect_id(),
+                                        new Exam(Database.GetEmptyId("Exams"), subject.subjectId, Generate_random_data_point.random_lect_id(),
                                                 starting_date.plusDays(new Random().nextInt(days_between))));
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            exam_id++;
                         }
                     }
                 }

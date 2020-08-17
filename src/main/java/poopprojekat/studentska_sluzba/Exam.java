@@ -41,3 +41,52 @@ public class Exam {
         this.subject_id = subject_id;
     }
 }
+
+class ExamDeadline {
+
+    private String name;
+    private LocalDate deadline_begin;
+    private LocalDate deadline_end;
+    private LocalDate application_begin;
+    private LocalDate application_end;
+
+    public ExamDeadline(String name, LocalDate deadline_begin, LocalDate deadline_end, LocalDate application_begin, LocalDate application_end) {
+        this.name = name;
+        this.deadline_begin = deadline_begin;
+        this.deadline_end = deadline_end;
+        this.application_begin = application_begin;
+        this.application_end = application_end;
+    }
+
+    public LocalDate getApplication_begin() {
+        return application_begin;
+    }
+    public LocalDate getApplication_end() {
+        return application_end;
+    }
+    public LocalDate getDeadline_begin() {
+        return deadline_begin;
+    }
+    public LocalDate getDeadline_end() {
+        return deadline_end;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public void setApplication_begin(LocalDate application_begin) {
+        this.application_begin = application_begin;
+    }
+    public void setApplication_end(LocalDate application_end) {
+        this.application_end = application_end;
+    }
+    public void setDeadline_begin(LocalDate deadline_begin) {
+        this.deadline_begin = deadline_begin;
+    }
+    public void setDeadline_end(LocalDate deadline_end) {
+        this.deadline_end = deadline_end;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+}
