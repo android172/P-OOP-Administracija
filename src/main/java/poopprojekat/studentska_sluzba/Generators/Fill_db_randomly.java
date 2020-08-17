@@ -46,8 +46,19 @@ public class Fill_db_randomly {
         try {
             for (int i = 0; i < number; i++) {
                 Lecturer gen = Generate_random_data_point.get_random_lecturer();
+                String username = gen.getLastName();
+                username = username.replace("ć", "c");
+                username = username.replace("č", "c");
+                username = username.replace("ž", "z");
+                username = username.replace("š", "s");
+                username = username.replace("đ", "d");
+                username = username.replace("Ć", "c");
+                username = username.replace("Č", "c");
+                username = username.replace("Ž", "z");
+                username = username.replace("Š", "s");
+                username = username.replace("Đ", "d");
                 Database.AddLecturer(gen);
-                Database.AddUser(new User(gen.getLastName() + gen.getLectId(), gen.getLectId(), "Lecturer",
+                Database.AddUser(new User(username + gen.getLectId(), gen.getLectId() + gen.getLectId(), "Lecturer",
                         gen.getLectId().toString()));
             }
         } catch (Exception e) {
