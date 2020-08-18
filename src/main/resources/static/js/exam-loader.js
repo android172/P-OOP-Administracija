@@ -1,18 +1,11 @@
 var oData = [];
 
-function parseDataToTable(tableID, custom, dataStr){
-	//var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
-	if(dataStr && dataStr!="")
-		oData = JSON.parse(dataStr);
-	else
-		oData = [];
-	//alert(dataStr + " | " + oData);
-
+function parseDataToTable(tableID, custom, data){
+	oData = data;
 	if(custom)
 		fillTableDeadlines(tableID);
 	else
 		fillTableExams(tableID);
-
 }
 
 function fillTableExams(tableID){

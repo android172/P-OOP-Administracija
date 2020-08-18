@@ -15,7 +15,7 @@
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/filters.js" th:src="@{/js/filters.js}"></script>
 </head>
-<body onload="getToken(); addTokenToLinks(); displayUsername(); addTokenToForm('new-examform'); addTokenToForm('new-deadlineform');
+<body onload="getToken(); displayUsername(); addTokenToForm('new-examform'); addTokenToForm('new-deadlineform');
 
 		makeRequest('/get_exam_dropdown', [], function(data){
 			addOptionsToFilter('new-lecturer-options', data[0], false, 0, true);
@@ -23,10 +23,10 @@
 			initDropDowns();
 		});
 		
-		makeRequest('/get_all_exams',[],function(){
-			parseDataToTable('exams', false, this.responseText); 
-			makeRequest('/get_exam_deadlines',[],function() {
-				parseDataToTable('exam-deadlines', true, this.responseText);
+		makeRequest('/get_all_exams',[],function(data){
+			parseDataToTable('exams', false, data); 
+			makeRequest('/get_exam_deadlines',[],function(data) {
+				parseDataToTable('exam-deadlines', true, data);
 			});
 		});">
 	<div id="background"></div>
