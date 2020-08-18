@@ -27,7 +27,7 @@ public class Exam_Controller {
     }
 
     @GetMapping("/get_exam_deadlines")
-    public ArrayList<String> get_exam_deadlines(@RequestParam("token") long token) {
+    public ArrayList<ExamDeadline> get_exam_deadlines(@RequestParam("token") long token) {
         if (Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return Database.GetExamDeadlines(null);
         return Database.GetExamDeadlines(LocalDate.now());

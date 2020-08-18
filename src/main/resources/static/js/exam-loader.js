@@ -9,13 +9,13 @@ function parseDataToTable(tableID, custom){
 	//alert(dataStr + " | " + oData);
 
 	if(custom)
-		fillTableCustom(tableID);
+		fillTableDeadlines(tableID);
 	else
-		fillTable(tableID);
+		fillTableExams(tableID);
 
 }
 
-function fillTable(tableID){
+function fillTableExams(tableID){
 	var data = [];
 
 	var table = document.getElementById(tableID);
@@ -81,7 +81,7 @@ function fillTable(tableID){
 	table.appendChild(lastRow);
 }
 
-function fillTableCustom(tableID){
+function fillTableDeadlines(tableID){
 	var data = [];
 
 	var table = document.getElementById(tableID);
@@ -92,7 +92,19 @@ function fillTableCustom(tableID){
     var rows = data.length;
 
 	var head = document.createElement("th");
-	head.innerHTML = "Ispitni rok:";
+	head.innerHTML = "Ispitni rok";
+	header.appendChild(head);
+	head = document.createElement("th");
+	head.innerHTML = "Početak";
+	header.appendChild(head);
+	head = document.createElement("th");
+	head.innerHTML = "Kraj";
+	header.appendChild(head);
+	head = document.createElement("th");
+	head.innerHTML = "Početak prijava";
+	header.appendChild(head);
+	head = document.createElement("th");
+	head.innerHTML = "Kraj prijava";
 	header.appendChild(head);
 
 	table.innerHTML = "";
@@ -101,13 +113,18 @@ function fillTableCustom(tableID){
 	for(var i=0; i<rows; i++){
 		var row = document.createElement("tr");
 
-		var cell = row.insertCell();
-		cell.innerHTML = data[i];
+		var values = Object.values(data[i]);
+		var cols = values.length;
+
+		for(var j=0; j<cols; j++){
+			var cell = row.insertCell();
+			cell.innerHTML = values[j];
+		}
 
 		var delButton = document.createElement("div");
 		delButton.innerHTML = "delete";
 		delButton.className = "button-delete";
-	    delButton.id = data[i];
+	    delButton.id = values[0];
 		delButton.onclick = function(){
 		    makeRequest("/delete_exam_deadline","sendframe",[["name", this.id]], function(){
 		    	makeRequest('/get_exam_deadlines','dataframe',[],function() {

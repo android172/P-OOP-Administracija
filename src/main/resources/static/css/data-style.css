@@ -76,7 +76,7 @@ tr:nth-child(odd)>* {
 	background-color: var(--table-odd);
 }
 
-:not(.table-static) tr:hover>td {
+table:not(.table-static)>tr:hover>td {
 	cursor: pointer;
 	background-color: var(--color-highlight);
 }
