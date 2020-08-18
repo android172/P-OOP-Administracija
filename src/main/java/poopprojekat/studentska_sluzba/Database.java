@@ -148,23 +148,6 @@ public class Database
 
     }
 
-    public void TempFix()
-    {
-        try
-        {
-            stat.executeUpdate("DROP TABLE ExamApplication");
-            stat.executeUpdate("DROP TABLE StudentStatus");
-            CreateTableExamApplications();
-            CreateTableStudentStatus();
-        }
-        catch (SQLException throwables)
-        {
-            throwables.printStackTrace();
-        }
-
-
-    }
-
     public void CreateDatabase(String name)     //  Creates full database for the project
     {
         sql = "CREATE DATABASE " + name;
@@ -188,11 +171,13 @@ public class Database
             CreateTableAppliedToListen();
             CreateTableStudentStatus();
             CreateExamDeadline();
+
             CreateTableDeletedStudents();
             CreateTableDeletedSubjects();
             CreateTableDeletedLecturers();
             CreateTableDeletedMajors();
             CreateTableDeletedExams();
+
             CreateApplyForExamTrigger();
             CreateCheckStatusInsertTrigger();
             CreateCheckAppliedInsertTrigger();
@@ -201,6 +186,9 @@ public class Database
             CreateArchiveExamsTrigger();
             CreateArchiveMajorsTrigger();
             CreateArchiveLecturersTrigger();
+            CreateCheckAppliedUpdateIndexTrigger();
+            CreateCheckAppliedUpdateIdTrigger();
+            CreateCheckStatusUpdateIndexTrigger();
         }
         catch (SQLException throwables)
         {
@@ -666,6 +654,28 @@ public class Database
         }
     }
 
+    private void CreateCheckStatusUpdateIndexTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS CheckStatusUpdateIndex AFTER UPDATE ON Students " +
+                "FOR EACH ROW " +
+                "UPDATE StudentStatus " +
+                "SET IndexNum = new.IndexNum " +
+                "WHERE IndexNum = old.IndexNum ";
+
+        System.out.println("Creating trigger 'CheckStatusUpdateIndex'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'CheckStatusUpdateIndex' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'CheckStatusUpdateIndex' failed");
+            throwables.printStackTrace();
+        }
+    }
+
     private void CreateCheckAppliedInsertTrigger()
     {
         sql = "CREATE TRIGGER IF NOT EXISTS CheckAppliedInsert BEFORE INSERT ON AppliedToListen " +
@@ -686,6 +696,50 @@ public class Database
         catch (SQLException throwables)
         {
             System.out.println("Creating trigger 'CheckAppliedInsert' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateCheckAppliedUpdateIndexTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS CheckAppliedUpdateIndex AFTER UPDATE ON Students " +
+                "FOR EACH ROW " +
+                "UPDATE AppliedToListen " +
+                "SET IndexNum = new.IndexNum " +
+                "WHERE IndexNum = old.IndexNum ";
+
+        System.out.println("Creating trigger 'CheckAppliedUpdateIndex'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'CheckAppliedUpdateIndex' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'CheckAppliedUpdateIndex' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateCheckAppliedUpdateIdTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS CheckAppliedUpdateId AFTER UPDATE ON Subjects " +
+                "FOR EACH ROW " +
+                "UPDATE AppliedToListen " +
+                "SET SubjectId = new.SubjectId " +
+                "WHERE SubjectId = old.SubjectId ";
+
+        System.out.println("Creating trigger 'CheckAppliedUpdateId'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'CheckAppliedUpdateId' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'CheckAppliedUpdateId' failed");
             throwables.printStackTrace();
         }
     }
@@ -944,7 +998,7 @@ public class Database
                     "VALUES ";
         else
         {
-            throw new Exception("index or subjectid[] is null");
+            throw new Exception("index or subjectId[] is null");
         }
 
         int currentyear = LocalDate.now().getYear();
@@ -977,7 +1031,7 @@ public class Database
                     "VALUES ";
         else
         {
-            throw new Exception("index or subjectid[] is null");
+            throw new Exception("index[] or subjectId is null");
         }
 
         int currentyear = LocalDate.now().getYear();
@@ -1775,7 +1829,7 @@ public class Database
         return null;
     }
 
-    public static ArrayList<String> GetExamDeadlines(LocalDate targetdate)
+    public static ArrayList<ExamDeadline> GetExamDeadlines(LocalDate targetdate)
     {
         if(targetdate == null)
             sql = "SELECT * FROM ExamDeadline ";
@@ -1785,7 +1839,7 @@ public class Database
                     "WHERE StartDate <= '" + targetdate + "' AND EndDate >= '" + targetdate + "' ";
 
         ResultSet res = null;
-        ArrayList<String> names = new ArrayList<>();
+        ArrayList<ExamDeadline> deadlines = new ArrayList<>();
 
         try
         {
@@ -1796,7 +1850,7 @@ public class Database
 
             do
             {
-                names.add(res.getString("ExamName"));
+                deadlines.add(new ExamDeadline(res.getString("ExamName"), res.getDate("StartDate").toLocalDate(), res.getDate("EndDate").toLocalDate(), res.getDate("StartApplicationDate").toLocalDate(), res.getDate("EndApplicationDate").toLocalDate()));
             }while(res.next());
         }
         catch (SQLException throwables)
@@ -1804,7 +1858,7 @@ public class Database
             throwables.printStackTrace();
         }
 
-        return names;
+        return deadlines;
     }
 
     public static ArrayList<Exam> GetAvailableExams(Index index, String examName) throws Exception
