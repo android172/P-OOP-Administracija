@@ -133,22 +133,23 @@ function fillTable(){
 			    	delButton.id = data[i][dataColumnNum];
 			    else
 			    	delButton.id = values[dataColumnNum];
-				delButton.onclick = function(){
+				delButton.addEventListener('click', function(e){
 				    //console.log("deleting: "+this.id);
 				    deleteRow(this.id);
-				};
+				    e.stopPropagation();
+				});
 				row.appendChild(delButton);
 
-				row.onclick = function(){
+				row.addEventListener('click', function(){
 					makeRequest("/get_"+dataType,"sendframe",[[dataIdName, this.id]],function(){
 						var elementDataStr = document.getElementById("sendframe").contentWindow.document.body.childNodes[0].innerHTML;
 						console.log(elementDataStr);
-						if(elementDataStr!=""){
+						if(elementDataStr && elementDataStr!=""){
 							var elementData = JSON.parse(elementDataStr);
 							fillUpdateForm(elementData);
 						}
 					});
-				}
+				});
 			}
 		}
 	}
@@ -168,6 +169,14 @@ function fillUpdateForm(elementData){
 
 	var keys = Object.keys(elementData);
 	var values = Object.values(elementData);
+
+	if(dataIdName == "index"){
+		var index = Object.values(values[objIdOrder]);
+		form.elements["new-index"].value = index[0];
+		form.elements["year"].value = index[1];
+		values[objIdOrder] = index[0]+"/"+index[1];
+	}
+
 	var len = values.length;
 	for(var i=0; i<len; i++){
 		
@@ -185,12 +194,6 @@ function fillUpdateForm(elementData){
 	inputId.name = dataIdName;
 	inputId.value = values[objIdOrder];
 	inputId.style.display = "none";
-
-	if(dataIdName == "index"){
-		var index = Object.values(values[objIdOrder]);
-		form.elements["new-index"].value = index[0];
-		form.elements["year"].value = index[1];
-	}
 
 	toggleElement(form.parentNode.parentNode);
 }
