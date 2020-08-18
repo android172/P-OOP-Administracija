@@ -12,7 +12,7 @@
 	<script type="text/javascript" language="Javascript" src="../static/js/student-loader-part2.js" th:src="@{/js/student-loader-part2.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/showTable.js" th:src="@{/js/showTable.js}"></script>
 </head>
-<body onload="getToken(); getIndex(); makeRequest('/get_student', 'dataframe', [['index',index]], function(){parseData();}); makeRequest('/budget', 'budgetframe', [['index',index]],function(){parseDataBudget();}); makeRequest('/get_attempts_info', 'examsframe', [['index',index]],function(){parseDataExams();});">
+<body onload="getToken(); getIndex(); fillTables(); statusBudget(); fillTable456();">
 	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
 		<header>
 			<h1>Student</h1>
@@ -80,10 +80,10 @@
 				</tr>
 			</table><!--close table 3-->
 		</div><!--close class tables-->
-		<input type="button" class = "button" value="Upisani predmeti" onclick='showTable4();'>
-		<input type="button" class = "button" value="Prijava ispita" onclick='showTable5();'>
-		<input type="button" class = "button" value="Ispitni rokovi" onclick='showTable6();'>
-			<table id = "table4">
+		<input type="button" class = "button" name = "button1" value="Upisani predmeti" onclick='showTable4();'>
+		<input type="button" class = "button" name = "button2" value="Prijava ispita" onclick='showTable5();'>
+		<input type="button" class = "button" name = "button3" value="Ispitni rokovi" onclick='showTable6();'>
+			<table id = "table4" style = "visibility: visible;">
 				<tr>
 					<th colspan = "6">Upisani Predmeti</th>
 				</tr>
@@ -104,7 +104,7 @@
 					<td></td>
 				</tr>
 			</table><!--close table 4-->
-		<table id = "table5">
+		<table id = "table5" style = "visibility: hidden;">
 				<tr>
 					<th colspan = "6">Prijava ispita</th>
 				</tr>
@@ -125,7 +125,7 @@
 					<td></td>
 				</tr>
 		</table><!--close table 5-->
-		<table id = "table6">
+		<table id = "table6" style = "visibility: hidden;">
 			<tr>
 				<th colspan = "7">Ispitni rokovi</th>				</tr>
 				<tr>
@@ -149,9 +149,6 @@
 		</table><!--close table 6-->
 		</div><!--close content-->
 	</div><!--close wrapper-->
-	<iframe src="" name="dataframe" id="dataframe"></iframe>
-	<iframe src="" name="examsframe" id="examsframe"></iframe>
-	<iframe src="" name="budgetframe" id="budgetframe"></iframe>
 	<iframe src="" name="sendframe" id="sendframe"></iframe>
 </body>
 </html>

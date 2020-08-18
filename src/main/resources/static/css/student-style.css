@@ -119,8 +119,8 @@ h1 {
 #table4{
 	width: 100%;
 	float: left;
-	position: relative;
-	visibility: visible;
+	position: absolute;
+	top: 530px;
 }
 #table4>tbody>tr>td{
 	background-color: var(--color-highlight2) !important;
@@ -136,31 +136,7 @@ h1 {
 	background-size: 100% 100%;
 }
 
-#dataframe {
-	position: absolute;
-	width: 400px;
-	height: 400px;
-	right: 0px;
-    bottom: 0px;
-    visibility: hidden;
-}
-#examsframe{
-	position: absolute;
-	width: 400px;
-	height: 400px;
-	right: 0px;
-    bottom: 0px;
-    visibility: visible;
-}
 #sendframe{
-	position: absolute;
-	width: 400px;
-	height: 400px;
-	right: 0px;
-    bottom: 0px;
-    visibility: hidden;
-}
-#budgetframe{
 	position: absolute;
 	width: 400px;
 	height: 400px;
@@ -172,8 +148,8 @@ h1 {
 #table5{
 	width: 100%;
 	float: left;
-	position: relative;
-	visibility: hidden;
+	position: absolute;
+	top: 530px;
 }
 #table5>tbody>tr>td{
 	background-color: var(--color-highlight2) !important;
@@ -185,8 +161,8 @@ h1 {
 #table6{
 	width: 100%;
 	float: left;
-	position: relative;
-	visibility: hidden;
+	position: absolute;
+	top: 530px;
 }
 #table6>tbody>tr>td{
 	background-color: var(--color-highlight2) !important;

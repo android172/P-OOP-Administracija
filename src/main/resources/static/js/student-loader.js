@@ -1,14 +1,13 @@
 var studentData = [];
 
 function parseData(){
-	var dataSt = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
+	//var dataSt = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
 	if(dataSt != ''){
 		studentData = JSON.parse(dataSt);
-		fillTables();
 	}
 }
 function parseDataBudget(){
-	var budzetSt = document.getElementById("budgetframe").contentWindow.document.body.childNodes[0].innerHTML;
+	//var budzetSt = document.getElementById("budgetframe").contentWindow.document.body.childNodes[0].innerHTML;
 	budzetData = JSON.parse(budzetSt);
 	statusBudget(budzetData);
 }
