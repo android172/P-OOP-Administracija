@@ -94,7 +94,8 @@ public class Fill_db_randomly {
                         if (new Random().nextInt(100) < chance) applied.add(s.getIndex());
                     }
                 }
-                Database.ApplyForSubject(applied.toArray(new Index[applied.size()]), gen.subjectId);
+                if (applied.size() > 0)
+                    Database.ApplyForSubject(applied.toArray(new Index[applied.size()]), gen.subjectId);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,10 +150,10 @@ public class Fill_db_randomly {
                     }
                 }
 
-                if (ending_date.isAfter(LocalDate.of(this_year, (i+2) % 13, 1))) starting_date = ending_date;
-                else starting_date = LocalDate.of(this_year, (i+2) % 13, 1);
+                if (ending_date.isAfter(LocalDate.of(this_year, (i+1) % 12 + 1, 1))) starting_date = ending_date;
+                else starting_date = LocalDate.of(this_year, (i+1) % 12 + 1, 1);
             }
-            else starting_date = LocalDate.of(this_year, (i+2) % 13, 1);
+            else starting_date = LocalDate.of(this_year, (i+1) % 12 + 1, 1);
         }
     }
 }

@@ -51,8 +51,7 @@ public class Exam_Controller {
 
     @GetMapping("/delete_exam_deadline")
     public String delete_exam_deadline(@RequestParam("token") long token, @RequestParam("name") String name) {
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
-            return null;
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } })) return null;
         try {
             Database.DeleteExamDeadline(name);
             return "Exam deadline was successfully removed";
