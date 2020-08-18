@@ -29,7 +29,7 @@ function redirect(){
 			username = document.getElementById("username").value;
 			document.cookie = "username="+username+";expires="+date.toUTCString()+";SameSite=Lax";
 
-			window.location.replace("/"+role+"?token="+token);
+			window.location.replace("/"+role);
 		}
 	}
 	initialized = true;
@@ -43,19 +43,11 @@ window.onload = function(){
 		return;
 
 	if(token != "") {
-		makeRequest("/access_allowed","sendframe");
+		makeRequest("/access_allowed",[],function(){
+			if(this.responseText && JSON.parse(this.responseText) == "true"){
+				var role = getCookie("role");
+				window.location.replace("/"+role);
+			}
+		});
 	}
-}
-
-var autoInit = false;
-
-function autoRedirect(){
-	if(autoInit){
-		var response = document.getElementById("sendframe").contentWindow.document.body.children[0].innerHTML;
-		if(response == "true"){
-			var role = getCookie("role");
-			window.location.replace("/"+role+"?token="+token);
-		}
-	}
-	autoInit = true;
 }

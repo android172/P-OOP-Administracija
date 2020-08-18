@@ -9,7 +9,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 </head>
-<body onload="getToken(); addTokenToLinks(); displayUsername();">
+<body onload="getToken(); displayUsername();">
 	<div id="background"></div>
 	<div id="wrapper">
 		<div id="user">
@@ -17,7 +17,7 @@
 			<img src="../images/user-img.bmp" id="user-img">
 			<div id="user-options">
 				<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
-				<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
+				<button type="button" onclick="makeRequest('/logout_req', [], function(){window.location.replace('/login');});">Log out</button>
 			</div>
 		</div>
 		<div id="admin-options-wrapper">

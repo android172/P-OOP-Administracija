@@ -14,22 +14,19 @@
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/filters.js" th:src="@{/js/filters.js}"></script>
-	<script>
-		function populateFilters(){
-			addOptionsToFilter('new-lecturer-options', filters[0], false, 0, true);
-			addOptionsToFilter('new-subject-options', filters[1], false, 0, true);
-			initDropDowns();
-		}
-	</script>
 </head>
 <body onload="getToken(); addTokenToLinks(); displayUsername(); addTokenToForm('new-examform'); addTokenToForm('new-deadlineform');
 
-		makeRequest('/get_exam_dropdown','sendframe'); initGetFilters('sendframe');
+		makeRequest('/get_exam_dropdown', [], function(data){
+			addOptionsToFilter('new-lecturer-options', data[0], false, 0, true);
+			addOptionsToFilter('new-subject-options', data[1], false, 0, true);
+			initDropDowns();
+		});
 		
-		makeRequest('/get_all_exams','dataframe',[],function(){
-			parseDataToTable('exams', false); 
-			makeRequest('/get_exam_deadlines','dataframe',[],function() {
-				parseDataToTable('exam-deadlines', true);
+		makeRequest('/get_all_exams',[],function(){
+			parseDataToTable('exams', false, this.responseText); 
+			makeRequest('/get_exam_deadlines',[],function() {
+				parseDataToTable('exam-deadlines', true, this.responseText);
 			});
 		});">
 	<div id="background"></div>
@@ -41,7 +38,7 @@
 				<img src="../images/user-img.bmp" id="user-img">
 				<div id="user-options">
 					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
-					<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
+					<button type="button" onclick="makeRequest('/logout_req', [], function(){window.location.replace('/login');});">Log out</button>
 				</div>
 			</div>
 		</header>
@@ -77,7 +74,7 @@
 			<div class="flex-col size-max">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
 				<br>
-				<form action="/add_exam" id="new-examform" method="get" target="sendframe" class="pad-medium wide new-grid">
+				<form action="/add_exam" id="new-examform" method="post" target="sendframe" class="pad-medium wide new-grid">
 						<label for="subject_id">Predmet:</label>
 						<div class="dropdown no-auto-submit">
 							<input name="subject_id" value="" minlength="1" readonly required>
@@ -104,7 +101,7 @@
 			<div class="flex-col size-max">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
 				<br>
-				<form action="/add_exam_deadline" id="new-deadlineform" method="get" target="sendframe" class="pad-medium wide new-grid">
+				<form action="/add_exam_deadline" id="new-deadlineform" method="post" target="sendframe" class="pad-medium wide new-grid">
 						<label for="name">Ime:</label><input type="text" name="name" required>
 						<label for="start_date">Traje od:</label><input type="date" name="start_date" required>
 						<label for="end_date">Do:</label><input type="date" name="end_date" required>

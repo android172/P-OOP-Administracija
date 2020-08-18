@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -14,7 +15,7 @@ public class Log_in_Controller {
 
     private static ArrayList<Cashed_user> cashed_users = new ArrayList<>();
 
-    @GetMapping(value = "/login_req")
+    @PostMapping(value = "/login_req")
     public String log_in_request(@RequestParam("username") String username,
             @RequestParam("password") String password) {
         String ri[] = Database.GetUser(username, password);
@@ -32,7 +33,7 @@ public class Log_in_Controller {
         return (cu.role + ":" + cu.token + ":" + cu.id);
     }
 
-    @GetMapping("/logout_req")
+    @PostMapping("/logout_req")
     public static String log_out_request(@RequestParam("token") long token) {
         int i = 0;
         for (Cashed_user cu : cashed_users) {
@@ -45,7 +46,7 @@ public class Log_in_Controller {
         return "user doesn't exist";
     }
 
-    @GetMapping("/access_allowed")
+    @PostMapping("/access_allowed")
     public static boolean access_allowed(@RequestParam("token") long token) {
         if (Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}, {"Lecturer", "any"}, {"Student", "any"}}))
             return true;

@@ -1,6 +1,7 @@
 package poopprojekat.studentska_sluzba;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 public class MajorsController {
 
 
-    @GetMapping("/get_all_majors")
+    @PostMapping("/get_all_majors")
     public ArrayList<Major> get_all_majors(@RequestParam("token") long token){
 
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
@@ -30,7 +31,7 @@ public class MajorsController {
         return lista;
     }
 
-    @GetMapping("/get_major")
+    @PostMapping("/get_major")
     public Major get_major(@RequestParam("token") long token,
                            @RequestParam("id") String id){
 

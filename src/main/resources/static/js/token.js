@@ -44,16 +44,16 @@ function addTokenToForm(formID){
     document.getElementById(formID).appendChild(inputEl);
 }
 
-function addTokenToLinks(){
+/*function addTokenToLinks(){
     var links = document.getElementsByClassName("tokenify");
     var len = links.length;
     for(var i=0; i<len; i++){
     	links[i].href+="?token="+token;
     }
-}
+}*/
 
 
-function makeRequest(requestStr, frameID, params=[], oncomplete=function(){}){
+/*function makeRequest(requestStr, frameID, params=[], oncomplete=function(){}){
   var frame = document.getElementById(frameID);
   var str = requestStr;
   str += "?token="+token;
@@ -68,4 +68,28 @@ function makeRequest(requestStr, frameID, params=[], oncomplete=function(){}){
   };
   frame.addEventListener('load', eventListener);
   frame.src = str;
+}*/
+
+function makeRequest(requestStr, params=[], oncomplete=function(){}){
+  var xhr = new XMLHttpRequest();
+  var str = requestStr;
+  str += "?token="+token;
+  var len = params.length;
+  for(var i=0; i<len; i++)
+    str+="&"+params[i][0]+"="+params[i][1];
+  console.log("[query]: "+str);
+  //alert(oncomplete);
+  xhr.open("POST", str, true);
+  //xhr.setRequestHeader('Content-Type', 'application/json');
+  var eventListener = function(){
+    var dataStr = this.responseText;
+    if(dataStr && dataStr!=""){
+      var data = JSON.parse(dataStr);
+      oncomplete(data);
+    }
+    console.log("[response]: "+this.responseText);
+    this.removeEventListener('load', eventListener);
+  };
+  xhr.addEventListener('load', eventListener);
+  xhr.send();
 }

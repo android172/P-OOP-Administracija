@@ -1,18 +1,9 @@
 var filters = [];
 
-function initGetFilters(frameID){
-	var frame = document.getElementById(frameID);
-	var filtersEventListener = function(){
-		getFilters(this);
-		this.removeEventListener('load', filtersEventListener);
-	};
-
-	frame.addEventListener("load", filtersEventListener);
-}
-
 function addOptionsToFilter(filterID, newOptions, multiselect, numExistingOptions, separate){
 	var filterElem = document.getElementById(filterID);
 	var i=0;
+
 	if(newOptions == null)
 		return;
 	var len = newOptions.length;
@@ -53,10 +44,4 @@ function addOptionsToFilter(filterID, newOptions, multiselect, numExistingOption
 
 		i++;
 	}
-}
-
-function getFilters(frame){
-	var filtersStr = frame.contentWindow.document.body.children[0].innerHTML;
-	filters = JSON.parse(filtersStr);
-	populateFilters();
 }

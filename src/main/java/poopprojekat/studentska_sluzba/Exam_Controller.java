@@ -4,13 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class Exam_Controller {
 
-    @GetMapping("/get_exam_dropdown")
+    @PostMapping("/get_exam_dropdown")
     public ArrayList<ArrayList<String>> get_exam_dropdown(@RequestParam("token") long token) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
@@ -26,14 +27,14 @@ public class Exam_Controller {
         return ret;
     }
 
-    @GetMapping("/get_exam_deadlines")
+    @PostMapping("/get_exam_deadlines")
     public ArrayList<ExamDeadline> get_exam_deadlines(@RequestParam("token") long token) {
         if (Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return Database.GetExamDeadlines(null);
         return Database.GetExamDeadlines(LocalDate.now());
     }
 
-    @GetMapping("/add_exam_deadline")
+    @PostMapping("/add_exam_deadline")
     public String add_exam_deadline(@RequestParam("token") long token, @RequestParam("name") String name,
             @RequestParam("start_date") String start_date, @RequestParam("end_date") String end_date,
             @RequestParam("start_app_date") String start_app_date, @RequestParam("end_app_date") String end_app_date) {
@@ -49,7 +50,7 @@ public class Exam_Controller {
         }
     }
 
-    @GetMapping("/delete_exam_deadline")
+    @PostMapping("/delete_exam_deadline")
     public String delete_exam_deadline(@RequestParam("token") long token, @RequestParam("name") String name) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } })) return null;
         try {
@@ -61,14 +62,14 @@ public class Exam_Controller {
         }
     }
 
-    @GetMapping("/get_all_exams")
+    @PostMapping("/get_all_exams")
     public ArrayList<Exam> get_all_exams(@RequestParam("token") long token) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
         return Database.GetAllExams();
     }
 
-    @GetMapping("/get_exams")
+    @PostMapping("/get_exams")
     public ArrayList<Exam> get_exams(@RequestParam("token") long token, @RequestParam("student") String index,
             @RequestParam("exam_deadline") String exam_deadline) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
@@ -81,7 +82,7 @@ public class Exam_Controller {
         }
     }
 
-    @GetMapping("/get_exams_for")
+    @PostMapping("/get_exams_for")
     public ArrayList<Exam> get_exams(@RequestParam("token") long token, @RequestParam("student") String index) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
             return null;
@@ -93,7 +94,7 @@ public class Exam_Controller {
         }
     }
 
-    @GetMapping("get_exams_for_lecturer")
+    @PostMapping("get_exams_for_lecturer")
     public ArrayList<Exam> get_exams_for_lecturer(@RequestParam("token") long token,
             @RequestParam("lecturer_id") String lect_id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Lecturer", lect_id } }))
@@ -106,7 +107,7 @@ public class Exam_Controller {
         }
     }
 
-    @GetMapping(value = "/add_exam")
+    @PostMapping(value = "/add_exam")
     public String add_exam(@RequestParam("token") long token, @RequestParam("subject_id") String subject_id,
             @RequestParam("lect_id") String lect_id, @RequestParam("Date") String date) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
@@ -121,7 +122,7 @@ public class Exam_Controller {
         }
     }
 
-    @GetMapping(value = "/delete_exam")
+    @PostMapping(value = "/delete_exam")
     public String delete_exam(@RequestParam("token") long token, @RequestParam("exam_id") String id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
@@ -134,7 +135,7 @@ public class Exam_Controller {
         }
     }
 
-    @GetMapping("/apply_for_exam")
+    @PostMapping("/apply_for_exam")
     public String apply_for_exam(@RequestParam("token") long token, @RequestParam("student") String index,
             @RequestParam("exam") String exam_id, @RequestParam("payed") int payed) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))

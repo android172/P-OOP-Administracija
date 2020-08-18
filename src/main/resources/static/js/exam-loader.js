@@ -1,8 +1,8 @@
 var oData = [];
 
-function parseDataToTable(tableID, custom){
-	var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
-	if(dataStr!="")
+function parseDataToTable(tableID, custom, dataStr){
+	//var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
+	if(dataStr && dataStr!="")
 		oData = JSON.parse(dataStr);
 	else
 		oData = [];

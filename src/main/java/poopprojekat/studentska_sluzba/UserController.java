@@ -1,6 +1,7 @@
 package poopprojekat.studentska_sluzba;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,14 +17,14 @@ import java.util.ArrayList;
 @RestController
 public class UserController {
 
-    @GetMapping("/get_all_users")
+    @PostMapping("/get_all_users")
     public ArrayList<User> get_all_users(@RequestParam("token") long token){
 
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         return Database.GetAllUsers();
     }
 
-    @GetMapping("/get_user")
+    @PostMapping("/get_user")
     public String[] get_user(@RequestParam("token") long token,
                              @RequestParam("username") String username,
                              @RequestParam("password") String password){
@@ -36,7 +37,7 @@ public class UserController {
         return tmp;
     }
 
-    @GetMapping("/add_user")
+    @PostMapping("/add_user")
     public String add_user(@RequestParam("token") long token,
                            @RequestParam("username") String username,
                            @RequestParam("password") String password,
@@ -57,7 +58,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/update_user")
+    @PostMapping("/update_user")
     public String update_user(@RequestParam("username") String username,
                               @RequestParam("new_username") String new_username,
                               @RequestParam("new_password") String new_password){
@@ -75,7 +76,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/delete_user")
+    @PostMapping("/delete_user")
     public String delete_user(@RequestParam("token") long token,
                               @RequestParam("unique_id") String id){
 

@@ -1,6 +1,7 @@
 package poopprojekat.studentska_sluzba;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 @RestController
 public class SubjectController {
 
-    @GetMapping("/get_subject_filters")
+    @PostMapping("/get_subject_filters")
     public ArrayList<ArrayList<String>> get_subject_filters(@RequestParam("token") long token){
 
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
@@ -46,7 +47,7 @@ public class SubjectController {
         return ret;
     }
 
-    @GetMapping("/get_all_subjects")
+    @PostMapping("/get_all_subjects")
     public ArrayList<Subject> get_all_subjects(@RequestParam("token") long token){
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
@@ -57,7 +58,7 @@ public class SubjectController {
             return null;
         }
     }
-    @GetMapping("/get_subject")
+    @PostMapping("/get_subject")
     public Subject get_subject(@RequestParam("token") long token,
                                @RequestParam("subjectId") String id){
 
@@ -71,7 +72,7 @@ public class SubjectController {
         }
     }
 
-    @GetMapping("/get_subjects_by_lecturer")
+    @PostMapping("/get_subjects_by_lecturer")
     public ArrayList<Subject> get_subjects_by_lecturer(@RequestParam("token") long token,
                                            @RequestParam("lect_id") String id){
 
@@ -86,7 +87,7 @@ public class SubjectController {
         }
     }
 
-    @GetMapping("/get_subjects")
+    @PostMapping("/get_subjects")
     public ArrayList<Subject> get_subjects(@RequestParam("token") long token,
                                            @RequestParam("year") String year,
                                            @RequestParam("lect_name") String lect_name,
@@ -148,7 +149,7 @@ public class SubjectController {
         }
     }
 
-    @GetMapping("/get_subjects_by_major")
+    @PostMapping("/get_subjects_by_major")
     public ArrayList<Subject> get_subjects_by_major(@RequestParam("token") long token,
                                                     @RequestParam("major_id") String id){
 
@@ -162,7 +163,7 @@ public class SubjectController {
         }
     }
 
-    @GetMapping("/get_subjects_by_student")
+    @PostMapping("/get_subjects_by_student")
     public ArrayList<Subject> get_subjects_by_student(@RequestParam("token") long token,
                                                       @RequestParam("index_number") int number,
                                                       @RequestParam("index_year") int ind_year,
@@ -178,7 +179,7 @@ public class SubjectController {
         }
     }
 
-    @GetMapping("/add_subject")
+    @PostMapping("/add_subject")
     public String add_subject(@RequestParam("token") long token,
                               @RequestParam("name") String name,
                               @RequestParam("espb") int espb,
@@ -199,7 +200,7 @@ public class SubjectController {
         }
     }
 
-    @GetMapping("/update_subject")
+    @PostMapping("/update_subject")
     public String update_subject(@RequestParam("token") long token,
                                  @RequestParam("id") String old_id,
                                  @RequestParam("name") String name,
@@ -222,7 +223,7 @@ public class SubjectController {
         }
     }
 
-    @GetMapping("/delete_subject")
+    @PostMapping("/delete_subject")
     public String delete_subject(@RequestParam("token") long token,
                                  @RequestParam("id") String id){
 

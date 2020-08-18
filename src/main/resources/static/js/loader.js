@@ -141,13 +141,11 @@ function fillTable(){
 				row.appendChild(delButton);
 
 				row.addEventListener('click', function(){
-					makeRequest("/get_"+dataType,"sendframe",[[dataIdName, this.id]],function(){
-						var elementDataStr = document.getElementById("sendframe").contentWindow.document.body.childNodes[0].innerHTML;
-						console.log(elementDataStr);
-						if(elementDataStr && elementDataStr!=""){
-							var elementData = JSON.parse(elementDataStr);
-							fillUpdateForm(elementData);
-						}
+					makeRequest("/get_"+dataType,[[dataIdName, this.id]],function(data){
+						elementData = data;
+						var form = document.getElementById("updateform");
+						fillUpdateForm(form);
+						toggleElement(form.parentNode.parentNode);
 					});
 				});
 			}
@@ -164,8 +162,9 @@ function deleteRow(id){
     });
 }
 
-function fillUpdateForm(elementData){
-	var form = document.getElementById("updateform");
+var elementData;
+
+function fillUpdateForm(form){
 
 	var keys = Object.keys(elementData);
 	var values = Object.values(elementData);
@@ -194,6 +193,23 @@ function fillUpdateForm(elementData){
 	inputId.name = dataIdName;
 	inputId.value = values[objIdOrder];
 	inputId.style.display = "none";
+}
 
-	toggleElement(form.parentNode.parentNode);
+function loaderInit(){
+	var updateform = document.getElementById("updateform");
+	updateform.onsubmit = function(){
+		toggleElement(updateform.parentNode.parentNode);
+		var sendframe = document.getElementById("sendframe");
+		var refresh = function(){
+			submitSearch();
+			sendframe.removeEventListener('load', refresh);
+		}
+		sendframe.addEventListener('load', refresh);
+	}
+
+	updateform.onreset = function() {
+		setTimeout(	function(){
+			fillUpdateForm(updateform);
+		}, 1);
+	}
 }

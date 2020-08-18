@@ -13,7 +13,7 @@
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 </head>
-<body onload="getToken(); displayUsername(); addTokenToForm('search'); /*addTokenToForm('newform');*/ addTokenToLinks(); submitSearch();">
+<body onload="getToken(); displayUsername(); addTokenToForm('search'); submitSearch();">
 	<div id="background"></div>
 	<div id="wrapper">
 		<header>
@@ -23,13 +23,13 @@
 				<img src="../images/user-img.bmp" id="user-img">
 				<div id="user-options">
 					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
-					<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
+					<button type="button" onclick="makeRequest('/logout_req', [], function(){window.location.replace('/login');});">Log out</button>
 				</div>
 			</div>
 		</header>
 		<div id="content">
 			<div id="content-header">
-				<form action="/get_all_users" id="search" method="get" target="dataframe">
+				<form action="/get_all_users" id="search" target="dataframe" method="post">
 					<input type="text" id="searchbar" value="" placeholder="Search..." oninput="fillTables();">
 
 					<div class="form-element">

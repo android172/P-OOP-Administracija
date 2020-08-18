@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +33,7 @@ public class StudentController {
 
     // // public methods
     // get all student filters
-    @GetMapping("/get_student_filters")
+    @PostMapping("/get_student_filters")
     public ArrayList<ArrayList<String>> get_student_filters(@RequestParam("token") long token) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
@@ -44,7 +45,7 @@ public class StudentController {
 
     // per page load we send full list of students including only index numbers,
     // first and last names
-    @GetMapping("/get_all_students")
+    @PostMapping("/get_all_students")
     public String[][] get_students(@RequestParam("token") long token) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
@@ -52,7 +53,7 @@ public class StudentController {
     }
 
     // returns filtered and ordered list of students
-    @GetMapping("/get_students")
+    @PostMapping("/get_students")
     public String[][] get_students(@RequestParam("token") long token,
             @RequestParam("date_of_birth") String date_of_birth, @RequestParam("city") String city,
             @RequestParam("major") String major, @RequestParam("order_by") String order_by) {
@@ -102,7 +103,7 @@ public class StudentController {
         return filter_students_from_database(dates, cities, majors, order_ctg);
     }
 
-    @GetMapping("get_students_by_exam")
+    @PostMapping("get_students_by_exam")
     public ArrayList<Attempts> get_students_by_exam(@RequestParam("token") long token,
             @RequestParam("exam_id") String exam_id) {
         String lect_id = null;
@@ -126,7 +127,7 @@ public class StudentController {
     }
 
     // return selected student
-    @GetMapping("/get_student")
+    @PostMapping("/get_student")
     public Student get_student(@RequestParam("token") long token, @RequestParam("index") String index) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Student", index } }))
             return null;
@@ -140,7 +141,7 @@ public class StudentController {
         return null;
     }
 
-    @GetMapping("/get_student_by_jmbg")
+    @PostMapping("/get_student_by_jmbg")
     public Student get_student_wj(@RequestParam("token") long token, @RequestParam("jmbg") String jmbg) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
@@ -148,7 +149,7 @@ public class StudentController {
     }
 
     // add student
-    @GetMapping("/add_student")
+    @PostMapping("/add_student")
     public String add_student(@RequestParam("token") long token, @RequestParam("first_name") String first_name,
             @RequestParam("last_name") String last_name, @RequestParam("year") int year,
             @RequestParam("date_of_birth") String date_of_birth, @RequestParam("city") String city,
@@ -168,7 +169,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/update_student")
+    @PostMapping("/update_student")
     public String update_student(@RequestParam("token") long token,
             @RequestParam("index") String index_of_student_to_update, @RequestParam("firstName") String first_name,
             @RequestParam("lastName") String last_name, @RequestParam("new-index") String index_num,
@@ -216,7 +217,7 @@ public class StudentController {
     }
 
     // delete student
-    @GetMapping("/delete_student")
+    @PostMapping("/delete_student")
     public String delete_student(@RequestParam("token") long token, @RequestParam("index") String index) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
@@ -232,7 +233,7 @@ public class StudentController {
     }
 
     // apply student to given subjects
-    @GetMapping("/apply_for_subject")
+    @PostMapping("/apply_for_subject")
     public String apply_for_subject(@RequestParam("token") long token, @RequestParam("index_num") String index,
             @RequestParam("subjects") String subjects) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Student", index } }))
@@ -249,7 +250,7 @@ public class StudentController {
     }
 
     // return all students for given year and subjects
-    @GetMapping(value = "get_all_students_from_subject")
+    @PostMapping(value = "get_all_students_from_subject")
     public ArrayList<Index> get_all_students_from_subject(@RequestParam("token") long token,
             @RequestParam("subject") String subject_id) {
         Lecturer lect = Database.GetLecturer(subject_id);
@@ -263,7 +264,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/get_attempts_info_for_index")
+    @PostMapping("/get_attempts_info_for_index")
     public ArrayList<Attempts> get_attempts_info(@RequestParam("token") long token,
             @RequestParam("index") String index) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
@@ -276,7 +277,7 @@ public class StudentController {
         }
     }
     
-    @GetMapping("/get_attempts_info_for_subject")
+    @PostMapping("/get_attempts_info_for_subject")
     public ArrayList<Attempts> get_attempts_info_s(@RequestParam("token") long token,
             @RequestParam("subject_id") String subject_id) {
         String lect_id = Database.GetSubject(subject_id).lectid;

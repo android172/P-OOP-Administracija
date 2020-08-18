@@ -12,16 +12,13 @@
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/filters.js" th:src="@{/js/filters.js}"></script>
-	<script>
-		function populateFilters(){
-			addOptionsToFilter('subject-options', filters[0], true, 1, true);
-			addOptionsToFilter('major-options', filters[1], true, 1, true);
-			//addOptionsToFilter('new-major-options', filters[1], false, 0, true);
-			initDropDowns();
-		}
-	</script>
 </head>
-<body onload="getToken(); setDataType('lecturer', 'lectId', 3, 3); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToForm('updateform'); addTokenToLinks(); submitSearch(); makeRequest('/get_lecturer_filters','sendframe'); initGetFilters('sendframe');">
+<body onload="getToken(); setDataType('lecturer', 'lectId', 3, 3); loaderInit(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToForm('updateform'); submitSearch(); 
+	makeRequest('/get_lecturer_filters',[], function(data){
+		addOptionsToFilter('subject-options', data[0], true, 1, true);
+		addOptionsToFilter('major-options', data[1], true, 1, true);
+		initDropDowns();
+	});">
 	<div id="background"></div>
 	<div id="wrapper">
 		<header>
@@ -31,13 +28,13 @@
 				<img src="../images/user-img.bmp" id="user-img">
 				<div id="user-options">
 					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
-					<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
+					<button type="button" onclick="makeRequest('/logout_req', [], function(){window.location.replace('/login');});">Log out</button>
 				</div>
 			</div>
 		</header>
 		<div id="content">
 			<div id="content-header">
-				<form action="/get_lecturers" id="search" method="get" target="dataframe">
+				<form action="/get_lecturers" id="search" method="post" target="dataframe">
 					<input type="text" id="searchbar" value="" placeholder="Search..." oninput="fillTable();">
 
 					<div class="form-element">
@@ -106,7 +103,7 @@
 			<div class="flex-col size-max">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
 				<br>
-				<form action="/add_lecturer" id="newform" method="get" target="sendframe" class="pad-medium wide new-grid" >
+				<form action="/add_lecturer" id="newform" method="post" target="sendframe" class="pad-medium wide new-grid" >
 					<label for="first_name">Ime:</label><input type="text" name="first_name" required>
 					<label for="last_name">Prezime:</label><input type="text" name="last_name" required>
 					<label for="title">Zvanje:</label>
@@ -132,7 +129,7 @@
 			<div class="flex-col size-max">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
 				<br>
-				<form action="/update_lecturer" id="updateform" method="get" target="sendframe" class="pad-medium wide new-grid" >
+				<form action="/update_lecturer" id="updateform" method="post" target="sendframe" class="pad-medium wide new-grid" >
 					<label for="new-lectId">ID:</label><input type="text" name="new-lectId" required>
 					<label for="firstName">Ime:</label><input type="text" name="firstName" required>
 					<label for="lastName">Prezime:</label><input type="text" name="lastName" required>

@@ -4,6 +4,7 @@ package poopprojekat.studentska_sluzba;
 import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class LecturerController {
 
     // public methods
     // get all lecturer filters
-    @GetMapping("/get_lecturer_filters")
+    @PostMapping("/get_lecturer_filters")
     public ArrayList<ArrayList<String>> get_lecturer_filters(@RequestParam("token") long token) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         ArrayList<ArrayList<String>> ret = new ArrayList<>();
@@ -38,14 +39,14 @@ public class LecturerController {
     }
 
     // return all lecturers
-    @GetMapping("/get_all_lecturers")
+    @PostMapping("/get_all_lecturers")
     public ArrayList<Lecturer> getLecturers(@RequestParam("token") long token) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         return Database.GetLecturers(null, null, 1);
     }
     
     // returns filtered and ordered list of lecturers
-    @GetMapping("/get_lecturers")
+    @PostMapping("/get_lecturers")
     public ArrayList<Lecturer> getLecturers(@RequestParam("token") long token, @RequestParam("subject") String subject, @RequestParam("major") String major, @RequestParam("order_by") String order_by) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         // format picked subjects
@@ -78,14 +79,14 @@ public class LecturerController {
     }
 
     // return requested lecturer
-    @GetMapping("/get_lecturer")
+    @PostMapping("/get_lecturer")
     public Lecturer getLecturers(@RequestParam("token") long token, @RequestParam("lectId") String lect_id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}, {"Lecturer", lect_id}})) return null;
         return Database.GetLecturer(lect_id);
     }
 
     // add lecturer
-    @GetMapping("/add_lecturer")
+    @PostMapping("/add_lecturer")
     public String add_lecturer(@RequestParam("token") long token, @RequestParam("first_name") String first_name,
             @RequestParam("last_name") String last_name, @RequestParam("title") String title) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
@@ -112,7 +113,7 @@ public class LecturerController {
     }
 
     // update lecturer
-    @GetMapping("/update_lecturer")
+    @PostMapping("/update_lecturer")
     public String update_lecturer(@RequestParam("token") long token, @RequestParam("lectId") String id_of_lec_to_up, @RequestParam("firstName") String first_name,
             @RequestParam("lastName") String last_name, @RequestParam("title") String title, @RequestParam("new-lectId") String lect_id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
@@ -140,7 +141,7 @@ public class LecturerController {
     }
 
     // delete lecturer
-    @GetMapping("/delete_lecturer")
+    @PostMapping("/delete_lecturer")
     public String delete_lecturer(@RequestParam("token") long token, @RequestParam("lecturer") String lect_id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         try {
