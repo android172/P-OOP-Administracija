@@ -11,6 +11,7 @@
 </head>
 
 <body onload = "getToken();getIndex(); makeRequest('/get_lecturer',[['lectId',index]],function(lecturerData){loadLecturerData(lecturerData);});makeRequest('get_exams_for_lecturer',[['lectId',index]],function(lecturerSubData){loadLecturerSubjects(lecturerSubData);});">
+	<div id="background"></div>
 	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
 		<header>
 			<h1>Lecturer</h1>
