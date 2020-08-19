@@ -167,11 +167,11 @@ function yesNoDialog(msg, param, yes=function(){}){
 	button.className = "dialog-button";
 	button.innerHTML = "Yes";
 	button.onclick = function(){
+		div.style.display = "none";
 		yes(param);
-		div.display = "none";
 		setTimeout(function(){
 			document.body.removeChild(div);
-		}, 1);
+		}, 3000);
 	}
 	buttons.appendChild(button);
 	button = document.createElement('button');

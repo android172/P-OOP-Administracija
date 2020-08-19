@@ -86,7 +86,10 @@ function makeRequest(requestStr, params=[], oncomplete=function(){}){
     try {
       var data = JSON.parse(dataStr);
       oncomplete(data);
-    } catch(e) { console.log("Couldn't parse response.")}
+    } catch(e) { 
+      oncomplete();
+      console.log("Couldn't parse response.");
+    }
     console.log("[response]: "+dataStr);
     this.removeEventListener('load', eventListener);
   };
