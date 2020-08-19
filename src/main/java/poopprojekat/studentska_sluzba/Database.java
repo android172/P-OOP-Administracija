@@ -2763,4 +2763,31 @@ public class Database
         return users;
     }
 
+    public static ArrayList<String> GetAllLecturers()
+    {
+        sql = "SELECT * FROM Lecturers ";
+
+        ResultSet res = null;
+        ArrayList<String> lects = new ArrayList<>();
+
+        try
+        {
+            if(!res.first())
+                return null;
+
+            res = stat.executeQuery(sql);
+
+            do
+            {
+                lects.add(res.getString("FirstName") + " " + res.getString("LastName") + "|" + res.getString("LectId"));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return lects;
+    }
+
 }
