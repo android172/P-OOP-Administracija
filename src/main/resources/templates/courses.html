@@ -15,11 +15,11 @@
 </head>
 <body onload="getToken(); setDataType('subject', 'id', 1, 1); loaderInit(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToForm('updateform'); submitSearch(); 
 	makeRequest('/get_subject_filters',[], function(data){
-		addOptionsToFilter('lect-options', data[0], true, 1, false);
+		addOptionsToFilter('lect-options', data[0], true, 1, true);
 		addOptionsToFilter('major-options', data[1], true, 1, true);
-		addOptionsToFilter('new-lect-options', data[0], false, 0, false);
+		addOptionsToFilter('new-lect-options', data[0], false, 0, true);
 		addOptionsToFilter('new-major-options', data[1], false, 0, true);
-		addOptionsToFilter('update-lect-options', data[0], false, 0, false);
+		addOptionsToFilter('update-lect-options', data[0], false, 0, true);
 		addOptionsToFilter('update-major-options', data[1], false, 0, true);
 		initDropDowns();
 	});">

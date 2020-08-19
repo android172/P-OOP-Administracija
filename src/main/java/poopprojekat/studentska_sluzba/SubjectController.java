@@ -29,20 +29,8 @@ public class SubjectController {
 
         ArrayList<ArrayList<String>> ret = new ArrayList<>();
 
-        ArrayList<Lecturer> lecturers =  Database.GetLecturers(null, null, 3);  //sorted by last name
-        ArrayList<String> names = null;
-        if (lecturers != null) {
-            names = new ArrayList<>(lecturers.size());
-
-            for (Lecturer l :
-                    lecturers) {
-                names.add(l.getFirstName() + " " + l.getLastName());
-            }
-        }
-        ret.add(names);
-
-        ArrayList<String> majors = Database.GetAllMajors();
-        ret.add(majors);
+        ret.add(Database.GetAllLecturers());
+        ret.add(Database.GetAllMajors());
 
         return ret;
     }

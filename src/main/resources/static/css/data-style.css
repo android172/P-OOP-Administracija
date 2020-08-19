@@ -156,18 +156,6 @@ input {
     border-radius: 0px;
 }
 
-.dropdown>input {
-	background-color: inherit;
-	text-align: center;
-	border: none;
-	border-radius: 5px;
-}
-
-.dropdown:hover>input {
-	background-color: var(--color-highlight2);
-	color: var(--color-highlight);
-}
-
 .dropdown {
 	position: relative;
 }
@@ -457,12 +445,12 @@ input[type=number]{
 .dropdown-preview {
 	position: absolute;
 	top: 0; left: 0;
-	width: 100%; height: 100%;
+	width: 100%; height: 80%;
 	pointer-events: none;
 	text-align: center;
 	background-color: transparent;
 	color: white;
-	margin-top: 3%;
+	padding-top: 3%; 
 	font-size: 12px;
 	font-family: Century Gothic, arial, sans-serif;
 
@@ -477,4 +465,17 @@ input[type=number]{
 
 .dropdown>input, .dropdown>input:hover {
 	color: transparent;
+	visibility: hidden;
+}
+
+.dropdown>input {
+	background-color: inherit;
+	text-align: center;
+	border: none;
+	border-radius: 5px;
+}
+
+.dropdown:hover>* {
+	background-color: var(--color-highlight2);
+	color: var(--color-highlight);
 }
