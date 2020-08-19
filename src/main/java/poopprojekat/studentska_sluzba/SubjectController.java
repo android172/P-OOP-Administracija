@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 //INCLUDES:
@@ -164,14 +165,11 @@ public class SubjectController {
 
     @PostMapping("/get_subjects_by_student")
     public ArrayList<Subject> get_subjects_by_student(@RequestParam("token") long token,
-                                                      @RequestParam("index_number") int number,
-                                                      @RequestParam("index_year") int ind_year,
-                                                      @RequestParam("year") int year){
+                                                      @RequestParam("index") int index){
 
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
-            Index index = new Index(number, ind_year);
-            return Database.GetSubjectsByStudent(index, year);
+            return Database.GetSubjectsByStudent(new Index(index), LocalDate.now().getYear());
         } catch (Exception e) {
             e.printStackTrace();
             return null;

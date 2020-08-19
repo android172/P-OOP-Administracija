@@ -50,11 +50,11 @@ public class LecturerController {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         // format picked subjects
         String subjects[] = null;
-        if (!subject.equals("all"))
+        if (!subject.equals("all") && !subject.equals(""))
             subjects = subject.split("\\+");
         // format picked majors
         String majors[] = null;
-        if (!major.equals("all"))
+        if (!major.equals("all") && !major.equals(""))
             majors = major.split("\\+");
         int order_ctg;
         switch (order_by) {
@@ -73,7 +73,6 @@ public class LecturerController {
             default:
                 order_ctg = 0;
         }
-
         return Database.GetLecturers(subjects, majors, order_ctg);
     }
 
