@@ -178,7 +178,6 @@ public class Database
             CreateTableDeletedMajors();
             CreateTableDeletedExams();
 
-            CreateApplyForExamTrigger();
             CreateCheckStatusInsertTrigger();
             CreateCheckAppliedInsertTrigger();
             CreateArchiveStudentsTrigger();
@@ -610,28 +609,6 @@ public class Database
 
     // Triggers
 
-    private void CreateApplyForExamTrigger()
-    {
-        sql = "CREATE TRIGGER IF NOT EXISTS UpdateAttempts AFTER INSERT ON ExamApplication " +
-                "FOR EACH ROW " +
-                "INSERT INTO AppliedToListen (Attempts) " +
-                "SELECT Attempts + 1 FROM AppliedToListen " +
-                "WHERE IndexNum = new.IndexNum ";
-
-        System.out.println("Creating trigger 'ApplyForExam'");
-
-        try
-        {
-            stat.executeQuery(sql);
-            System.out.println("trigger 'ApplyForExam' has been created");
-        }
-        catch (SQLException throwables)
-        {
-            System.out.println("Creating trigger 'ApplyForExam' failed");
-            throwables.printStackTrace();
-        }
-    }
-
     private void CreateCheckStatusInsertTrigger()
     {
         sql = "CREATE TRIGGER IF NOT EXISTS CheckStatusInsert BEFORE INSERT ON StudentStatus " +
@@ -962,13 +939,18 @@ public class Database
 
         try
         {
-            stat.executeUpdate(sql);
-            System.out.println("Exam applied");
+            if(stat.executeUpdate(sql) != 0)
+            {
+                IncAttempts(index);
+                System.out.println("Exam applied");
+            }
+            else
+                System.out.println("Student doesn't have enough points");
         }
         catch (SQLException throwables)
         {
             if(throwables.getErrorCode() == 1062)
-                throw new Exception("Student is already aplied for this exam");
+                throw new Exception("Student is already applied for this exam");
             throwables.printStackTrace();
         }
     }
@@ -2623,6 +2605,22 @@ public class Database
         {
             if(stat.executeUpdate(sql) == 0)
                 throw new Exception("Couldn't update");
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    private static void IncAttempts(Index index)
+    {
+        sql = "UPDATE AppliedToListen " +
+                "SET Attempts = Attempts + 1 " +
+                "WHERE IndexNum = new.IndexNum ";
+
+        try
+        {
+            stat.executeUpdate(sql);
         }
         catch (SQLException throwables)
         {
