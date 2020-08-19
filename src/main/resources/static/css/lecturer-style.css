@@ -36,7 +36,7 @@ header > * {
 	max-height: 40px;
 }
 #picture-info{
-	float: center;
+	margin: auto;
 	width: 30%;
 	position: relative;
 }
@@ -51,7 +51,7 @@ header > * {
 	padding: 10px;
 	width: 200px;
 	height: 200px;
-	margin-left: 30%;
+	margin-left: 25%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -99,4 +99,44 @@ h1 {
 #table1{
 	background-color: #907AD6;
 	width: 30%;
+	margin: auto;
+}
+#table2{
+	width: 100%;
+	float: left;
+	position: absolute;
+	top: 450px;
+}
+#table2>tbody>tr>td{
+	background-color: var(--color-highlight2) !important;
+}
+
+#table2>tbody>tr>th{
+	background-color: var(--color-highlight) !important;
+}
+#table3{
+	width: 100%;
+	float: left;
+	position: absolute;
+	top: 450px;
+}
+#table3>tbody>tr>td{
+	background-color: var(--color-highlight2) !important;
+}
+
+#table3>tbody>tr>th{
+	background-color: var(--color-highlight) !important;
+}
+
+.button{
+	text-align: center;
+	display: inline-block;
+	font-size: 17px;
+	background-color: var(--color-highlight);
+	cursor: pointer;
+}
+.buttons{
+	padding: 20px;
+	margin-left: 42%;
+	position: absolute;
 }

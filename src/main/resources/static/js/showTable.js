@@ -1,3 +1,27 @@
+function showTable2(){
+	var x,y,z;
+	x = document.getElementById("table2");
+	y = document.getElementById("table3");
+	var b = document.getElementsByName("button4");
+	switch(b){
+		case b:
+			x.style.visibility = "visible";
+			y.style.visibility = "hidden";
+			break;
+	}
+}
+function showTable3(){
+	var x,y,z;
+	x = document.getElementById("table2");
+	y = document.getElementById("table3");
+	var b = document.getElementsByName("button5");
+	switch(b){
+		case b:
+			x.style.visibility = "hidden";
+			y.style.visibility = "visible";
+			break;
+	}
+}
 function showTable4(){
 	var x,y,z;
 	x = document.getElementById("table4");
