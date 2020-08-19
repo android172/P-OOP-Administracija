@@ -7,9 +7,10 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/showTable.js" th:src="@{/js/showTable.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/lecturer-loader.js" th:src="@{/js/lecturer-loader.js}"></script>
 </head>
 
-<body onload = "getToken(); makeRequest('/get_lecturer',[['index',index]],function(lecturerData){loadLecturerData(lecturerData);});makeRequest('get_exams_for_lecturer',[['index',index]],function(lecturerSubData){loadLecturerSubjects(lecturerSubData);});">
+<body onload = "getToken();getIndex(); makeRequest('/get_lecturer',[['lectId',index]],function(lecturerData){loadLecturerData(lecturerData);});makeRequest('get_exams_for_lecturer',[['lectId',index]],function(lecturerSubData){loadLecturerSubjects(lecturerSubData);});">
 	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
 		<header>
 			<h1>Lecturer</h1>

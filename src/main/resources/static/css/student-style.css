@@ -107,6 +107,7 @@ html, body {
 
 a, p, h1, h2, h3, label, input, ::placeholder {
 	font-family: Century Gothic, Arial, sans-serif;
+	text-decoration: none;
 }
 
 h1 {

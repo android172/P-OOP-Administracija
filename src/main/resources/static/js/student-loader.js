@@ -25,7 +25,6 @@ function loadStudentData(studentData){
 }
 
 function statusBudget(budzetData){
-	console.log(budzetData);
 	if(budzetData){
 		document.getElementById("Status").innerHTML = 'Budzet';
 	}

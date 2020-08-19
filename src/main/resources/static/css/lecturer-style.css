@@ -97,6 +97,7 @@ h1 {
 	font-size: 16px;
 }
 #table1{
+	padding: 5px;
 	background-color: #907AD6;
 	width: 30%;
 	margin: auto;
@@ -105,7 +106,7 @@ h1 {
 	width: 100%;
 	float: left;
 	position: absolute;
-	top: 450px;
+	top: 500px;
 }
 #table2>tbody>tr>td{
 	background-color: var(--color-highlight2) !important;
@@ -118,7 +119,7 @@ h1 {
 	width: 100%;
 	float: left;
 	position: absolute;
-	top: 450px;
+	top: 500px;
 }
 #table3>tbody>tr>td{
 	background-color: var(--color-highlight2) !important;
@@ -131,12 +132,14 @@ h1 {
 .button{
 	text-align: center;
 	display: inline-block;
-	font-size: 17px;
+	font-size: 20px;
 	background-color: var(--color-highlight);
 	cursor: pointer;
+	border: none;
+	padding: 10px;
 }
 .buttons{
 	padding: 20px;
-	margin-left: 42%;
+	margin-left: 39%;
 	position: absolute;
 }
