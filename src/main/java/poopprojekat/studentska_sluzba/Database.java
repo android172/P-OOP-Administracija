@@ -2772,10 +2772,10 @@ public class Database
 
         try
         {
+            res = stat.executeQuery(sql);
+
             if(!res.first())
                 return null;
-
-            res = stat.executeQuery(sql);
 
             do
             {
