@@ -188,6 +188,11 @@ public class Database
             CreateCheckAppliedUpdateIndexTrigger();
             CreateCheckAppliedUpdateIdTrigger();
             CreateCheckStatusUpdateIndexTrigger();
+            CreateArchiveExamsFromLecturersTrigger();
+            CreateArchiveExamsFromSubjectsTrigger();
+            CreateArchiveStudentsFromMajorTrigger();
+            CreateArchiveSubjectsFromLecturersTrigger();
+            CreateArchiveSubjectsFromMajorTrigger();
         }
         catch (SQLException throwables)
         {
@@ -603,10 +608,6 @@ public class Database
         }
     }
 
-    // boolean true u AddX -> uspesno dodalo
-    // null u GetX -> ne postoji
-    // Za AddX f-je sve obavezne promenjive moraju biti popunjene
-
     // Triggers
 
     private void CreateCheckStatusInsertTrigger()
@@ -741,6 +742,27 @@ public class Database
         }
     }
 
+    private void CreateArchiveStudentsFromMajorTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS ArchiveStudentsFromMajor AFTER DELETE ON Majors FOR EACH ROW " +
+                "INSERT INTO DeletedStudents (IndexNum, FirstName, LastName, JMBG, DateOfBirth, City, MajorId) " +
+                "SELECT IndexNum, FirstName, LastName, JMBG, DateOfBirth, City, MajorId FROM Students " +
+                "WHERE MajorId = old.MajorId ";
+
+        System.out.println("Creating trigger 'ArchiveStudentsFromMajor'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ArchiveStudentsFromMajor' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ArchiveStudentsFromMajor' failed");
+            throwables.printStackTrace();
+        }
+    }
+
     private void CreateArchiveLecturersTrigger()
     {
         sql = "CREATE TRIGGER IF NOT EXISTS ArchiveLecturers AFTER DELETE ON Lecturers FOR EACH ROW " +
@@ -777,6 +799,48 @@ public class Database
         catch (SQLException throwables)
         {
             System.out.println("Creating trigger 'ArchiveSubjects' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateArchiveSubjectsFromMajorTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS ArchiveSubjectsFromMajor AFTER DELETE ON Majors FOR EACH ROW " +
+                "INSERT INTO DeletedSubjects (SubjectName, SubjectId, Year, ESPB, MajorId, LectId, PointsRequired) " +
+                "SELECT SubjectName, SubjectId, Year, ESPB, MajorId, LectId, PointsRequired FROM Subjects " +
+                "WHERE MajorId = old.MajorId ";
+
+        System.out.println("Creating trigger 'ArchiveSubjectsFromMajor'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ArchiveSubjectsFromMajor' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ArchiveSubjectsFromMajor' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateArchiveSubjectsFromLecturersTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS ArchiveSubjectsFromLecturers AFTER DELETE ON Lecturers FOR EACH ROW " +
+                "INSERT INTO DeletedSubjects (SubjectName, SubjectId, Year, ESPB, MajorId, LectId, PointsRequired) " +
+                "SELECT SubjectName, SubjectId, Year, ESPB, MajorId, LectId, PointsRequired FROM Subjects " +
+                "WHERE LectId = old.LectId ";
+
+        System.out.println("Creating trigger 'ArchiveSubjectsFromLecturers'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ArchiveSubjectsFromLecturers' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ArchiveSubjectsFromLecturers' failed");
             throwables.printStackTrace();
         }
     }
@@ -821,7 +885,51 @@ public class Database
         }
     }
 
+    private void CreateArchiveExamsFromSubjectsTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS ArchiveExamsFromSubjects AFTER DELETE ON Subjects FOR EACH ROW " +
+                "INSERT INTO DeletedExams (ExamId, ExamDate, SubjectId, LectId) " +
+                "SELECT ExamId, ExamDate, SubjectId, LectId FROM Exams " +
+                "WHERE SubjectId = old.SubjectId ";
+
+        System.out.println("Creating trigger 'ArchiveExamsFromSubjects'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ArchiveExamsFromSubjects' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ArchiveExamsFromSubjects' failed");
+            throwables.printStackTrace();
+        }
+    }
+
+    private void CreateArchiveExamsFromLecturersTrigger()
+    {
+        sql = "CREATE TRIGGER IF NOT EXISTS ArchiveExamsFromLecturers AFTER DELETE ON Lecturers FOR EACH ROW " +
+                "INSERT INTO DeletedExams (ExamId, ExamDate, SubjectId, LectId) " +
+                "SELECT ExamId, ExamDate, SubjectId, LectId FROM Exams " +
+                "WHERE LectId = old.LectId ";
+
+        System.out.println("Creating trigger 'ArchiveExamsFromLecturers'");
+
+        try
+        {
+            stat.executeQuery(sql);
+            System.out.println("trigger 'ArchiveExamsFromLecturers' has been created");
+        }
+        catch (SQLException throwables)
+        {
+            System.out.println("Creating trigger 'ArchiveExamsFromLecturers' failed");
+            throwables.printStackTrace();
+        }
+    }
+
     // ADD f-je -----------------------------------------------------
+
+    // Za AddX f-je sve obavezne promenjive moraju biti popunjene
 
     public static void AddStudent(Student s) throws Exception       // JMBG and indexNum is unique
     {
