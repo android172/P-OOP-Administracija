@@ -1603,7 +1603,7 @@ public class Database
 
              for(int i=0; i<subjects.length; i++)
             {
-                sqlt += " s.SubjectName = '" + subjects[i] + "' OR ";
+                sqlt += " s.SubjectId = '" + subjects[i] + "' OR ";
             }
 
             sqlt += " 0) ";
@@ -1647,7 +1647,7 @@ public class Database
                 sqlt += "ORDER BY l.Title ASC ";
                 break;
         }
-
+        System.out.println(sqlt);
         try
         {
             res = stat.executeQuery(sqlt);
