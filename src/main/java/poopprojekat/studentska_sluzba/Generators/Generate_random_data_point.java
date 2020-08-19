@@ -36,14 +36,16 @@ public class Generate_random_data_point {
 
     public static Lecturer get_random_lecturer() {
         String title;
-        switch (new Random().nextInt( )) {
+        switch (new Random().nextInt(4)) {
             case 0:
                 title = "Redovni profesor";
                 break;
             case 1:
                 title = "Vanredni profesor";
+                break;
             case 2:
                 title = "Docent";
+                break;
             default:
                 title = "Asistent";
         }

@@ -111,7 +111,7 @@ public class Database
         AddUser(new User("admin", "123456789", "Admin", "A001"));
 
         Fill_db_randomly.with_majors(3);
-        Fill_db_randomly.with_students(20);
+        Fill_db_randomly.with_students(120);
         Fill_db_randomly.with_lecturers(15);
         Fill_db_randomly.with_Subjects(10);
         Fill_db_randomly.with_exams(6);
