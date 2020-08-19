@@ -28,6 +28,11 @@ public class Redirect_Controller {
         return "student";
     }
 
+    @GetMapping("/lecturer")
+    public String lecturer(HttpServletResponse response){
+        return "lecturer";
+    }
+
     @GetMapping("/students")
     public String students(HttpServletResponse response){
         return "students";

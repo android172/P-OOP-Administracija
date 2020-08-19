@@ -49,7 +49,7 @@ function fillTable(){
 	var data = [];
 
 	var table = document.getElementById("data");
-	var terms = document.getElementById("searchbar").value.toLowerCase();
+	var terms = format(document.getElementById("searchbar").value);
 	var header = document.createElement("tr");
 
 	var headerData;
@@ -97,7 +97,7 @@ function fillTable(){
 			var match = false;
 			if(customTable){
 				for(var j=0; j<cols; j++){
-					if(data[i][j].toLowerCase().search(terms) != -1)
+					if(format(data[i][j]).search(terms) != -1)
 						match = true;
 				}
 			}else{
@@ -105,7 +105,7 @@ function fillTable(){
 				var len = values.length;
 				for(var j=0; j<len; j++){
 					//console.log(values[j]);
-					if(!Array.isArray(values[j]) && (""+values[j]).toLowerCase().search(terms) != -1)
+					if(!Array.isArray(values[j]) && (format(""+values[j])).search(terms) != -1)
 						match = true;
 				}
 			}
@@ -157,9 +157,10 @@ function fillTable(){
     Salje zahtev za brisanje reda
 */
 function deleteRow(id){
-    makeRequest("/delete_"+dataType,"sendframe",[[dataIdName, id]], function(){
-    	submitSearch();
-    });
+	yesNoDialog("Are you sure you want to delete "+dataType+" " + id + "?", id, function(param){
+		makeRequest("/delete_"+dataType,[[dataIdName, param]], function(){
+    		submitSearch();
+    });});
 }
 
 var elementData;

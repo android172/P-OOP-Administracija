@@ -141,7 +141,7 @@ public class LecturerController {
 
     // delete lecturer
     @PostMapping("/delete_lecturer")
-    public String delete_lecturer(@RequestParam("token") long token, @RequestParam("lecturer") String lect_id) {
+    public String delete_lecturer(@RequestParam("token") long token, @RequestParam("lectId") String lect_id) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
         try {
             Database.DeleteLecturer(lect_id);

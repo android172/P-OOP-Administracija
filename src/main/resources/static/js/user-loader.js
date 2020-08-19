@@ -29,7 +29,7 @@ function fillTables(){
 	var adminTable = document.getElementById("data-admin");
 	var lectTable = document.getElementById("data-lecturer");
 	var studentTable = document.getElementById("data-student");
-	var terms = document.getElementById("searchbar").value.toLowerCase();
+	var terms = format(document.getElementById("searchbar").value);
 	var header = document.createElement("tr");
 
 	if(asc)
@@ -63,7 +63,7 @@ function fillTables(){
 			var len = values.length;
 
 			for(var j=0; j<len; j++){
-				if(values[j] && values[j].toLowerCase().search(terms) != -1)
+				if(values[j] && format(values[j]).search(terms) != -1)
 					match = true;
 			}
 			if(match){

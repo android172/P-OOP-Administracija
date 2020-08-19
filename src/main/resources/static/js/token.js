@@ -83,11 +83,11 @@ function makeRequest(requestStr, params=[], oncomplete=function(){}){
   //xhr.setRequestHeader('Content-Type', 'application/json');
   var eventListener = function(){
     var dataStr = this.responseText;
-    if(dataStr && dataStr!=""){
+    try {
       var data = JSON.parse(dataStr);
       oncomplete(data);
-    }
-    console.log("[response]: "+this.responseText);
+    } catch(e) { console.log("Couldn't parse response.")}
+    console.log("[response]: "+dataStr);
     this.removeEventListener('load', eventListener);
   };
   xhr.addEventListener('load', eventListener);

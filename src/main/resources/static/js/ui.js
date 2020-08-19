@@ -3,6 +3,12 @@ function toggleElementById(id){
 	toggleElement(el);
 }
 
+function format(str){
+	var newStr = str.toLowerCase().replace(/ć/,'c').replace(/č/,'c').replace(/š/,'s').replace(/đ/,'dj').replace(/ž/,'z');
+	//console.log(str+" -> "+newStr);
+	return newStr;
+}
+
 var dds = [];
 
 function initDropDowns(){
@@ -139,4 +145,41 @@ function getDisplayName(input){
 		case "date": return "Datum";
 	}
 	return input;
+}
+
+function createPopup(width, height){
+	var div = document.createElement('div');
+	div.className = 'popup';
+	div.style = "width:"+width+"px; height:"+height+"px; margin-left:"+(-width/2)+"px; margin-top:"+(-height/2)+"px;";
+	document.body.appendChild(div);
+	return div;
+}
+
+function yesNoDialog(msg, param, yes=function(){}){
+	var div = createPopup(250, 95);
+	var text = document.createElement('p');
+	text.innerHTML = msg;
+	div.appendChild(text);
+
+	var buttons = document.createElement('div');
+	buttons.className = "dialog-buttons";
+	var button = document.createElement('button');
+	button.className = "dialog-button";
+	button.innerHTML = "Yes";
+	button.onclick = function(){
+		yes(param);
+		div.display = "none";
+		setTimeout(function(){
+			document.body.removeChild(div);
+		}, 1);
+	}
+	buttons.appendChild(button);
+	button = document.createElement('button');
+	button.className = "dialog-button";
+	button.innerHTML = "No";
+	button.onclick = function(){
+		document.body.removeChild(div);
+	}
+	buttons.appendChild(button);
+	div.appendChild(buttons);
 }

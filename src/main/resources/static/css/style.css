@@ -170,3 +170,47 @@ header > * {
 #sendframe, #dataframe, #loginframe {
 	visibility: hidden;
 }
+
+.popup {
+	position: fixed;
+	top: 50%; left: 50%;
+	z-index: 13;
+	background-color: var(--color-header);
+	border: 2px solid var(--color-highlight2);
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 10px;
+}
+
+.popup:before {
+	content: "";
+	position: fixed;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	background-color: black;
+	opacity: 0.3;
+	z-index: -1;
+}
+
+.dialog-button {
+	background-color: var(--color-dark);
+	border: 1px solid var(--color-highlight2);
+	margin: 5px;
+	color: var(--color-highlight2);
+	/*width: 35px;*/
+}
+
+.dialog-button:hover {
+	background-color: var(--color-highlight2);
+	color: var(--color-dark);
+	cursor: pointer;
+}
+
+.dialog-buttons {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
