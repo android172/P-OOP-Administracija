@@ -1627,10 +1627,8 @@ public class Database
             uslov = true;
         }
 
-        if(uslov)
-            sqlt += "AND ";
-
-        sqlt += "1 ";
+        if(!uslov)
+            sqlt += "1 ";
 
         switch(orderBy)
         {

@@ -15,16 +15,16 @@ public class StudentskaSluzbaApplication
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
         Database db = new Database("testing");
 
-        Database.DropDatabase("testing");
-
-        try
-        {
-            db.TestDummy();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+//        Database.DropDatabase("testing");
+//
+//        try
+//        {
+//            db.TestDummy();
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
 
 //        Subject s = new Subject("M002");
 //        s = Database.GetSubject(s);
