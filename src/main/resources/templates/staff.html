@@ -12,8 +12,9 @@
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/filters.js" th:src="@{/js/filters.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
 </head>
-<body onload="getToken(); setDataType('lecturer', 'lectId', 3, 3); loaderInit(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToForm('updateform'); submitSearch(); 
+<body onload="checkRedirect(); setDataType('lecturer', 'lectId', 3, 3); loaderInit(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToForm('updateform'); submitSearch(); 
 	makeRequest('/get_lecturer_filters',[], function(data){
 		addOptionsToFilter('subject-options', data[0], true, 1, true);
 		addOptionsToFilter('major-options', data[1], true, 1, true);

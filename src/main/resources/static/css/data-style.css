@@ -375,6 +375,7 @@ input[type=number]{
 
 .add-row:hover {
 	color: black;
+	cursor: pointer;
 	background-color: var(--color-highlight2) !important;
 }
 
@@ -453,6 +454,7 @@ input[type=number]{
 	padding-top: 3%; 
 	font-size: 12px;
 	font-family: Century Gothic, arial, sans-serif;
+	z-index: 4;
 
 	white-space: nowrap;
   	overflow: hidden;

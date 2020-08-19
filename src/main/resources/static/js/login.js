@@ -43,8 +43,8 @@ window.onload = function(){
 		return;
 
 	if(token != "") {
-		makeRequest("/access_allowed",[],function(){
-			if(this.responseText && JSON.parse(this.responseText) == "true"){
+		makeRequest("/access_allowed",[],function(response){
+			if(response){
 				var role = getCookie("role");
 				window.location.replace("/"+role);
 			}

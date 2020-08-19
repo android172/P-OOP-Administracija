@@ -83,13 +83,18 @@ function makeRequest(requestStr, params=[], oncomplete=function(){}){
   //xhr.setRequestHeader('Content-Type', 'application/json');
   var eventListener = function(){
     var dataStr = this.responseText;
+    var parsed = false;
+    var data;
     try {
-      var data = JSON.parse(dataStr);
-      oncomplete(data);
+      data = JSON.parse(dataStr);
+      parsed = true;
     } catch(e) { 
-      oncomplete();
-      console.log("Couldn't parse response.");
+      console.log("Couldn't parse: \n"+dataStr);
     }
+    if(parsed) 
+      oncomplete(data);
+    else 
+      oncomplete([]);
     console.log("[response]: "+dataStr);
     this.removeEventListener('load', eventListener);
   };

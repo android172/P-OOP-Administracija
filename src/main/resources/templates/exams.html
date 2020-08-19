@@ -14,8 +14,9 @@
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/filters.js" th:src="@{/js/filters.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
 </head>
-<body onload="getToken(); displayUsername(); addTokenToForm('new-examform'); addTokenToForm('new-deadlineform');
+<body onload="checkRedirect(); displayUsername(); addTokenToForm('new-examform'); addTokenToForm('new-deadlineform');
 
 		makeRequest('/get_exam_dropdown', [], function(data){
 			addOptionsToFilter('new-lecturer-options', data[0], false, 0, true);
@@ -77,14 +78,15 @@
 				<form action="/add_exam" id="new-examform" method="post" target="sendframe" class="pad-medium wide new-grid">
 						<label for="subject_id">Predmet:</label>
 						<div class="dropdown no-auto-submit">
-							<input name="subject_id" value="" minlength="1" readonly required>
+							<input name="subject_id" value="" minlength="1" required>
 							<div class="dropdown-preview"></div>
 							<div class="dd-options" id="new-subject-options">
 							</div>
 						</div>
 						<label for="lect_id">Predavač:</label>
 						<div class="dropdown no-auto-submit">
-							<input name="lect_id" value="" minlength="1" readonly required>
+							<input name="lect_id" value="" minlength="1" required>
+							<div class="dropdown-preview"></div>
 							<div class="dd-options" id="new-lecturer-options">
 							</div>
 						</div>
