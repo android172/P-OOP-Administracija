@@ -1,18 +1,4 @@
-var studentData = [];
-
-function parseData(){
-	//var dataSt = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
-	if(dataSt != ''){
-		studentData = JSON.parse(dataSt);
-	}
-}
-function parseDataBudget(){
-	//var budzetSt = document.getElementById("budgetframe").contentWindow.document.body.childNodes[0].innerHTML;
-	budzetData = JSON.parse(budzetSt);
-	statusBudget(budzetData);
-}
-function fillTables(){
-	
+function loadStudentData(studentData){
 	var ime = studentData["firstName"];
 	var prezime = studentData["lastName"];
 	document.getElementById("Ime").innerHTML = ime;
@@ -39,6 +25,7 @@ function fillTables(){
 }
 
 function statusBudget(budzetData){
+	console.log(budzetData);
 	if(budzetData){
 		document.getElementById("Status").innerHTML = 'Budzet';
 	}
@@ -46,4 +33,10 @@ function statusBudget(budzetData){
 		document.getElementById("Status").innerHTML = 'Samofinansiranje';
 	}
 	//Status filled
+}
+function loadStudentSubjects(examsData){
+	console.log(examsData);
+	var Prosek = 0;
+	var ESPB = 0;
+	
 }

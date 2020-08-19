@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
+	<link rel="stylesheet" type="text/css" href="../static/css/exams-registration.css" th:href="@{/css/exams-registration.css}"/>
+	<link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
+	<meta charset="utf-8">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
+</head>
+<body onload="getToken(); getIndex();">
+	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
+		<header>
+			<h1>Student</h1>
+			<div id="user">
+				<p><b><span id = "Ime"></span> <span id = "Prezime"></span></b></p>
+				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
+				<div id="user-options">
+					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
+					<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
+				</div><!--close user options-->
+			</div><!--close user-->
+		</header>
+		<div id = "content">
+			<table id = "tableExams">
+				<tr>
+					<th colspan = "6">Prijava ispita</th>
+				</tr>
+				<tr>
+					<th>Predmet</th>
+					<th>IDPredmet</th>
+					<th>Godina</th>
+					<th>ESPB</th>
+					<th>Profesor</th>
+					<th>Prijavi ispit</th>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><input type="button" class = "buttonPrijava" name = "button1" value="Prijavi" onclick=''></td>
+				</tr>
+			</table><!--close table 1-->
+		<table id = "tableRegistered">
+			<tr>
+				<th colspan = "2">Prijavljeni predmeti</th>
+			</tr>
+			<tr>
+				<td></td>
+				<td style = "width: 20%;"><input type="button" class = "buttonClear" name = "button2" value="Obrisi" onclick=''></td>
+			</tr>
+		</table>
+		</div><!--close content-->
+	</div><!--close wrapper-->
+	<iframe src="" name="dataframe" id="dataframe" onload = "parseData()"></iframe>
+	<iframe src="" name="sendframe" id="sendframe"></iframe>
+</body>
+</html>

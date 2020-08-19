@@ -50,17 +50,3 @@ function showTable5(){
 			break;
 	}
 }
-function showTable6(){
-	var x,y,z;
-	x = document.getElementById("table4");
-	y = document.getElementById("table5");
-	z = document.getElementById("table6");
-	var b = document.getElementsByName("button3");
-	switch(b){
-		case b:
-			z.style.visibility = "visible";
-			y.style.visibility = "hidden";
-			x.style.visibility = "hidden";
-			break;
-	}
-}

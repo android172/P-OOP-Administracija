@@ -4,13 +4,12 @@
 	<link rel="stylesheet" type="text/css" href="../static/css/lecturer-style.css" th:href="@{/css/lecturer-style.css}"/>
 	<link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
 	<meta charset="utf-8">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/showTable.js" th:src="@{/js/showTable.js}"></script>
 </head>
 
-<body>
+<body onload = "getToken(); makeRequest('/get_lecturer',[['index',index]],function(lecturerData){loadLecturerData(lecturerData);});makeRequest('get_exams_for_lecturer',[['index',index]],function(lecturerSubData){loadLecturerSubjects(lecturerSubData);});">
 	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
 		<header>
 			<h1>Lecturer</h1>
@@ -19,7 +18,7 @@
 				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
 				<div id="user-options">
 					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
-					<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
+					<button type="button" onclick="makeRequest('/logout_req', [], function(){window.location.replace('/login');});">Log out</button>
 				</div><!--close user options-->
 			</div><!--close user-->
 		</header>

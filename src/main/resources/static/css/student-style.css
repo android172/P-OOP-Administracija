@@ -178,3 +178,9 @@ h1 {
 	background-color: var(--color-highlight);
 	cursor: pointer;
 }
+.buttonPrijava{
+	text-align: center;
+	font-size: 20px;
+	cursor: pointer;
+	background-color: var(--color-highlight2) !important;
+}
