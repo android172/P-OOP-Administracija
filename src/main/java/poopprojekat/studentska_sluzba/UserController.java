@@ -65,7 +65,7 @@ public class UserController {
         if (new_username.equals("")) new_username = null;
         if (new_password.equals("")) new_password = null;
 
-        User updated_user = new User(new_username, new_password, null);
+        User updated_user = new User(new_username, new_password,null, null);
         try{
             Database.EditUser(username, updated_user);
             return "User successfully updated";

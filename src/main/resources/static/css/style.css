@@ -185,7 +185,7 @@ header > * {
 	border-radius: 10px;
 }
 
-.popup:before {
+.popup:before, #update-self:before {
 	content: "";
 	position: fixed;
 	top: 0; left: 0;
@@ -213,4 +213,75 @@ header > * {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
+}
+
+.grid {
+	display: inline-grid;
+	grid-template-columns: auto auto;
+	grid-row-gap: 20px;
+	grid-column-gap: 20px;
+}
+
+#update-self {
+	padding-top: 35px; 
+	background-color: var(--color-header);
+	border: 2px solid var(--color-highlight2);
+
+	width: 340px;
+	height: 200px;
+	margin-left: -170px;
+	margin-top: -100px;
+
+	position: fixed;
+	top: 50%; left: 50%;
+
+	display: none;
+}
+
+#update-self>div>form>input {
+	margin: 1px;
+	color: var(--color-text);
+	background-color: var(--color-darker);
+	border-radius: 2px;
+}
+
+#update-self>div>form>input[type=submit] {
+	background-color: var(--color-dark);
+	color: var(--color-highlight2);
+	height: 40px;
+	width: 100px;
+	border-radius: 10px;
+	position: absolute;
+	left: 50%;
+	margin-left: -50px;
+	bottom: 15px;
+}
+
+.quit {
+	width: 42px;
+	height: 42px;
+
+	background-color: var(--color-highlight);
+	color: var(--color-darker);
+
+	border-radius: 50%;
+	font-weight: 900;
+	font-size: 25px;
+
+	padding: 0px;
+	margin: 0px;
+
+	position: absolute;
+	top: 20px;
+	right: 20px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.quit:hover {
+	background-color: var(--color-highlight2);
+	color: var(--color-dark);
+	cursor: pointer;
 }

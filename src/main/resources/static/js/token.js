@@ -9,9 +9,11 @@ function getIndex(){
     index = getCookie("index");
 }
 
-function displayUsername(){
+function displayUsername(id="user-name"){
   username = getCookie("username");
-  document.getElementById("user-name").innerHTML = username;
+  var elem = document.getElementById(id);
+  elem.innerHTML = username;
+  elem.value = username;
 }
 
 function setIndex(newIndex){
