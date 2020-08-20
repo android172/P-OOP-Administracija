@@ -220,7 +220,7 @@ public class Database
                 "Password NVARCHAR(20) not NULL, " +
                 "Role VARCHAR(20) not NULL, " +          // Student, Profesor, Admin
                 "UniqueId VARCHAR(10) not NULL UNIQUE , " +
-                "PRIMARY KEY (id, Username) ) ENGINE=InnoDB";
+                "PRIMARY KEY (id, Username) ) COLLATE 'latin2_general_ci', CHARACTER SET 'latin2', ENGINE=InnoDB";
 
         System.out.println("Creating table 'Users'");
 
@@ -1645,7 +1645,7 @@ public class Database
                 sqlt += "ORDER BY l.Title ASC ";
                 break;
         }
-        System.out.println(sqlt);
+
         try
         {
             res = stat.executeQuery(sqlt);
