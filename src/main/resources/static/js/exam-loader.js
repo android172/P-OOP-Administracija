@@ -53,9 +53,9 @@ function fillTableExams(tableID){
 		delButton.className = "button-delete";
 	    delButton.id = values[0];
 		delButton.onclick = function(){
-		    makeRequest("/delete_exam","sendframe",[["exam_id", this.id]], function(){
-		    	makeRequest('/get_all_exams','dataframe',[],function() {
-					parseDataToTable('exams', false);
+		    makeRequest("/delete_exam",[["exam_id", this.id]], function(){
+		    	makeRequest('/get_all_exams',[],function(data) {
+					parseDataToTable('exams', false, data);
 				});
 		    });
 		};
@@ -119,9 +119,9 @@ function fillTableDeadlines(tableID){
 		delButton.className = "button-delete";
 	    delButton.id = values[0];
 		delButton.onclick = function(){
-		    makeRequest("/delete_exam_deadline","sendframe",[["name", this.id]], function(){
-		    	makeRequest('/get_exam_deadlines','dataframe',[],function() {
-					parseDataToTable('exam-deadlines', true);
+		    makeRequest("/delete_exam_deadline",[["name", this.id]], function(){
+		    	makeRequest('/get_exam_deadlines',[],function(data) {
+					parseDataToTable('exam-deadlines', true, data);
 				});
 		    });
 		};

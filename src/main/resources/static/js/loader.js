@@ -14,10 +14,11 @@ function setCustomTable(value){
 
 function parseData(){
 	if(hasData){
-		var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
-		if(dataStr!=""){
+		try{
+			var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
 			oData = JSON.parse(dataStr);
-		}else{
+		}catch(e){
+			console.log("Couldn't parse: " + dataStr);
 			oData = [];
 		}
 		//alert(oData);
@@ -46,6 +47,9 @@ function setDataType(type, idName, columnNum = 0, newObjIdOrder = 0){
 }
 
 function fillTable(){
+	if(oData.length==0)
+		return;
+
 	var data = [];
 
 	var table = document.getElementById("data");

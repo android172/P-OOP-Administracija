@@ -68,6 +68,8 @@ function initDropDowns(){
 
 					str=str.substr(0,str.length-1);
 					displayStr=displayStr.substr(0,displayStr.length-2);
+					if(displayStr=="")
+						displayStr="Nijedan";
 					input.value = str;
 					displayInput.innerHTML = displayStr;
 					input.form.submit();

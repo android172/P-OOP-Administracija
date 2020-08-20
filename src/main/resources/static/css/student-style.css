@@ -107,6 +107,7 @@ html, body {
 
 a, p, h1, h2, h3, label, input, ::placeholder {
 	font-family: Century Gothic, Arial, sans-serif;
+	text-decoration: none;
 }
 
 h1 {
@@ -121,6 +122,7 @@ h1 {
 	float: left;
 	position: absolute;
 	top: 530px;
+	margin-left:-10px;
 }
 #table4>tbody>tr>td{
 	background-color: var(--color-highlight2) !important;
@@ -150,6 +152,7 @@ h1 {
 	float: left;
 	position: absolute;
 	top: 530px;
+	margin-left:-10px;
 }
 #table5>tbody>tr>td{
 	background-color: var(--color-highlight2) !important;
@@ -174,13 +177,10 @@ h1 {
 .button{
 	text-align: center;
 	display: inline-block;
-	font-size: 17px;
+	font-size: 20px;
 	background-color: var(--color-highlight);
 	cursor: pointer;
-}
-.buttonPrijava{
-	text-align: center;
-	font-size: 20px;
-	cursor: pointer;
-	background-color: var(--color-highlight2) !important;
+	border: none;
+	padding: 5px;
+	margin-left: 2px;
 }

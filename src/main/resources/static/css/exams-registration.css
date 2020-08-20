@@ -112,3 +112,10 @@ h1 {
 #tableRegistered>tbody>tr>th{
 	background-color: var(--color-highlight) !important;
 }
+.buttonPrihvati{
+	text-align: center;
+	font-size: 20px;
+	cursor: pointer;
+	background-color: var(--color-highlight2) !important;
+	margin-left: 86%;
+}

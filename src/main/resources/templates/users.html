@@ -12,8 +12,9 @@
 
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
 </head>
-<body onload="getToken(); displayUsername(); addTokenToForm('search'); submitSearch();">
+<body onload="checkRedirect(); displayUsername(); addTokenToForm('search'); submitSearch();">
 	<div id="background"></div>
 	<div id="wrapper">
 		<header>

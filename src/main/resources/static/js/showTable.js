@@ -1,5 +1,5 @@
 function showTable2(){
-	var x,y,z;
+	var x,y;
 	x = document.getElementById("table2");
 	y = document.getElementById("table3");
 	var b = document.getElementsByName("button4");
@@ -11,7 +11,7 @@ function showTable2(){
 	}
 }
 function showTable3(){
-	var x,y,z;
+	var x,y;
 	x = document.getElementById("table2");
 	y = document.getElementById("table3");
 	var b = document.getElementsByName("button5");
@@ -23,10 +23,9 @@ function showTable3(){
 	}
 }
 function showTable4(){
-	var x,y,z;
+	var x,y;
 	x = document.getElementById("table4");
 	y = document.getElementById("table5");
-	z = document.getElementById("table6");
 	var b = document.getElementsByName("button1");
 	switch(b){
 		case b:
@@ -37,10 +36,9 @@ function showTable4(){
 	}
 }
 function showTable5(){
-	var x,y,z;
+	var x,y;
 	x = document.getElementById("table4");
 	y = document.getElementById("table5");
-	z = document.getElementById("table6");
 	var b = document.getElementsByName("button2");
 	switch(b){
 		case b:
