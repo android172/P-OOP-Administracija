@@ -205,8 +205,4 @@ public class Exam_Controller {
             return "Grading failed due to the following error: " + e1.getMessage();
         }
     }
-
-    // Subject Controller
-    // TO DO: Daj sve predmete na datom smeru
-    // TO DO: Daj sve predmete koje slusa dati ucenik (Svi upisani predmeti)
 }

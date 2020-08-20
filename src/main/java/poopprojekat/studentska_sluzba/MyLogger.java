@@ -60,7 +60,7 @@ public class MyLogger extends Thread{
             while (true) {
                 writer = new FileWriter("log.txt", true);
                 capturer.start();
-                sleep(1000 * 10);
+                sleep(1000 * 60 * 3 );
                 String tmp = capturer.stop();
                 if (tmp != null || tmp != "") {
                     writer.write(tmp);

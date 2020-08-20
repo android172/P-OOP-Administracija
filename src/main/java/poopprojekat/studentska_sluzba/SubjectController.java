@@ -13,6 +13,7 @@ import java.util.ArrayList;
 // /get_subjects?token=&name=&year=&lect_name=&major_name=&order_by  -returns filtered ordered list of subjects (ArrayList<Subject>)
 // /get_subjects_by_lecturer?token=&lect_id= -returns subjects of lecturer with given id
 // /get_subjects_by_major?token=&major_id= -returns subjects from given major
+// /get_subjects_by_student?token=&index= -returns subjects that student is applied
 //
 // /add_subject?token=&name=&id=&espb=&year=&lect_id=&major_id=
 // /update_subject?token=&name=&id=&new_id=&espb=&year=&lect_id=&major_id=
