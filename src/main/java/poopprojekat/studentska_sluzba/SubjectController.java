@@ -153,7 +153,7 @@ public class SubjectController {
 
     @PostMapping("/get_subjects_by_student")
     public ArrayList<Subject> get_subjects_by_student(@RequestParam("token") long token,
-                                                      @RequestParam("index") int index){
+                                                      @RequestParam("index") String index){
 
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
