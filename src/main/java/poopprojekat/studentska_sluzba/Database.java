@@ -1363,7 +1363,7 @@ public class Database
         return s;
     }
 
-    public static ArrayList<Subject> GetSubjects(int year[], String profName[], String majorId[], int orderBy)
+    public static ArrayList<Subject> GetSubjects(int year[], String lectId[], String majorId[], int orderBy)
     {
         String sqlt;
 
@@ -1389,24 +1389,14 @@ public class Database
             sqlt += "0 ) ";
             uslov = true;
         }
-        if(profName != null)
+        if(lectId != null)
         {
             if(uslov)
                 sqlt += "AND ";
             sqlt += "( ";
-            for(int i = 0;i<profName.length;i++)
+            for(int i = 0;i<lectId.length;i++)
             {
-                String temp[] = profName[i].split(" ");
-
-                ArrayList<String> LectIds = GetLecturers(temp[0], temp[1]);
-
-                if(LectIds != null)
-                {
-                    for (String id : LectIds)
-                    {
-                        sqlt += "s.LectId = '" + id + "' OR ";
-                    }
-                }
+                sqlt += "s.LectId = '" + lectId[i] + "' OR ";
             }
 
             sqlt += "0 ) ";
