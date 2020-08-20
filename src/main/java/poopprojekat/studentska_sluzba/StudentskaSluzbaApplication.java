@@ -13,6 +13,8 @@ public class StudentskaSluzbaApplication
 {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(StudentskaSluzbaApplication.class, args);
+        MyLogger logger = new MyLogger();
+        logger.start();
         Database db = new Database("testing");
 
 //        Database.DropDatabase("testing");
