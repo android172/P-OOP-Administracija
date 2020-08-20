@@ -85,7 +85,7 @@ public class SubjectController {
 
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
-
+            if (year.equals("") || lect_name.equals("") || major_name.equals("")) return null;
             // String[] names = null;
             int[] years = null;
             String[] pom = year.split("\\+");

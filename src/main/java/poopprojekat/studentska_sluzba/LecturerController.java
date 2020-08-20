@@ -48,13 +48,14 @@ public class LecturerController {
     @PostMapping("/get_lecturers")
     public ArrayList<Lecturer> getLecturers(@RequestParam("token") long token, @RequestParam("subject") String subject, @RequestParam("major") String major, @RequestParam("order_by") String order_by) {
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+        if (subject.equals("") || major.equals("")) return null;
         // format picked subjects
         String subjects[] = null;
-        if (!subject.equals("all") && !subject.equals(""))
+        if (!subject.equals("all"))
             subjects = subject.split("\\+");
         // format picked majors
         String majors[] = null;
-        if (!major.equals("all") && !major.equals(""))
+        if (!major.equals("all"))
             majors = major.split("\\+");
         int order_ctg;
         switch (order_by) {

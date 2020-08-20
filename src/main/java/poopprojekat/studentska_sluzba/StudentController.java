@@ -58,6 +58,7 @@ public class StudentController {
             @RequestParam("major") String major, @RequestParam("order_by") String order_by) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
+        if (date_of_birth.equals("") || city.equals("") || major.equals("")) return null;
         // format picked dates
         LocalDate dates[] = null;
         if (!date_of_birth.equals("all")) {
