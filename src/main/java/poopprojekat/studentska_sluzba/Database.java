@@ -2147,11 +2147,11 @@ public class Database
     {
         if(index != null)
         {
-            sql = "SELECT * FROM AppliedToListen as al join Subjects as s on al.SubjectId = s.SubjectId" +
+            sql = "SELECT * FROM AppliedToListen as al join Subjects as s on al.SubjectId = s.SubjectId " +
                     "WHERE al.IndexNum = '" + index + "' AND al.DatePassed is null ";
 
             if(year != 0)
-                sql += "AND al.Year = '" + year + "' ";
+                sql += "AND al.Year = " + year + " ";
         }
         else
             throw new Exception("Index is null");
@@ -2168,7 +2168,7 @@ public class Database
 
             do
             {
-                subjects.add(new Subject(res.getString("s.SubjectName"), res.getString("s.SubjectId"), res.getInt("s.ESPB"), res.getInt("s.Year"), res.getString("ss.LectId"), res.getString("s.MajorId"), res.getInt("s.PointsRequired")));
+                subjects.add(new Subject(res.getString("s.SubjectName"), res.getString("s.SubjectId"), res.getInt("s.ESPB"), res.getInt("s.Year"), res.getString("s.LectId"), res.getString("s.MajorId"), res.getInt("s.PointsRequired")));
             }while(res.next());
         }
         catch (SQLException throwables)
