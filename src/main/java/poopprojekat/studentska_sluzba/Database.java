@@ -216,11 +216,11 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Users " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "Username NVARCHAR(20) not NULL Unique, " +      // ind/god ili ind-god
-                "Password NVARCHAR(20) not NULL, " +
+                "Username NVARCHAR(20) not NULL Unique COLLATE utf8_bin, " +      // ind/god ili ind-god
+                "Password NVARCHAR(20) not NULL COLLATE utf8_bin, " +
                 "Role VARCHAR(20) not NULL, " +          // Student, Profesor, Admin
                 "UniqueId VARCHAR(10) not NULL UNIQUE , " +
-                "PRIMARY KEY (id, Username) ) CHARACTER SET 'latin1', COLLATE 'latin1_general_cs', ENGINE=InnoDB ";
+                "PRIMARY KEY (id, Username) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'Users'");
 
