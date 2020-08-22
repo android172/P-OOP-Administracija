@@ -68,7 +68,7 @@ public class SubjectController {
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] { {"Admin", "any"}, {"Lecturer", id} })) return null;
 
-            return Database.SubjectsOfLecturer(Database.GetLecturer(id));
+            return Database.SubjectsOfLecturer(id);
 
         } catch (Exception e) {
             e.printStackTrace();
