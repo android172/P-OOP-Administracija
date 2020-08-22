@@ -10,7 +10,7 @@
 	<script type="text/javascript" language="Javascript" src="../static/js/student-loader.js" th:src="@{/js/student-loader.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/showTable.js" th:src="@{/js/showTable.js}"></script>
 </head>
-<body onload="getToken(); getIndex(); makeRequest('/get_student',[['index',index]],function(studentData){loadStudentData(studentData);}); makeRequest('/budget',[['index',index]],function(budzetData){statusBudget(budzetData);});makeRequest('/get_subjects_by_student',[['index',index]],function(examsData){loadStudentSubjects(examsData);});">
+<body onload="getToken(); getIndex(); makeRequest('/get_student',[['index',index]],function(studentData){loadStudentData(studentData);}); makeRequest('/budget',[['index',index]],function(budzetData){statusBudget(budzetData);});makeRequest('/get_subjects_by_student',[['index',index]],function(subjectData){loadStudentSubjects(subjectData);});/*makeRequest('/get_exams',[['student',index]],function(examsData){loadExams(examsData);});*/makeRequest('/get_attempts_info_for_index',[['index',index]],function(Data){loadGrades(gradeData);}	);">
 	<div id="background"></div>
 	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
 		<header>

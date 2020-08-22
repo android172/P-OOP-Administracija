@@ -33,9 +33,34 @@ function statusBudget(budzetData){
 	}
 	//Status filled
 }
-function loadStudentSubjects(examsData){
-	console.log(examsData);
+
+function loadStudentSubjects(subjectData){
+	var table4 = document.getElementById("table4");
+	let table = '<table>'
+	table += '<tr><th colspan = "6">Upisani predmeti</th></tr>'
+	table += '<tr><th>Predmet</th><th>ID</th><th>Godina</th><th>ESPB</th><th>Profesor</th><th>Smer</th></tr>'
+	console.log(subjectData);
+    for (let i = 0; i < subjectData.length; i++) {
+        const subjectName = subjectData[i]["subjectName"];
+        const Id =  subjectData[i]["subjectId"];
+		const espb =  subjectData[i]["espb"];
+		const year =  subjectData[i]["year"];
+		const lecName =  subjectData[i]["lectName"];
+		const majorName =  subjectData[i]["majorName"];
+        table += `<tr><td>${subjectName}</td><td>${Id}</td><td>${year}</td><td>${espb}</td><td>${lecName}</td><td>${majorName}</td></tr>`
+    }
+    table += '</table>'
+    table4.innerHTML = table;
+}
+
+function loadGrades(gradeData){
 	var Prosek = 0;
 	var ESPB = 0;
-	
+	for(let i = 0; i < gradeData.length; i++)
+		if(gradeData[i]["grades"] > 5)
+			Prosek += gradeData[i]["grade"];
+	document.getElementById("Prosek").innerHTML = Prosek
+}
+
+function loadExams(examsData){
 }
