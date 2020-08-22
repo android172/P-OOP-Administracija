@@ -1545,34 +1545,6 @@ public class Database
         return p;
     }
 
-    private static ArrayList<String> GetLecturers(String fname, String lname)
-    {
-        ArrayList<String> LectIds = new ArrayList<>();
-        sql = "SELECT * FROM Lecturers " +
-                "WHERE FirstName = '" + fname + "' AND LastName = '" + lname + "' ";
-
-        ResultSet res = null;
-
-        try
-        {
-            res = stat.executeQuery(sql);
-
-            if(!res.first())
-                return null;
-
-            LectIds.add(res.getString("LectId"));
-
-            while(res.next())
-                LectIds.add(res.getString("LectId"));
-        }
-        catch (SQLException throwables)
-        {
-            throwables.printStackTrace();
-        }
-
-        return LectIds;
-    }
-
     public static ArrayList<Lecturer> GetLecturers(String subjects[], String majorId[], int orderBy)
     {
         ArrayList<Lecturer> lista = new ArrayList<>();
@@ -1728,10 +1700,10 @@ public class Database
         return m;
     }
 
-    public static ArrayList<Subject> SubjectsOfLecturer(Lecturer p)
+    public static ArrayList<Subject> SubjectsOfLecturer(String lectId)
     {
         sql = "SELECT * FROM Subjects " +
-                "WHERE LectId = '" + p.getLectId() + "' ";
+                "WHERE LectId = '" + lectId + "' ";
 
         ResultSet res = null;
         Subject temp = null;
