@@ -68,7 +68,7 @@ public class SubjectController {
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] { {"Admin", "any"}, {"Lecturer", id} })) return null;
 
-            return Database.SubjectsOfLecturer(Database.GetLecturer(id));
+            return Database.SubjectsOfLecturer(id);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,7 +85,7 @@ public class SubjectController {
 
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
-
+            if (year.equals("") || lect_name.equals("") || major_name.equals("")) return null;
             // String[] names = null;
             int[] years = null;
             String[] pom = year.split("\\+");
@@ -155,9 +155,9 @@ public class SubjectController {
     @PostMapping("/get_subjects_by_student")
     public ArrayList<Subject> get_subjects_by_student(@RequestParam("token") long token,
                                                       @RequestParam("index") String index){
-
+        
         try {
-            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}, {"Student", index}})) return null;
             return Database.GetSubjectsByStudent(new Index(index), LocalDate.now().getYear());
         } catch (Exception e) {
             e.printStackTrace();

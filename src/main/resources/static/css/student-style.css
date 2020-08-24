@@ -45,8 +45,8 @@ header > * {
 }
 #user-img-info{
 	padding: 10px;
-	width: 200px;
-	height: 200px;
+	width: 35%;
+	height: 35%;
 	margin-left: 30%;
 	display: flex;
 	flex-direction: column;
@@ -121,7 +121,7 @@ h1 {
 	width: 100%;
 	float: left;
 	position: absolute;
-	top: 530px;
+	top: 48%;
 	margin-left:-10px;
 }
 #table4>tbody>tr>td{
@@ -151,7 +151,7 @@ h1 {
 	width: 100%;
 	float: left;
 	position: absolute;
-	top: 530px;
+	top: 48%;
 	margin-left:-10px;
 }
 #table5>tbody>tr>td{
@@ -159,19 +159,6 @@ h1 {
 }
 
 #table5>tbody>tr>th{
-	background-color: var(--color-highlight) !important;
-}
-#table6{
-	width: 100%;
-	float: left;
-	position: absolute;
-	top: 530px;
-}
-#table6>tbody>tr>td{
-	background-color: var(--color-highlight2) !important;
-}
-
-#table6>tbody>tr>th{
 	background-color: var(--color-highlight) !important;
 }
 .button{
@@ -183,4 +170,10 @@ h1 {
 	border: none;
 	padding: 5px;
 	margin-left: 2px;
+}
+#buttons{
+	float: left;
+	position: relative;
+	margin-left: 25%;
+	padding-top: 4%;
 }

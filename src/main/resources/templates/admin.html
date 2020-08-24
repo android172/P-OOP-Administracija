@@ -8,9 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
     <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
+    <script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
     <script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
 </head>
-<body onload="checkRedirect(); displayUsername();">
+<body onload="checkRedirect(); displayUsername(); displayUsername('update-uname'); addTokenToForm('userform');">
 	<div id="background"></div>
 	<div id="wrapper">
 		<div id="user">
@@ -32,6 +33,20 @@
 					<li><a href="exams" class="tokenify">Ispiti</a></li>
 					<li><a href="users" class="tokenify">Korisnici</a></li>
 				</ul>
+			</div>
+		</div>
+		<div id="update-self">
+			<div class="flex-center">
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
+				<form id="userform" action="/update_user" target="_blank" method="post" class="grid">
+					<h2>Update user:</h2><br>
+					<input type="hidden" name="username" id="update-uname">
+					<label for="new-username">Change username:</label>
+					<input type="text" name="new_username">
+					<label for="new-password">Change password:</label>
+					<input type="password" name="new_password">
+					<input type="submit" value="Submit" onclick="toggleElement(this.parentNode.parentNode.parentNode);">
+				</form>
 			</div>
 		</div>
 		<iframe src="" name="sendframe" id="sendframe"></iframe>

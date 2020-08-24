@@ -216,11 +216,11 @@ public class Database
     {
         sql = "CREATE TABLE IF NOT EXISTS Users " +
                 "( id INTEGER not NULL AUTO_INCREMENT," +
-                "Username NVARCHAR(20) not NULL Unique, " +      // ind/god ili ind-god
-                "Password NVARCHAR(20) not NULL, " +
+                "Username NVARCHAR(20) not NULL Unique COLLATE utf8_bin, " +      // ind/god ili ind-god
+                "Password NVARCHAR(20) not NULL COLLATE utf8_bin, " +
                 "Role VARCHAR(20) not NULL, " +          // Student, Profesor, Admin
                 "UniqueId VARCHAR(10) not NULL UNIQUE , " +
-                "PRIMARY KEY (id, Username) ) CHARACTER SET 'latin1', COLLATE 'latin1_general_cs', ENGINE=InnoDB ";
+                "PRIMARY KEY (id, Username) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'Users'");
 
@@ -1363,7 +1363,7 @@ public class Database
         return s;
     }
 
-    public static ArrayList<Subject> GetSubjects(int year[], String profName[], String majorId[], int orderBy)
+    public static ArrayList<Subject> GetSubjects(int year[], String lectId[], String majorId[], int orderBy)
     {
         String sqlt;
 
@@ -1389,24 +1389,14 @@ public class Database
             sqlt += "0 ) ";
             uslov = true;
         }
-        if(profName != null)
+        if(lectId != null)
         {
             if(uslov)
                 sqlt += "AND ";
             sqlt += "( ";
-            for(int i = 0;i<profName.length;i++)
+            for(int i = 0;i<lectId.length;i++)
             {
-                String temp[] = profName[i].split(" ");
-
-                ArrayList<String> LectIds = GetLecturers(temp[0], temp[1]);
-
-                if(LectIds != null)
-                {
-                    for (String id : LectIds)
-                    {
-                        sqlt += "s.LectId = '" + id + "' OR ";
-                    }
-                }
+                sqlt += "s.LectId = '" + lectId[i] + "' OR ";
             }
 
             sqlt += "0 ) ";
@@ -1553,34 +1543,6 @@ public class Database
         }
 
         return p;
-    }
-
-    private static ArrayList<String> GetLecturers(String fname, String lname)
-    {
-        ArrayList<String> LectIds = new ArrayList<>();
-        sql = "SELECT * FROM Lecturers " +
-                "WHERE FirstName = '" + fname + "' AND LastName = '" + lname + "' ";
-
-        ResultSet res = null;
-
-        try
-        {
-            res = stat.executeQuery(sql);
-
-            if(!res.first())
-                return null;
-
-            LectIds.add(res.getString("LectId"));
-
-            while(res.next())
-                LectIds.add(res.getString("LectId"));
-        }
-        catch (SQLException throwables)
-        {
-            throwables.printStackTrace();
-        }
-
-        return LectIds;
     }
 
     public static ArrayList<Lecturer> GetLecturers(String subjects[], String majorId[], int orderBy)
@@ -1738,10 +1700,10 @@ public class Database
         return m;
     }
 
-    public static ArrayList<Subject> SubjectsOfLecturer(Lecturer p)
+    public static ArrayList<Subject> SubjectsOfLecturer(String lectId)
     {
         sql = "SELECT * FROM Subjects " +
-                "WHERE LectId = '" + p.getLectId() + "' ";
+                "WHERE LectId = '" + lectId + "' ";
 
         ResultSet res = null;
         Subject temp = null;
@@ -2723,6 +2685,22 @@ public class Database
         sql = "UPDATE AppliedToListen " +
                 "SET Attempts = Attempts + 1 " +
                 "WHERE IndexNum = new.IndexNum ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void SetPoints(Index index, String subjectId, int points)
+    {
+        sql = "UPDATE AppliedToListen " +
+                "SET Points = " + points + " " +
+                "WHERE IndexNum = '" + index + "' AND SubjectId = '" + subjectId + "' AND Year = " + LocalDate.now().getYear() +  " ";
 
         try
         {

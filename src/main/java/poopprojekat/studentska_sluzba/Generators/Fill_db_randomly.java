@@ -94,8 +94,19 @@ public class Fill_db_randomly {
                         if (new Random().nextInt(100) < chance) applied.add(s.getIndex());
                     }
                 }
-                if (applied.size() > 0)
+                if (applied.size() > 0) {
                     Database.ApplyForSubject(applied.toArray(new Index[applied.size()]), gen.subjectId);
+
+                    if (gen.points_required != 0) {
+                        int maximum_points_possible = Math.min(2 * gen.points_required - 1, 101);
+                        for (Index in : applied) {
+                            int points_earned = 0;
+                            if (new Random().nextInt(100) < 20) points_earned = new Random().nextInt(maximum_points_possible / 2);
+                            else if (new Random().nextInt(100) < 80) points_earned = new Random().nextInt(maximum_points_possible);
+                            Database.SetPoints(in, gen.subjectId, points_earned);
+                        }
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,6 +1,5 @@
 package poopprojekat.studentska_sluzba;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +39,7 @@ public class MajorsController {
     }
 
 
-    @GetMapping("/add_major")
+    @PostMapping("/add_major")
     public String add_major(@RequestParam("token") long token,
                             @RequestParam("name") String name){
         if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
@@ -55,7 +54,7 @@ public class MajorsController {
         }
     }
 
-    @GetMapping("/update_major")
+    @PostMapping("/update_major")
     public String update_major(@RequestParam("token") long token,
                                @RequestParam("id") String id,
                                @RequestParam("new-id") String new_id,
@@ -74,7 +73,7 @@ public class MajorsController {
         return "Major successfully updated";
     }
 
-    @GetMapping("/delete_major")
+    @PostMapping("/delete_major")
     public String delete_major(@RequestParam("token") long token,
                                @RequestParam("id") String id){
 

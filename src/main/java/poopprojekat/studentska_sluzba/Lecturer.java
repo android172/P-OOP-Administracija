@@ -3,10 +3,10 @@ package poopprojekat.studentska_sluzba;
 public class Lecturer
 {
     // Obavezne za dodavanje
+    private String lectId;
     private String firstName;
     private String lastName;
     private String title;
-    private String lectId;
 
     public Lecturer(String id) // za pretragu baze
     {
