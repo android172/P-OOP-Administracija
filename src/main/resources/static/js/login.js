@@ -2,7 +2,7 @@ var initialized = false;
 
 function redirect(){
 	if(initialized){
-		var dataStr = document.getElementById("loginframe").contentWindow.document.body.innerHTML;
+		var dataStr = document.getElementById("@loginframe").contentWindow.document.body.innerHTML;
 		//alert(dataStr);
 
 		if(dataStr=="access denied"){

@@ -17,7 +17,7 @@
 	<div id="background"></div>
 	<div id="wrapper">
 		<div id="login-wrapper">
-			<form action="/login_req" id="login" target="loginframe" method="post">
+			<form action="/login_req" id="login" target="@loginframe" method="post">
 				<h2> Log-in: </h2>
 				<br>
 	            <label>Username:</label>
@@ -30,7 +30,7 @@
 	            <input type="reset" value="Reset" class="reset">
 			</form>
 		</div>
-		<iframe src="" name="loginframe" id="loginframe" onload="redirect();"></iframe>
+		<iframe src="" name="@loginframe" id="@loginframe" onload="redirect();"></iframe>
 	</div>
 </body>
 </html>

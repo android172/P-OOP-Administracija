@@ -26,10 +26,14 @@ function initDropDowns(){
 
 		let input = dds[i].children[0];
 		let displayInput = dds[i].children[1];
-		if(opts.children[0].children[0])
+		if(opts.children[0].children[0]){
+			input.value = opts.children[0].children[1].value;
 			displayInput.innerHTML = opts.children[0].children[0].innerHTML;
-		else
+		}
+		else{
+			input.value = opts.children[0].value;
 			displayInput.innerHTML = opts.children[0].innerHTML;
+		}
 
 		var j=0;
 		let len2 = opts.children.length;

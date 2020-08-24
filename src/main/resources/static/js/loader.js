@@ -15,7 +15,7 @@ function setCustomTable(value){
 function parseData(){
 	if(hasData){
 		try{
-			var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
+			var dataStr = document.getElementById("@dataframe").contentWindow.document.body.childNodes[0].innerHTML;
 			oData = JSON.parse(dataStr);
 		}catch(e){
 			console.log("Couldn't parse: " + dataStr);
@@ -47,8 +47,11 @@ function setDataType(type, idName, columnNum = 0, newObjIdOrder = 0){
 }
 
 function fillTable(){
-	if(oData.length==0)
+	if(oData.length==0){
+		var table = document.getElementById("data");
+		table.innerHTML  = "<tr><th>Nije pronađen nijedan rezultat!</th></tr>";
 		return;
+	}
 
 	var data = [];
 
@@ -204,7 +207,7 @@ function loaderInit(){
 	var updateform = document.getElementById("updateform");
 	updateform.onsubmit = function(){
 		toggleElement(updateform.parentNode.parentNode);
-		var sendframe = document.getElementById("sendframe");
+		var sendframe = document.getElementById("@sendframe");
 		var refresh = function(){
 			submitSearch();
 			sendframe.removeEventListener('load', refresh);
@@ -216,5 +219,16 @@ function loaderInit(){
 		setTimeout(	function(){
 			fillUpdateForm(updateform);
 		}, 1);
+	}
+
+	var newform = document.getElementById("newform");
+	newform.onsubmit = function(){
+		toggleElement(newform.parentNode.parentNode);
+		var sendframe = document.getElementById("@sendframe");
+		var refresh = function(){
+			submitSearch();
+			sendframe.removeEventListener('load', refresh);
+		}
+		sendframe.addEventListener('load', refresh);
 	}
 }

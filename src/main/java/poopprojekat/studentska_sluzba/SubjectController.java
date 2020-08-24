@@ -188,9 +188,9 @@ public class SubjectController {
 
     @PostMapping("/update_subject")
     public String update_subject(@RequestParam("token") long token,
-                                 @RequestParam("id") String old_id,
-                                 @RequestParam("name") String name,
-                                 @RequestParam("new-id") String id,
+                                 @RequestParam("subjectId") String old_id,
+                                 @RequestParam("subjectName") String name,
+                                 @RequestParam("new-subjectId") String id,
                                  @RequestParam("espb") int espb,
                                  @RequestParam("year") int year,
                                  @RequestParam("lectid") String lect_id,
@@ -211,7 +211,7 @@ public class SubjectController {
 
     @PostMapping("/delete_subject")
     public String delete_subject(@RequestParam("token") long token,
-                                 @RequestParam("id") String id){
+                                 @RequestParam("subjectId") String id){
 
         try {
             if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
