@@ -4,6 +4,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import org.apache.tomcat.jni.Local;
 import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 
 // Database class Includes:
@@ -2685,6 +2686,22 @@ public class Database
         sql = "UPDATE AppliedToListen " +
                 "SET Attempts = Attempts + 1 " +
                 "WHERE IndexNum = new.IndexNum ";
+
+        try
+        {
+            stat.executeUpdate(sql);
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void SetPoints(Index index, String subjectId, int points)
+    {
+        sql = "UPDATE AppliedToListen " +
+                "SET Points = " + points + " " +
+                "WHERE IndexNum = '" + index + "' AND SubjectId = '" + subjectId + "' AND Year = " + LocalDate.now().getYear() +  " ";
 
         try
         {
