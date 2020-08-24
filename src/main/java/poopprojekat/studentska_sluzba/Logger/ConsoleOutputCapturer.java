@@ -1,4 +1,4 @@
-package poopprojekat.studentska_sluzba;
+package poopprojekat.studentska_sluzba.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
