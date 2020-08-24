@@ -32,3 +32,4 @@ build/
 
 ### Custom ###
 /src/main/java/poopprojekat/studentska_sluzba/StudentskaSluzbaApplication.java
+/log.txt
