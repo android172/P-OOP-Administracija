@@ -39,7 +39,6 @@ function loadStudentSubjects(subjectData){
 	let table = '<table>'
 	table += '<tr><th colspan = "6">Upisani predmeti</th></tr>'
 	table += '<tr><th>Predmet</th><th>ID</th><th>Godina</th><th>ESPB</th><th>Profesor</th><th>Smer</th></tr>'
-	console.log(subjectData);
     for (let i = 0; i < subjectData.length; i++) {
         const subjectName = subjectData[i]["subjectName"];
         const Id =  subjectData[i]["subjectId"];
@@ -55,7 +54,6 @@ function loadStudentSubjects(subjectData){
 
 function loadGrades(gradeData){
 	var Prosek = 0;
-	var ESPB = 0;
 	for(let i = 0; i < gradeData.length; i++)
 		if(gradeData[i]["grades"] > 5)
 			Prosek += gradeData[i]["grade"];
@@ -63,4 +61,17 @@ function loadGrades(gradeData){
 }
 
 function loadExams(examsData){
+	console.log(examsData);
+	var table5 = document.getElementById("table5");
+	let table = '<table>'
+	table += '<tr><th colspan = "3">Prijava ispita</th></tr>'
+	table += '<tr><th>Ispitni rok</th><th>Rok za prijavu</th><th>Prijava</th></tr>'
+	console.log(examsData);
+    for (let i = 0; i < examsData.length; i++) {
+        const name = examsData[i]["name"];
+        const ap_end =  examsData[i]["application_end"];
+        table += `<tr><td>${name}</td><td>${ap_end}</td><td><a href = "exmas-registration.html">Prijavi</a></td></tr>`
+    }
+    table += '</table>'
+    table5.innerHTML = table;
 }
