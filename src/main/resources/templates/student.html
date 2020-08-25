@@ -9,14 +9,17 @@
 	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/student-loader.js" th:src="@{/js/student-loader.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/showTable.js" th:src="@{/js/showTable.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
+	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 </head>
-<body onload="getToken(); getIndex(); makeRequest('/get_student',[['index',index]],function(studentData){loadStudentData(studentData);}); makeRequest('/budget',[['index',index]],function(budzetData){statusBudget(budzetData);});makeRequest('/get_subjects_by_student',[['index',index]],function(subjectData){loadStudentSubjects(subjectData);});makeRequest('/get_attempts_info_for_index',[['index',index]],function(gradeData){loadGrades(gradeData);});makeRequest('/get_exam_deadlines',[['student',index]],function(examsData){loadExams(examsData);});">
+<body onload="checkRedirect(); getIndex(); init(); displayUsername('update-uname');">
 	<div id="background"></div>
-	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
+	<div id = "wrapper">
 		<header>
 			<h1>Student</h1>
 			<div id="user">
 				<p><b><span id = "Ime"></span> <span id = "Prezime"></span></b></p>
+				<p id = "user-name" style = "display: none;"></p>
 				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
 				<div id="user-options">
 					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
@@ -24,6 +27,7 @@
 				</div><!--close user options-->
 			</div><!--close user-->
 		</header>
+		<div id = "div1">
 		<div id = "content">
 			<div id = "picture-info">
 				<div id = "background-pic-name">
@@ -83,6 +87,8 @@
 			<input type="button" class = "button" name = "button1" value="Upisani predmeti" onclick='showTable4();'>
 			<input type="button" class = "button" name = "button2" value="Prijava ispita" onclick='showTable5();'>
 		</div>
+		</div><!--close div 1-->
+		<div id	= "div2">
 			<table id = "table4" style = "visibility: visible;">
 				<tr>
 					<th colspan = "6">Upisani Predmeti</th>
@@ -106,7 +112,7 @@
 			</table><!--close table 4-->
 		<table id = "table5" style = "visibility: hidden;">
 			<tr>
-				<th colspan = "3">Ispitni rokovi</th>				
+				<th colspan = "3">Ispitni rokovi</th>		
 			</tr>
 				<tr>
 					<th>Ispitni rok</th>
@@ -116,11 +122,27 @@
 				<tr>
 					<td></td>
 					<td></td>
-					<td><a href = "exmas-registration.html">Prijavi</a></td>
+					<td>Prijavi</td>
 			</tr>
 		</table><!--close table 5-->
+		</div><!--close div 2-->
 		</div><!--close content-->
+		<div id="update-self">
+			<div class="flex-center">
+				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
+				<form id="userform" action="/update_user" target="@sendframe" method="post" class="grid" onsubmit="toggleElement(this.parentNode.parentNode); updateUName();">
+					<h2>Update user:</h2><br>
+					<input type="hidden" name="username" id="update-uname">
+					<label for="new-username">Change username:</label>
+					<input type="text" name="new_username">
+					<label for="new-password">Change password:</label>
+					<input type="password" name="new_password">
+					<input type="submit" value="Submit">
+				</form>
+			</div>
+		</div><!--close self update-->
 	</div><!--close wrapper-->
+	<iframe src="" name="@sendframe" id="@sendframe"></iframe>
 	<iframe src="" name="sendframe" id="sendframe"></iframe>
 </body>
 </html>

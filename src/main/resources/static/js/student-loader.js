@@ -1,3 +1,5 @@
+var subject_id = {};
+
 function loadStudentData(studentData){
 	var ime = studentData["firstName"];
 	var prezime = studentData["lastName"];
@@ -46,6 +48,7 @@ function loadStudentSubjects(subjectData){
 		const year =  subjectData[i]["year"];
 		const lecName =  subjectData[i]["lectName"];
 		const majorName =  subjectData[i]["majorName"];
+		subject_id[Id] = espb;
         table += `<tr><td>${subjectName}</td><td>${Id}</td><td>${year}</td><td>${espb}</td><td>${lecName}</td><td>${majorName}</td></tr>`
     }
     table += '</table>'
@@ -54,14 +57,20 @@ function loadStudentSubjects(subjectData){
 
 function loadGrades(gradeData){
 	var Prosek = 0;
-	for(let i = 0; i < gradeData.length; i++)
+	var ESPB = 0;
+	for(let i = 0; i < gradeData.length; i++){
 		if(gradeData[i]["grades"] > 5)
 			Prosek += gradeData[i]["grade"];
-	document.getElementById("Prosek").innerHTML = Prosek
+		for(let j = 0; j < subject_id.length; j++)
+			if(gradeData[i]["id_subject"] === subject_id[j])
+				ESPB += subject_id[j].espb;
+			
+	}
+	document.getElementById("Prosek").innerHTML = Prosek;
+	document.getElementById("ESPB").innerHTML = ESPB;
 }
 
 function loadExams(examsData){
-	console.log(examsData);
 	var table5 = document.getElementById("table5");
 	let table = '<table>'
 	table += '<tr><th colspan = "3">Prijava ispita</th></tr>'
@@ -70,8 +79,16 @@ function loadExams(examsData){
     for (let i = 0; i < examsData.length; i++) {
         const name = examsData[i]["name"];
         const ap_end =  examsData[i]["application_end"];
-        table += `<tr><td>${name}</td><td>${ap_end}</td><td><a href = "exmas-registration.html">Prijavi</a></td></tr>`
+        table += `<tr><td>${name}</td><td>${ap_end}</td><td><a onclick = "window.location.replace('exams-registration.html')" id = "examsReg">Prijavi</a></td></tr>`
     }
     table += '</table>'
     table5.innerHTML = table;
+}
+
+function init(){
+	makeRequest('/get_student',[['index',index]],function(studentData){loadStudentData(studentData);});
+	makeRequest('/budget',[['index',index]],function(budzetData){statusBudget(budzetData);});
+	makeRequest('/get_subjects_by_student',[['index',index]],function(subjectData){loadStudentSubjects(subjectData);});
+	makeRequest('/get_attempts_info_for_index',[['index',index]],function(gradeData){loadGrades(gradeData);});
+	makeRequest('/get_exam_deadlines',[['student',index]],function(examsData){loadExams(examsData);});
 }

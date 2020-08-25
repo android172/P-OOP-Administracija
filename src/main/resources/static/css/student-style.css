@@ -177,3 +177,9 @@ h1 {
 	margin-left: 25%;
 	padding-top: 4%;
 }
+#examsreg{
+}
+a:hover{
+	background-color: mediumpurple;
+	cursor: pointer;
+}
