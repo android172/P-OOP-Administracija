@@ -16,7 +16,7 @@
 	<script type="text/javascript" language="Javascript" src="../static/js/filters.js" th:src="@{/js/filters.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
 </head>
-<body onload="checkRedirect(); displayUsername(); addTokenToForm('new-examform'); addTokenToForm('new-deadlineform'); loaderInit();
+<body onload="checkRedirect(); displayUsername(); displayUsername('update-uname');  addTokenToForm('new-examform'); addTokenToForm('new-deadlineform'); loaderInit();
 
 		makeRequest('/get_exam_dropdown', [], function(data){
 			addOptionsToFilter('new-lecturer-options', data[0], false, 0, true);

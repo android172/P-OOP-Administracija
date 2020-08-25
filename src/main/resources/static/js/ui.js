@@ -112,6 +112,7 @@ function initDropDowns(){
 					}, true)
 					opts.children[j].addEventListener('click', function(){
 						input.value = this.value;
+						displayInput.innerHTML = this.innerHTML;
 						toggleElement(opts);
 					}, true)
 					j++;

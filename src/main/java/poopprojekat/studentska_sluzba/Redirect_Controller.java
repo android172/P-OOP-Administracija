@@ -63,6 +63,16 @@ public class Redirect_Controller {
         return "exams";
     }
 
+    @GetMapping("/registrations")
+    public String registrations(HttpServletResponse response){
+        return "exams-registration";
+    }
+
+    @GetMapping("/grading")
+    public String grading(HttpServletResponse response){
+        return "grade";
+    }
+
     @GetMapping("/login")
     public String login(){
         return "login";
