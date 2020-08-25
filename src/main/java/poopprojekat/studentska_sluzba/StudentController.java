@@ -157,7 +157,8 @@ public class StudentController {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" } }))
             return null;
         try {
-            Index ind = new Index(Database.GetHighestIndex(year), year);
+            System.out.println(Database.GetHighestIndex(year));
+            Index ind = new Index(Database.GetHighestIndex(year) + 1, year);
             Student new_student = new Student(first_name, last_name, ind,
                     LocalDate.parse(date_of_birth), city, jmbg, major_id);
             Database.AddStudent(new_student);
