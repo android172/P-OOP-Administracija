@@ -1739,7 +1739,7 @@ public class Database
 
     public static int GetHighestIndex(int year)
     {
-        sql = "SELECT MAX(SUBSTR(IndexNum, 1, INSTR(IndexNum, '/')-1)) as ind, SUBSTR(IndexNum, INSTR(IndexNum, '/')+1) as god FROM Students " +
+        sql = "SELECT MAX(CAST(SUBSTR(IndexNum, 1, INSTR(IndexNum, '/')-1) AS INT)) as ind, CAST(SUBSTR(IndexNum, INSTR(IndexNum, '/')+1) AS INT) as god FROM Students " +
                 "WHERE SUBSTR(IndexNum, INSTR(IndexNum, '/')+1) = " + year + " ";
 
         ResultSet res = null;
