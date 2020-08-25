@@ -1772,17 +1772,17 @@ public class Database
         }
         else if(tableName == "Majors")
         {
-            sql = "SELECT MajorId FROM Majors UNION SELECT LectId FROM DeletedMajors ";
+            sql = "SELECT MajorId FROM Majors UNION SELECT MajorId FROM DeletedMajors ";
             prefix = "M";
         }
         else if(tableName == "Subjects")
         {
-            sql = "SELECT SubjectId FROM Subjects UNION SELECT LectId FROM DeletedSubjects ";
+            sql = "SELECT SubjectId FROM Subjects UNION SELECT SubjectId FROM DeletedSubjects ";
             prefix = "S";
         }
         else if(tableName == "Exams")
         {
-            sql = "SELECT ExamId FROM Exams UNION SELECT LectId FROM DeletedExams ";
+            sql = "SELECT ExamId FROM Exams UNION SELECT ExamId FROM DeletedExams ";
             prefix = "E";
         }
         else
