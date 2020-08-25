@@ -17,11 +17,12 @@ function parseData(){
 		try{
 			var dataStr = document.getElementById("@dataframe").contentWindow.document.body.childNodes[0].innerHTML;
 			oData = JSON.parse(dataStr);
+			if(customTable && oData.length == 3)
+				oData = [];
 		}catch(e){
 			console.log("Couldn't parse: " + dataStr);
 			oData = [];
 		}
-		//alert(oData);
 		fillTable();
 	}
 }

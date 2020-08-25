@@ -88,12 +88,16 @@ function initDropDowns(){
 					opts.children[j].addEventListener('change', function(){
 						input.value = this.value;
 						displayInput.innerHTML = this.innerHTML;
+						if(this.type=="date")
+							displayInput.innerHTML = this.value;
 						input.form.submit();
 						toggleElement(opts);
 					}, true)
 					opts.children[j].addEventListener('click', function(){
 						input.value = this.value;
 						displayInput.innerHTML = this.innerHTML;
+						if(this.type=="date")
+							displayInput.innerHTML = this.value;
 						input.form.submit();
 						toggleElement(opts);
 					}, true)
@@ -108,7 +112,6 @@ function initDropDowns(){
 					}, true)
 					opts.children[j].addEventListener('click', function(){
 						input.value = this.value;
-						displayInput.innerHTML = this.innerHTML;
 						toggleElement(opts);
 					}, true)
 					j++;

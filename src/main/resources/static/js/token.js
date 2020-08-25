@@ -111,7 +111,7 @@ function makeRequest(requestStr, params=[], oncomplete=function(){}){
 }
 
 function updateUName(){
-  var newUname = document.getElementById('update-uname');
+  var newUname = document.getElementById('update-uname').value;
   if(newUname != "")
     setCookie('username', newUname);
 }
