@@ -152,7 +152,7 @@ public class Fill_db_randomly {
                         if (new Random().nextInt(100) < active_chance) {
                             try {
                                 Database.AddExam(
-                                        new Exam(Database.GetEmptyId("Exams"), subject.subjectId, Generate_random_data_point.random_lect_id(),
+                                        new Exam(Database.GetEmptyId("Exams"), subject.subjectId, Database.GetLecturerFromSubjectId(subject.subjectId),
                                                 starting_date.plusDays(new Random().nextInt(days_between))));
                             } catch (Exception e) {
                                 e.printStackTrace();
