@@ -1768,22 +1768,22 @@ public class Database
 
         if(tableName == "Lecturers")
         {
-            sql = "SELECT LectId FROM Lecturers ";
+            sql = "SELECT LectId FROM Lecturers UNION SELECT LectId FROM DeletedLecturers ";
             prefix = "P";
         }
         else if(tableName == "Majors")
         {
-            sql = "SELECT MajorId FROM Majors";
+            sql = "SELECT MajorId FROM Majors UNION SELECT LectId FROM DeletedMajors ";
             prefix = "M";
         }
         else if(tableName == "Subjects")
         {
-            sql = "SELECT SubjectId FROM Subjects";
+            sql = "SELECT SubjectId FROM Subjects UNION SELECT LectId FROM DeletedSubjects ";
             prefix = "S";
         }
         else if(tableName == "Exams")
         {
-            sql = "SELECT ExamId FROM Exams";
+            sql = "SELECT ExamId FROM Exams UNION SELECT LectId FROM DeletedExams ";
             prefix = "E";
         }
         else
