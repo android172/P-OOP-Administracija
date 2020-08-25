@@ -9,7 +9,7 @@ var oData = [];
 
 function parseData(){
 	if(hasData){
-		var dataStr = document.getElementById("dataframe").contentWindow.document.body.childNodes[0].innerHTML;
+		var dataStr = document.getElementById("@dataframe").contentWindow.document.body.childNodes[0].innerHTML;
 		oData = JSON.parse(dataStr);
 		//alert(oData);
 		fillTables();
@@ -98,7 +98,7 @@ function fillTables(){
     Salje zahtev za brisanje reda
 */
 function deleteRow(id){
-    document.getElementById("sendframe").src = "/delete_student?token="+token+"&index_num="+id;
+    document.getElementById("@sendframe").src = "/delete_student?token="+token+"&index_num="+id;
     document.getElementById("search").submit();
 }
 

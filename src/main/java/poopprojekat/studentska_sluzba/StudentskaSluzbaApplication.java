@@ -2,10 +2,7 @@ package poopprojekat.studentska_sluzba;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import javax.xml.crypto.Data;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import poopprojekat.studentska_sluzba.Logger.MyLogger;
 
 
 @SpringBootApplication

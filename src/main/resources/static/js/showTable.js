@@ -31,7 +31,6 @@ function showTable4(){
 		case b:
 			x.style.visibility = "visible";
 			y.style.visibility = "hidden";
-			z.style.visibility = "hidden";
 			break;
 	}
 }
@@ -44,7 +43,6 @@ function showTable5(){
 		case b:
 			y.style.visibility = "visible";
 			x.style.visibility = "hidden";
-			z.style.visibility = "hidden";
 			break;
 	}
 }

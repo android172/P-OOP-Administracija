@@ -151,24 +151,10 @@ header > * {
 	justify-content: center;
 }
 
-#dataframe {
+iframe {
 	position: absolute;
-	width: 400px;
-	height: 400px;
-	right: 0px;
-    bottom: 0px;
-}
-
-#sendframe {
-	position: absolute;
-	width: 400px;
-	height: 400px;
-	left: 0px;
-    bottom: 0px;
-}
-
-#sendframe, #dataframe, #loginframe {
 	visibility: hidden;
+	display: none;
 }
 
 .popup {

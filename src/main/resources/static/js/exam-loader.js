@@ -140,3 +140,21 @@ function fillTableDeadlines(tableID){
 	}
 	table.appendChild(lastRow);
 }
+
+function loaderInit(){
+	var new_examform = document.getElementById("new-examform");
+	new_examform.onsubmit = function(){
+		toggleElement(new_examform.parentNode.parentNode);
+		makeRequest('/get_all_exams',[],function(data){
+			parseDataToTable('exams', false, data); 
+		});
+	}
+
+	var new_deadlineform = document.getElementById("new-deadlineform");
+	new_deadlineform.onsubmit = function(){
+		toggleElement(new_deadlineform.parentNode.parentNode);
+		makeRequest('/get_exam_deadlines',[],function(data) {
+			parseDataToTable('exam-deadlines', true, data);
+		});
+	}
+}

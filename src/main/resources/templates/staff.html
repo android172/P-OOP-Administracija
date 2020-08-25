@@ -14,7 +14,7 @@
 	<script type="text/javascript" language="Javascript" src="../static/js/filters.js" th:src="@{/js/filters.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
 </head>
-<body onload="checkRedirect(); setDataType('lecturer', 'lectId', 3, 3); loaderInit(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToForm('updateform'); submitSearch(); 
+<body onload="checkRedirect(); setDataType('lecturer', 'lectId', 0, 0); loaderInit(); displayUsername(); addTokenToForm('search'); addTokenToForm('newform'); addTokenToForm('updateform'); submitSearch(); 
 	makeRequest('/get_lecturer_filters',[], function(data){
 		addOptionsToFilter('subject-options', data[0], true, 1, true);
 		addOptionsToFilter('major-options', data[1], true, 1, true);
@@ -35,7 +35,7 @@
 		</header>
 		<div id="content">
 			<div id="content-header">
-				<form action="/get_lecturers" id="search" method="post" target="dataframe">
+				<form action="/get_lecturers" id="search" method="post" target="@dataframe">
 					<input type="text" id="searchbar" value="" placeholder="Search..." oninput="fillTable();">
 
 					<div class="form-element">
@@ -104,7 +104,7 @@
 			<div class="flex-col size-max">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
 				<br>
-				<form action="/add_lecturer" id="newform" method="post" target="sendframe" class="pad-medium wide new-grid" >
+				<form action="/add_lecturer" id="newform" method="post" target="@sendframe" class="pad-medium wide new-grid">
 					<label for="first_name">Ime:</label><input type="text" name="first_name" required>
 					<label for="last_name">Prezime:</label><input type="text" name="last_name" required>
 					<label for="title">Zvanje:</label>
@@ -130,7 +130,7 @@
 			<div class="flex-col size-max">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
 				<br>
-				<form action="/update_lecturer" id="updateform" method="post" target="sendframe" class="pad-medium wide new-grid" >
+				<form action="/update_lecturer" id="updateform" method="post" target="@sendframe" class="pad-medium wide new-grid">
 					<label for="new-lectId">ID:</label><input type="text" name="new-lectId" required>
 					<label for="firstName">Ime:</label><input type="text" name="firstName" required>
 					<label for="lastName">Prezime:</label><input type="text" name="lastName" required>
@@ -156,19 +156,19 @@
 		<div id="update-self">
 			<div class="flex-center">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
-				<form id="userform" action="/update_user" target="_blank" method="post" class="grid">
+				<form id="userform" action="/update_user" target="@sendframe" method="post" class="grid" onsubmit="toggleElement(this.parentNode.parentNode); updateUName();">
 					<h2>Update user:</h2><br>
 					<input type="hidden" name="username" id="update-uname">
 					<label for="new-username">Change username:</label>
 					<input type="text" name="new_username">
 					<label for="new-password">Change password:</label>
 					<input type="password" name="new_password">
-					<input type="submit" value="Submit" onclick="toggleElement(this.parentNode.parentNode.parentNode);">
+					<input type="submit" value="Submit">
 				</form>
 			</div>
 		</div>
-		<iframe src="" name="sendframe" id="sendframe"></iframe>
-		<iframe src="" name="dataframe" id="dataframe" onload="parseData();"></iframe>
+		<iframe src="" name="@sendframe" id="@sendframe"></iframe>
+		<iframe src="" name="@dataframe" id="@dataframe" onload="parseData();"></iframe>
 	</div>
 </body>
 </html>

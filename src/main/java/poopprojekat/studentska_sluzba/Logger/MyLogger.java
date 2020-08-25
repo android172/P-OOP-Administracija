@@ -1,4 +1,4 @@
-package poopprojekat.studentska_sluzba;
+package poopprojekat.studentska_sluzba.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -64,7 +64,7 @@ public class MyLogger extends Thread{
                 String tmp = capturer.stop();
                 if (tmp != null || tmp != "") {
                     writer.write(tmp);
-                    System.out.println("Updating log file");
+                    //System.out.println("Updating log file");
                 }
                 writer.close();
             }

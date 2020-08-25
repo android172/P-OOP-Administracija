@@ -30,7 +30,7 @@
 		</header>
 		<div id="content">
 			<div id="content-header">
-				<form action="/get_all_users" id="search" target="dataframe" method="post">
+				<form action="/get_all_users" id="search" target="@dataframe" method="post">
 					<input type="text" id="searchbar" value="" placeholder="Search..." oninput="fillTables();">
 
 					<div class="form-element">
@@ -81,19 +81,19 @@
 		<div id="update-self">
 			<div class="flex-center">
 				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
-				<form id="userform" action="/update_user" target="_blank" method="post" class="grid">
+				<form id="userform" action="/update_user" target="@sendframe" method="post" class="grid" onsubmit="toggleElement(this.parentNode.parentNode); updateUName();">
 					<h2>Update user:</h2><br>
 					<input type="hidden" name="username" id="update-uname">
 					<label for="new-username">Change username:</label>
 					<input type="text" name="new_username">
 					<label for="new-password">Change password:</label>
 					<input type="password" name="new_password">
-					<input type="submit" value="Submit" onclick="toggleElement(this.parentNode.parentNode.parentNode);">
+					<input type="submit" value="Submit">
 				</form>
 			</div>
 		</div>	
-		<iframe src="" name="sendframe" id="sendframe"></iframe>
-		<iframe src="" name="dataframe" id="dataframe" onload="parseData();"></iframe>
+		<iframe src="" name="@sendframe" id="@sendframe"></iframe>
+		<iframe src="" name="@dataframe" id="@dataframe" onload="parseData();"></iframe>
 	</div>
 </body>
 </html>

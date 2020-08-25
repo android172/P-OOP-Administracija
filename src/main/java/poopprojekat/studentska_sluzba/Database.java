@@ -4,7 +4,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import org.apache.tomcat.jni.Local;
 import poopprojekat.studentska_sluzba.Generators.Fill_db_randomly;
 
 // Database class Includes:

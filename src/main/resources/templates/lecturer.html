@@ -10,7 +10,7 @@
 	<script type="text/javascript" language="Javascript" src="../static/js/lecturer-loader.js" th:src="@{/js/lecturer-loader.js}"></script>
 </head>
 
-<body onload = "getToken();getIndex(); makeRequest('/get_lecturer',[['lectId',index]],function(lecturerData){loadLecturerData(lecturerData);});makeRequest('get_exams_for_lecturer',[['lectId',index]],function(lecturerSubData){loadLecturerSubjects(lecturerSubData);});">
+<body onload = "getToken();getIndex(); makeRequest('/get_lecturer',[['lectId',index]],function(lecturerData){loadLecturerData(lecturerData);});makeRequest('get_exams_for_lecturer',[['lecturer_id',index]],function(examData){loadExamDeadline(examData);});makeRequest('/get_subjects_by_lecturer',[['lect_id',index]],function(lecturerSubData){loadLecturerSubjects(lecturerSubData);});">
 	<div id="background"></div>
 	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
 		<header>
@@ -64,20 +64,14 @@
 			</table><!--close table 2-->
 		<table id = "table3" style = "visibility: hidden;">
 				<tr>
-					<th colspan = "6">Ispitni rokovi</th>
+					<th colspan = "3">Ispitni rokovi</th>
 				</tr>
 				<tr>
 					<th>Predmet</th>
 					<th>IDPredmet</th>
-					<th>Godina</th>
-					<th>ESPB</th>
-					<th>Smer</th>
-					<th>Poeni</th>
+					<th>Datum</th>
 				</tr>
 				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
 					<td></td>
 					<td></td>
 					<td></td>

@@ -23,6 +23,12 @@ function setIndex(newIndex){
     document.cookie = "index="+newIndex+";expires="+date.toUTCString()+";SameSite=Lax";
 }
 
+function setCookie(cookie, newValue){
+    var date = new Date();
+    date.setHours(date.getHours+6);
+    document.cookie = cookie + "=" + newValue + ";expires=" + date.toUTCString() + ";SameSite=Lax";
+}
+
 function getCookie(cname) {
   	var name = cname + "=";
   	var ca = document.cookie.split(';');
@@ -102,4 +108,10 @@ function makeRequest(requestStr, params=[], oncomplete=function(){}){
   };
   xhr.addEventListener('load', eventListener);
   xhr.send();
+}
+
+function updateUName(){
+  var newUname = document.getElementById('update-uname');
+  if(newUname != "")
+    setCookie('username', newUname);
 }
