@@ -75,11 +75,10 @@ function loadExams(examsData){
 	let table = '<table>'
 	table += '<tr><th colspan = "3">Prijava ispita</th></tr>'
 	table += '<tr><th>Ispitni rok</th><th>Rok za prijavu</th><th>Prijava</th></tr>'
-	console.log(examsData);
     for (let i = 0; i < examsData.length; i++) {
         const name = examsData[i]["name"];
         const ap_end =  examsData[i]["application_end"];
-        table += `<tr><td>${name}</td><td>${ap_end}</td><td><a onclick = "window.location.replace('exams-registration.html')" id = "examsReg">Prijavi</a></td></tr>`
+        table += `<tr><td>${name}</td><td>${ap_end}</td><td><a onclick = "window.location.replace('/registrations')" id = "examsReg">Prijavi</a></td></tr>`
     }
     table += '</table>'
     table5.innerHTML = table;
