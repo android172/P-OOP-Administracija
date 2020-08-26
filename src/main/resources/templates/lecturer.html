@@ -12,7 +12,7 @@
 	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 </head>
 
-<body onload = "checkRedirect(); getIndex(); init(); displayUsername('update-uname');">
+<body onload = "checkRedirect(); getIndex(); init(); displayUsername('update-uname'); setTimeout(setCookie('subject_id',subjectID) , 1)">
 	<div id="background"></div>
 	<div id = "wrapper">
 		<header>

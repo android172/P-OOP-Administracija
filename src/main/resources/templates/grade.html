@@ -5,17 +5,16 @@
 	<link rel="stylesheet" type="text/css" href="../static/css/grade-style.css" th:href="@{/css/grade-style.css}"/>
 	<link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
 	<meta charset="utf-8">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600,800' rel='stylesheet' type='text/css'>
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
 	<script type="text/javascript" language="Javascript" src="../static/js/grade.js" th:src="@{/js/grade.js}"></script>
 </head>
-<body onload="getToken(); getIndex();">
+<body onload="checkRedirect(); getIndex(); init(); var subjectID = getCookie('subject_id');">
 	<div id="background"></div>
 	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
 		<header>
-			<h1>Lecturer</h1>
+			<h1><a onclick = "window.location.replace('/lecturer')">Lecturer</a>/Grade</h1>
 			<div id="user">
 				<p><b><span id = "Ime"></span> <span id = "Prezime"></span></b></p>
 				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
@@ -28,18 +27,16 @@
 		<div id = "content">
 			<table id = "tableGrade">
 				<tr>
-					<th colspan = "5">Ocenjivanje</th>
+					<th colspan = "6">Ocenjivanje</th>
 				</tr>
 				<tr>
 					<th>Ime</th>
 					<th>Prezime</th>
 					<th>Predmet</th>
-					<th>Godina</th>
 					<th>Predispitne obaveze</th>
 					<th>Poeni sa ispita</th>
 				</tr>
 				<tr>
-					<td></td>
 					<td></td>
 					<td></td>
 					<td></td>
@@ -64,7 +61,7 @@
 			</div>
 		</div><!--close self update-->
 	</div><!--close wrapper-->
-	<iframe src="" name="dataframe" id="dataframe" onload = "parseData()"></iframe>
+	<iframe src="" name="@sendframe" id="@sendframe"></iframe>
 	<iframe src="" name="sendframe" id="sendframe"></iframe>
 </body>
 </html>
