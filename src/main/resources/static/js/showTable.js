@@ -5,8 +5,8 @@ function showTable2(){
 	var b = document.getElementsByName("button4");
 	switch(b){
 		case b:
-			x.style.visibility = "visible";
-			y.style.visibility = "hidden";
+			x.style.display = "table";
+			y.style.display = "none";
 			break;
 	}
 }
@@ -17,8 +17,8 @@ function showTable3(){
 	var b = document.getElementsByName("button5");
 	switch(b){
 		case b:
-			x.style.visibility = "hidden";
-			y.style.visibility = "visible";
+			x.style.display = "none";
+			y.style.display = "table";
 			break;
 	}
 }
@@ -29,8 +29,8 @@ function showTable4(){
 	var b = document.getElementsByName("button1");
 	switch(b){
 		case b:
-			x.style.visibility = "visible";
-			y.style.visibility = "hidden";
+			x.style.display = "table";
+			y.style.display = "none";
 			break;
 	}
 }
@@ -41,8 +41,8 @@ function showTable5(){
 	var b = document.getElementsByName("button2");
 	switch(b){
 		case b:
-			y.style.visibility = "visible";
-			x.style.visibility = "hidden";
+			y.style.display = "table";
+			x.style.display = "none";
 			break;
 	}
 }

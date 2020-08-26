@@ -28,7 +28,7 @@ function loadStudentSubjects(subjectData){
 			year =  subjectData[i]["year"];
 			lecName =  subjectData[i]["lectName"];
 		}
-        table += `<tr><td>${subjectName}</td><td>${Id}</td><td>${year}</td><td>${espb}</td><td>${lecName}</td><td><input type="checkbox" onchange="examRegister(${Id},${i})" value="Prijavi"></td></tr>`
+        table += `<tr><td>${subjectName}</td><td>${Id}</td><td>${year}</td><td>${espb}</td><td>${lecName}</td><td><input type="checkbox" onchange="examRegister("${Id},${i}")" value="Prijavi"></td></tr>`
     }
     table += '</table>'
     table4.innerHTML = table;
@@ -67,14 +67,14 @@ function showExamSet(){
 	var subjectName;
     let table = '<table>'
 	table += '<tr><th>Predmet</th><th>ID</th></tr>'
-    for (const item of korpaSet) {
+    for (const item of examSet) {
 		for(let i = 0; i < subject.length; i++)
 			if(subject[i] === item)
 				subjectName = subject[i].subjectName;
         table += `<tr><td>${subjectName}</td><td>${item}</td></tr>`
     }
     table += '</table>';
-    if(korpaSet.size === 0)
+    if(examSet.size === 0)
         table = '';
     tableReg.innerHTML = table;
 }

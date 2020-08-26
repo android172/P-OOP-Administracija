@@ -20,7 +20,7 @@
 				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
 				<div id="user-options">
 					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
-					<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
+					<button type="button" onclick="makeRequest('/logout_req', [], function(){window.location.replace('/login');});">Log out</button>
 				</div><!--close user options-->
 			</div><!--close user-->
 		</header>
@@ -56,7 +56,7 @@
 				<td></td>
 			</tr>
 		</table>
-		<input type="button" class = "buttonPrihvati" name = "button1" value="Prihvati" onclick=''>
+		<input type="button" class = "buttonPrihvati" name = "button1" value="Prihvati" onclick='applyForExam();'>
 		</div><!--close content-->
 		<div id="update-self">
 			<div class="flex-center">
@@ -73,7 +73,7 @@
 			</div>
 		</div><!--close self update-->
 	</div><!--close wrapper-->
-	<iframe src="" name="dataframe" id="dataframe" onload = "parseData()"></iframe>
+	<iframe src="" name="@sendframe" id="@sendframe"></iframe>
 	<iframe src="" name="sendframe" id="sendframe"></iframe>
 </body>
 </html>

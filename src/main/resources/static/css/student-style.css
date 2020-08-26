@@ -68,17 +68,14 @@ header > * {
 	margin-left: 10px;
 	width: 69%;
 	background-color: #907AD6;
+	display: flex;
 }
 #table2{
-	background-color: #907AD6;
-	margin-left: 10px;
-	width: 49%;
+	width: 50%;
 }
 
 #table3{
-	background-color: #907AD6;
-	margin-left: 10px;
-	width:49%;
+	width:50%;
 }
 table {
 	padding: 10px;
@@ -120,9 +117,6 @@ h1 {
 #table4{
 	width: 100%;
 	float: left;
-	position: absolute;
-	top: 48%;
-	margin-left:-10px;
 }
 #table4>tbody>tr>td{
 	background-color: var(--color-highlight2) !important;
@@ -150,9 +144,7 @@ h1 {
 #table5{
 	width: 100%;
 	float: left;
-	position: absolute;
-	top: 48%;
-	margin-left:-10px;
+	position: relative;
 }
 #table5>tbody>tr>td{
 	background-color: var(--color-highlight2) !important;
@@ -175,10 +167,9 @@ h1 {
 	float: left;
 	position: relative;
 	margin-left: 25%;
-	padding-top: 4%;
+	padding-top: 2%;
 }
-#examsreg{
-}
+
 a:hover{
 	background-color: mediumpurple;
 	cursor: pointer;

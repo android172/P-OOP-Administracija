@@ -42,7 +42,7 @@ function loadExamDeadline(examData){
 				subjectName = examData[i]["subjectName"];
         const Id =  examData[i]["id"];
 		const date =  examData[i]["date"];
-        table += `<tr><td>${subjectName}</td><td>${Id}</td><td>${date}</td><td>Oceni</td></tr>`
+        table += `<tr><td>${subjectName}</td><td>${Id}</td><td>${date}</td><td><a onclick = "window.location.replace('/grading')" id = "grade">Oceni</a></td></tr>`
     }
     table += '</table>'
     table3.innerHTML = table;
