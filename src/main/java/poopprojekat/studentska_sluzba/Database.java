@@ -1987,9 +1987,9 @@ public class Database
             if(!res.first())
                 throw new Exception("No results");
 
-            if(res.getString("Status") == "Budzet")
+            if(res.getString("Status").equals("Budzet"))
                 return true;
-            else if(res.getString("Status") == "Samofinansirajuci")
+            else if(res.getString("Status").equals("Samofinansirajuci"))
                 return false;
         }
         catch (SQLException throwables)
