@@ -2662,7 +2662,7 @@ public class Database
 
         for(int i = 0; i<index.length;i++)
         {
-            sql += "( '" + index[i] + "' , (SELECT SubjectId FROM Exams WHERE ExamId = " + examId[i] + "'), (SELECT ExamDate FROM Exams WHERE ExamId = '" + examId[i] + "') '" + year + "', '" + mark[i] + "', '" + points[i] + "' ) ";
+            sql += "( '" + index[i] + "' , (SELECT SubjectId FROM Exams WHERE ExamId = '" + examId[i] + "'), (SELECT ExamDate FROM Exams WHERE ExamId = '" + examId[i] + "'), '" + year + "', '" + mark[i] + "', '" + points[i] + "' ) ";
 
             if(i < index.length - 1)
                 sql += ", ";
