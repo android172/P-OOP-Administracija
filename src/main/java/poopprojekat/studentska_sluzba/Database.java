@@ -1049,7 +1049,9 @@ public class Database
         {
             if(stat.executeUpdate(sql) != 0)
             {
-                IncAttempts(index);
+                ResultSet temp = stat.executeQuery("SELECT SubjectId FROM Exams WHERE ExamId = '" + examId +"' ");
+                temp.first();
+                IncAttempts(index,temp.getString("SubjectId") , LocalDate.now().getYear());
                 System.out.println("Exam applied");
             }
             else
@@ -2680,11 +2682,11 @@ public class Database
         }
     }
 
-    private static void IncAttempts(Index index)
+    private static void IncAttempts(Index index, String subjectId, int year)
     {
         sql = "UPDATE AppliedToListen " +
                 "SET Attempts = Attempts + 1 " +
-                "WHERE IndexNum = new.IndexNum ";
+                "WHERE IndexNum = '" + index + "' AND SubjectId = '" + subjectId + "' AND Year = " + year + " ";
 
         try
         {
