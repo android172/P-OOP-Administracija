@@ -1948,7 +1948,7 @@ public class Database
     public static int GetAttempts(Index index, String examId) throws Exception
     {
         if(index != null && examId != null)
-            sql = "SELECT * FROM AppliedToListen as al join Exams as e on al.SubjectId = e.ExamId " +
+            sql = "SELECT * FROM AppliedToListen as al join Exams as e on al.SubjectId = e.SubjectId " +
                     "WHERE al.IndexNum = '" + index + "' AND e.ExamId = '" + examId + "' ";
         else
             throw new Exception("Index or ExamId is null");
