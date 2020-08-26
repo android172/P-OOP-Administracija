@@ -171,7 +171,7 @@ public class Exam_Controller {
             @RequestParam("grade") String grade) {
         String lect_id = null;
         for (Exam e : Database.GetAllExams())
-            if (e.getId() == exam_id) {
+            if (e.getId().equals(exam_id)) {
                 lect_id = e.getLect_id();
                 break;
             }
