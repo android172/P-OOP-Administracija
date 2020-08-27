@@ -1887,7 +1887,7 @@ public class Database
 
         else
             sql = "SELECT * FROM ExamDeadline " +
-                    "WHERE StartDate <= '" + targetdate + "' AND EndDate >= '" + targetdate + "' ";
+                    "WHERE StartApplicationDate <= '" + targetdate + "' AND EndDate >= '" + targetdate + "' ";
 
         ResultSet res = null;
         ArrayList<ExamDeadline> deadlines = new ArrayList<>();
