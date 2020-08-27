@@ -137,5 +137,13 @@ function applyForSubject(Id) {
     makeRequest('/apply_for_subject', [
         ['index_num', index],
         ['subjects', Id]
-    ], function(response) { console.log(response) })
+    ], function(response) {
+        console.log(response);
+        makeRequest('/get_subjects_by_student', [
+            ['index', index]
+        ], function(subjectData) { loadStudentSubjects(subjectData); });
+        makeRequest('/get_subjects_by_major', [
+            ['major_id', majorId]
+        ], function(subjectData) { loadAvailableSubjects(subjectData); });
+    });
 }
