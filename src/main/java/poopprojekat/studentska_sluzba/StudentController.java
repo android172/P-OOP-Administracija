@@ -251,11 +251,11 @@ public class StudentController {
     }
 
     // return all students for given year and subjects
-    @PostMapping(value = "get_all_students_from_subject")
+    @PostMapping(value = "/get_all_students_from_subject")
     public ArrayList<Index> get_all_students_from_subject(@RequestParam("token") long token,
-            @RequestParam("subject") String subject_id) {
+            @RequestParam("subject_id") String subject_id) {
         Lecturer lect = Database.GetLecturer(subject_id);
-        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Student", lect.getLectId() } }))
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Admin", "any" }, { "Lecturer", lect.getLectId() } }))
             return null;
         try {
             return Database.GetAllStudentsFromSubject(subject_id, LocalDate.now().getYear());

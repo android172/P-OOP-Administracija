@@ -1,67 +1,76 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
-	<link rel="stylesheet" type="text/css" href="../static/css/grade-style.css" th:href="@{/css/grade-style.css}"/>
-	<link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
-	<script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
-	<script type="text/javascript" language="Javascript" src="../static/js/grade.js" th:src="@{/js/grade.js}"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" type="text/css" href="../static/css/grade-style.css" th:href="@{/css/grade-style.css}" />
+    <link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
+    <script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
+    <script type="text/javascript" language="Javascript" src="../static/js/grade.js" th:src="@{/js/grade.js}"></script>
 </head>
-<body onload="checkRedirect(); getIndex(); init(); var subjectID = getCookie('subject_id');">
-	<div id="background"></div>
-	<div id = "wrapper" style="background-image: url('../images/lowpoly.png');">
-		<header>
-			<h1><a onclick = "window.location.replace('/lecturer')" id = "Back">Lecturer</a> / Grade</h1>
-			<div id="user">
-				<p><b><span id = "Ime"></span> <span id = "Prezime"></span></b></p>
-				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
-				<div id="user-options">
-					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
-					<button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
-				</div><!--close user options-->
-			</div><!--close user-->
-		</header>
-		<div id = "content">
-			<table id = "tableGrade">
-				<tr>
-					<th colspan = "6">Ocenjivanje</th>
-				</tr>
-				<tr>
-					<th>Ime</th>
-					<th>Prezime</th>
-					<th>Predmet</th>
-					<th>Predispitne obaveze</th>
-					<th>Poeni sa ispita</th>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td><input type="text" id="points" name="points" value=""><br></td>
-				</tr>
-			</table><!--close table 1-->
-		<input type="button" class = "buttonPrihvati" name = "button1" value="Prihvati" onclick=''>
-		</div><!--close content-->
-		<div id="update-self">
-			<div class="flex-center">
-				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
-				<form id="userform" action="/update_user" target="@sendframe" method="post" class="grid" onsubmit="toggleElement(this.parentNode.parentNode); updateUName();">
-					<h2>Update user:</h2><br>
-					<input type="hidden" name="username" id="update-uname">
-					<label for="new-username">Change username:</label>
-					<input type="text" name="new_username">
-					<label for="new-password">Change password:</label>
-					<input type="password" name="new_password">
-					<input type="submit" value="Submit">
-				</form>
-			</div>
-		</div><!--close self update-->
-	</div><!--close wrapper-->
-	<iframe src="" name="@sendframe" id="@sendframe"></iframe>
-	<iframe src="" name="sendframe" id="sendframe"></iframe>
+
+<body onload="checkRedirect(); getIndex(); init();">
+    <div id="background"></div>
+    <div id="wrapper" style="background-image: url('../images/lowpoly.png');">
+        <header>
+            <h1><a onclick="window.location.replace('/lecturer')" id="Back">Lecturer</a> / Grade</h1>
+            <div id="user">
+                <p><b><span id = "Ime"></span> <span id = "Prezime"></span></b></p>
+                <img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}" />
+                <div id="user-options">
+                    <button type="button" onclick="toggleElementById('update-self');">Edit user</button>
+                    <button type="button" onclick="makeRequest('/logout_req','sendframe', [], function(){window.location.replace('/login');});">Log out</button>
+                </div>
+                <!--close user options-->
+            </div>
+            <!--close user-->
+        </header>
+        <div id="content">
+            <table id="tableGrade">
+                <tr>
+                    <th colspan="6">Ocenjivanje</th>
+                </tr>
+                <tr>
+                    <th>Ime</th>
+                    <th>Prezime</th>
+                    <th>Predmet</th>
+                    <th>Predispitne obaveze</th>
+                    <th>Poeni sa ispita</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><input type="text" id="points" name="points" value=""><br></td>
+                </tr>
+            </table>
+            <!--close table 1-->
+            <input type="button" class="buttonPrihvati" name="button1" value="Prihvati" onclick=''>
+        </div>
+        <!--close content-->
+        <div id="update-self">
+            <div class="flex-center">
+                <div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
+                <form id="userform" action="/update_user" target="@sendframe" method="post" class="grid" onsubmit="toggleElement(this.parentNode.parentNode); updateUName();">
+                    <h2>Update user:</h2><br>
+                    <input type="hidden" name="username" id="update-uname">
+                    <label for="new-username">Change username:</label>
+                    <input type="text" name="new_username">
+                    <label for="new-password">Change password:</label>
+                    <input type="password" name="new_password">
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+        <!--close self update-->
+    </div>
+    <!--close wrapper-->
+    <iframe src="" name="@sendframe" id="@sendframe"></iframe>
+    <iframe src="" name="sendframe" id="sendframe"></iframe>
 </body>
+
 </html>

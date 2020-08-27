@@ -1,100 +1,111 @@
 <!DOCTYPE html>
+
 <head>
-	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
-	<link rel="stylesheet" type="text/css" href="../static/css/lecturer-style.css" th:href="@{/css/lecturer-style.css}"/>
-	<link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-	<script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
-	<script type="text/javascript" language="Javascript" src="../static/js/showTable.js" th:src="@{/js/showTable.js}"></script>
-	<script type="text/javascript" language="Javascript" src="../static/js/lecturer-loader.js" th:src="@{/js/lecturer-loader.js}"></script>
-	<script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
-	<script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" type="text/css" href="../static/css/lecturer-style.css" th:href="@{/css/lecturer-style.css}" />
+    <link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script type="text/javascript" language="Javascript" src="../static/js/token.js" th:src="@{/js/token.js}"></script>
+    <script type="text/javascript" language="Javascript" src="../static/js/showTable.js" th:src="@{/js/showTable.js}"></script>
+    <script type="text/javascript" language="Javascript" src="../static/js/lecturer-loader.js" th:src="@{/js/lecturer-loader.js}"></script>
+    <script type="text/javascript" language="Javascript" src="../static/js/redirect.js" th:src="@{/js/redirect.js}"></script>
+    <script type="text/javascript" language="Javascript" src="../static/js/ui.js" th:src="@{/js/ui.js}"></script>
 </head>
 
-<body onload = "checkRedirect(); getIndex(); init(); displayUsername('update-uname'); setTimeout(setCookie('subject_id',subjectID) , 1)">
-	<div id="background"></div>
-	<div id = "wrapper">
-		<header>
-			<h1>Lecturer</h1>
-			<div id="user">
-				<p><b><span id = "Ime"></span> <span id = "Prezime"></span></b></p>
-				<p id = "user-name" style = "display: none;"></p>
-				<img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}"/>
-				<div id="user-options">
-					<button type="button" onclick="toggleElementById('update-self');">Edit user</button>
-					<button type="button" onclick="makeRequest('/logout_req', [], function(){window.location.replace('/login');});">Log out</button>
-				</div><!--close user options-->
-			</div><!--close user-->
-		</header>
-		<div id = "content">
-			<div id = "picture-info">
-				<div id = "background-pic-name">
-					<img src="../static/images/user-img.bmp" id="user-img-info" th:src="@{/images/user-img.bmp}"/>
-					<p><b><span id = "Ime1"></span> <span id = "Prezime1"></span></b></p>
-				</div><!--close background picture name-->
-			</div><!--close picture info-->
-				<table id = "table1">
-					<tr>
-						<th>Titula</th>
-					</tr>
-					<tr>
-						<td id = "Titula"></td>
-					</tr>
-				</table><!--close table 1-->
-			<div class = "buttons">
-				<input type="button" class = "button" name = "button4" value="Predmeti" onclick='showTable2();'>
-				<input type="button" class = "button" name = "button5" value="Ispiti" onclick='showTable3();'>
-			</div>
-			<table id = "table2" style = "display: table;">
-				<tr>
-					<th colspan = "5">Predmeti</th>
-				</tr>
-				<tr>
-					<th>Predmet</th>
-					<th>IDPredmet</th>
-					<th>Godina</th>
-					<th>ESPB</th>
-					<th>Smer</th>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table><!--close table 2-->
-		<table id = "table3" style = "display: none">
-				<tr>
-					<th colspan = "3">Ispitni rokovi</th>
-				</tr>
-				<tr>
-					<th>Predmet</th>
-					<th>IDPredmet</th>
-					<th>Datum</th>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table><!--close table 3-->
-		</div><!--close content-->
-		<div id="update-self">
-			<div class="flex-center">
-				<div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
-				<form id="userform" action="/update_user" target="@sendframe" method="post" class="grid" onsubmit="toggleElement(this.parentNode.parentNode); updateUName();">
-					<h2>Update user:</h2><br>
-					<input type="hidden" name="username" id="update-uname">
-					<label for="new-username">Change username:</label>
-					<input type="text" name="new_username">
-					<label for="new-password">Change password:</label>
-					<input type="password" name="new_password">
-					<input type="submit" value="Submit">
-				</form>
-			</div>
-		</div><!--close self update-->
-		<iframe src="" name="@sendframe" id="@sendframe"></iframe>
-	</div><!--close wrapper-->
+<body onload="checkRedirect(); getIndex(); init(); displayUsername('update-uname'); ">
+    <div id="background"></div>
+    <div id="wrapper">
+        <header>
+            <h1>Lecturer</h1>
+            <div id="user">
+                <p><b><span id = "Ime"></span> <span id = "Prezime"></span></b></p>
+                <p id="user-name" style="display: none;"></p>
+                <img src="../static/images/user-img.bmp" id="user-img" th:src="@{/images/user-img.bmp}" />
+                <div id="user-options">
+                    <button type="button" onclick="toggleElementById('update-self');">Edit user</button>
+                    <button type="button" onclick="makeRequest('/logout_req', [], function(){window.location.replace('/login');});">Log out</button>
+                </div>
+                <!--close user options-->
+            </div>
+            <!--close user-->
+        </header>
+        <div id="content">
+            <div id="picture-info">
+                <div id="background-pic-name">
+                    <img src="../static/images/user-img.bmp" id="user-img-info" th:src="@{/images/user-img.bmp}" />
+                    <p><b><span id = "Ime1"></span> <span id = "Prezime1"></span></b></p>
+                </div>
+                <!--close background picture name-->
+            </div>
+            <!--close picture info-->
+            <table id="table1">
+                <tr>
+                    <th>Titula</th>
+                </tr>
+                <tr>
+                    <td id="Titula"></td>
+                </tr>
+            </table>
+            <!--close table 1-->
+            <div class="buttons">
+                <input type="button" class="button" name="button4" value="Predmeti" onclick='showTable2();'>
+                <input type="button" class="button" name="button5" value="Ispiti" onclick='showTable3();'>
+            </div>
+            <table id="table2" style="display: table;">
+                <tr>
+                    <th colspan="5">Predmeti</th>
+                </tr>
+                <tr>
+                    <th>Predmet</th>
+                    <th>IDPredmet</th>
+                    <th>Godina</th>
+                    <th>ESPB</th>
+                    <th>Smer</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <!--close table 2-->
+            <table id="table3" style="display: none">
+                <tr>
+                    <th colspan="3">Ispitni rokovi</th>
+                </tr>
+                <tr>
+                    <th>Predmet</th>
+                    <th>IDPredmet</th>
+                    <th>Datum</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <!--close table 3-->
+        </div>
+        <!--close content-->
+        <div id="update-self">
+            <div class="flex-center">
+                <div class="quit" onclick="toggleElement(this.parentNode.parentNode);">&#x00D7;</div>
+                <form id="userform" action="/update_user" target="@sendframe" method="post" class="grid" onsubmit="toggleElement(this.parentNode.parentNode); updateUName();">
+                    <h2>Update user:</h2><br>
+                    <input type="hidden" name="username" id="update-uname">
+                    <label for="new-username">Change username:</label>
+                    <input type="text" name="new_username">
+                    <label for="new-password">Change password:</label>
+                    <input type="password" name="new_password">
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+        <!--close self update-->
+        <iframe src="" name="@sendframe" id="@sendframe"></iframe>
+    </div>
+    <!--close wrapper-->
 </body>
