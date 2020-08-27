@@ -143,7 +143,7 @@ public class SubjectController {
                                                     @RequestParam("major_id") String id){
 
         try {
-            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}})) return null;
+            if (!Log_in_Controller.access_allowed(token, new String[][] {{"Admin", "any"}, {"Student", "any"}})) return null;
             if (id.equals("")) return Database.GetSubjectsByMajor(null);
             return Database.GetSubjectsByMajor(id);
         } catch (Exception e) {

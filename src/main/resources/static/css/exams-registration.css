@@ -119,3 +119,10 @@ h1 {
 	background-color: var(--color-highlight2) !important;
 	margin-left: 86%;
 }
+
+#Back{
+	cursor: pointer;
+}
+a:hover{
+	color: blue;
+}
