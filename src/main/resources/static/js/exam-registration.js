@@ -11,9 +11,6 @@ var subject_to_show = [];
 var exam_id_to_show = [];
 var subject_id = [];
 
-
-
-
 function loadStudentSubjects(subjectData){
 	console.log("subject id");
 	console.log(subject_id);
