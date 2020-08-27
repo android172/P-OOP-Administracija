@@ -296,15 +296,14 @@ public class Database
     private void CreateTableAppliedToListen()
     {
         sql = "CREATE TABLE IF NOT EXISTS AppliedToListen " +
-                "( id INTEGER not NULL AUTO_INCREMENT," +
-                "IndexNum VARCHAR(10) not NULL," +
+                "(IndexNum VARCHAR(10) not NULL," +
                 "SubjectId VARCHAR(10) not NULL," +
                 "Year INTEGER not NULL," +
                 "DatePassed Date, " +
                 "Attempts INTEGER DEFAULT '0', " +
                 "Mark INTEGER, " +
                 "Points INTEGER DEFAULT '0', " +
-                "PRIMARY KEY (id, IndexNum, SubjectId) ) ENGINE=InnoDB ";
+                "PRIMARY KEY (IndexNum, SubjectId, Year) ) ENGINE=InnoDB ";
 
         System.out.println("Creating table 'AppliedToListen'");
 
