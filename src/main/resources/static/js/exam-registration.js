@@ -1,9 +1,9 @@
 function init(){
-	makeRequest('/get_exams',[['student',index],['exam_deadline','Avgustovski']],function(examData){getExamId(examData);});
-	makeRequest('/get_subjects_by_student',[['index',index]],function(subjectData){loadStudentSubjects(subjectData);});
+	//makeRequest('/get_exams',[['student',index],['exam_deadline','Avgustovski']],function(examData){getExamId(examData);});
+	//makeRequest('/get_subjects_by_student',[['index',index]],function(subjectData){loadStudentSubjects(subjectData);});
 	makeRequest('/get_student',[['index',index]],function(studentData){loadStudentData(studentData);});
 }
-
+/*
 let examSet = new Set();
 var subject = {};
 var exam_id = [];
@@ -91,3 +91,4 @@ for(let i = 0; i < exam_id.length; i++){
   makeRequest("/apply_for_exam",[['student',index],['exam', examId],['payed', 0]]);
 }
 }
+*/
