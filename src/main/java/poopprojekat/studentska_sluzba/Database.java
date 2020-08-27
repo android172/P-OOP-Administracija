@@ -2282,6 +2282,34 @@ public class Database
         return applied;
     }
 
+    public static ArrayList<Exam> GetAppliedExams(Index index, String deadline)
+    {
+        sql = "SELECT * FROM ExamApplication as ea join Exams as e on e.ExamId = ea.ExamId join ExamDeadline as ed on (e.ExamDate >= ed.StartDate AND e.ExamDate <= ed.EndDate) " +
+                "WHERE ed.ExamName = '" + deadline + "' AND ea.IndexNum = '" + index + "' ";
+
+        ResultSet res = null;
+        ArrayList<Exam> applied = new ArrayList<>();
+
+        try
+        {
+            res = stat.executeQuery(sql);
+
+            if(!res.first())
+                return null;
+
+            do
+            {
+                applied.add(new Exam(res.getString("e.ExamId"), res.getString("e.SubjectId"), res.getString("e.LectId"), res.getDate("e.ExamDate").toLocalDate()));
+            }while(res.next());
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        return applied;
+    }
+
     // Remove f-je
 
     public static void DeleteStudent(Index index) throws Exception
