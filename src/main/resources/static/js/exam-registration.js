@@ -12,6 +12,9 @@ var subject_to_show = [];
 var exam_id_to_show = [];
 var subject_id = [];
 
+
+
+
 function loadStudentSubjects(subjectData){
 	console.log(subject_to_show);
 	var table4 = document.getElementById("tableExams");
