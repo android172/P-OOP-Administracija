@@ -5,12 +5,12 @@
 # Sadržaj:
 
 - [Uputstvo](#uputstvo)
-    * [Navigacija](##navigacija)
-        + [Uvod](###uvod)
-        + [Administrator](###administrator)
-        + [Predavač](###predavač)
-        + [Student](###student)
-    * [Dodatno](##dodatno)
+    * [Navigacija](#navigacija)
+        + [Uvod](#uvod)
+        + [Administrator](#administrator)
+        + [Predavač](#predavač)
+        + [Student](#student)
+    * [Dodatno](#dodatno)
 - [Credits](#credits)
 
 # Uputstvo:
