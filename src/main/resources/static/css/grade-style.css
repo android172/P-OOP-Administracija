@@ -99,3 +99,10 @@ h1 {
 #points{
 	color: black;
 }
+
+#Back{
+	cursor: pointer;
+}
+a:hover{
+	color: blue;
+}
