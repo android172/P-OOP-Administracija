@@ -76,6 +76,19 @@ public class Exam_Controller {
         }
     }
 
+    @PostMapping("/get_applied_exams")
+    public ArrayList<Exam> get_applied_exams(@RequestParam("token") long token, @RequestParam("student") String index,
+            @RequestParam("exam_deadline") String exam_deadline) {
+        if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
+            return null;
+        try {
+            return Database.GetAppliedExams(new Index(index), exam_deadline);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @PostMapping("/get_exams_for")
     public ArrayList<Exam> get_exams(@RequestParam("token") long token, @RequestParam("student") String index) {
         if (!Log_in_Controller.access_allowed(token, new String[][] { { "Student", index } }))
