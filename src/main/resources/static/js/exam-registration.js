@@ -1,9 +1,9 @@
 function init(){
-	//makeRequest('/get_exams',[['student',index],['exam_deadline','Avgustovski']],function(examData){getExamId(examData);});
-	//makeRequest('/get_subjects_by_student',[['index',index]],function(subjectData){loadStudentSubjects(subjectData);});
+	makeRequest('/get_exams',[['student',index],['exam_deadline','Avgustovski']],function(examData){getExamId(examData);});
+	makeRequest('/get_subjects_by_student',[['index',index]],function(subjectData){loadStudentSubjects(subjectData);});
 	makeRequest('/get_student',[['index',index]],function(studentData){loadStudentData(studentData);});
 }
-/*
+
 let examSet = new Set();
 var subject = {};
 var exam_id = [];
@@ -12,8 +12,6 @@ var exam_id_to_show = [];
 var subject_id = [];
 
 function loadStudentSubjects(subjectData){
-	console.log("subject id");
-	console.log(subject_id);
 	var table4 = document.getElementById("tableExams");
 	var subjectName;
 	var lecName;
@@ -25,15 +23,13 @@ function loadStudentSubjects(subjectData){
 	for(let j = 0; j < subject_id.length; j++){
 		for (let i = 0; i < subjectData.length; i++){
 			let sub_id = subjectData[i]["subjectId"];
-			console.log("id predmeta u foru")
-			console.log(Id)
 			if(sub_id === subject_id[j]){
 				subjectName = subjectData[i]["subjectName"];
-				subject[Id] = subjectName;
+				subject[sub_id] = subjectName;
 				espb =  subjectData[i]["espb"];
 				year =  subjectData[i]["year"];
 				lecName =  subjectData[i]["lectName"];
-				table += `<tr><td>${subjectName}</td><td>${sub_id}</td><td>${year}</td><td>${espb}</td><td>${lecName}</td><td><input type="checkbox" onchange="examRegister('${Id}','${i}')" value="Prijavi"></td></tr>`
+				table += `<tr><td>${subjectName}</td><td>${sub_id}</td><td>${year}</td><td>${espb}</td><td>${lecName}</td><td><input type="checkbox" onchange="examRegister('${sub_id}','${i}')" value="Prijavi"></td></tr>`
 			}
 		}
     }
@@ -70,14 +66,15 @@ function examRegister(Id,i){
 
 function showExamSet(){
 	let tableReg = document.getElementById('tableRegistered');
-	var subject_name;
+	let subject_name;
     let table = '<table>'
-	table += '<tr><th>Predmet</th><th>ID</th></tr>'
+	table += '<tr><th>ID</th></tr>'
     for (const item of examSet) {
 		for(let i = 0; i < subject.length; i++)
-			if(subject[i] === item)
+			if(subject[i] === item){
 				subject_name = subject[i].subjectName;
-        table += `<tr><td>${subject_name}</td><td>${item}</td></tr>`
+			}
+        	table += `<td>${item}</td></tr>`
     }
     table += '</table>';
     if(examSet.size === 0)
@@ -91,4 +88,3 @@ for(let i = 0; i < exam_id.length; i++){
   makeRequest("/apply_for_exam",[['student',index],['exam', examId],['payed', 0]]);
 }
 }
-*/
